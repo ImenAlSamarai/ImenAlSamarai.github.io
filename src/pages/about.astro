@@ -11,7 +11,7 @@ const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
     <img src="/images/portrait.jpg" alt={`Portrait of ${site.name}`} width="720" height="900" />
     <div class="txt">
       <p class="label">About</p>
-      <h1 class="about-name">{site.name}</h1>
+      <h1 class="about-name">Dr. {site.name}</h1>
       {a.intro.split(/\n\s*\n/).map((para) => <p style="margin:0;font-size:19px;line-height:1.65;color:var(--fg-2)">{para}</p>)}
       <div class="btn-row" style="padding-top:4px">
         <a class="btn btn-solid" href="#" data-email data-u={site.email_user} data-d={site.email_domain}>Get in touch</a>
