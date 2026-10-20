@@ -1,6 +1,6 @@
 ---
 title: How to write an article on this site
-date: 2026-10-20
+date: 2026-01-01
 tag: Other
 summary: A template showing every formatting option. It is a draft, so it never appears on the public site.
 draft: true
