@@ -11,8 +11,22 @@ const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
     <img src="/images/portrait.jpg" alt={`Portrait of ${site.name}`} width="720" height="900" />
     <div class="txt">
       <p class="label">About</p>
-      <p style="margin:0;font-size:19px;line-height:1.65;color:var(--fg-2);max-width:620px">{a.intro}</p>
+      <h1 class="about-name">{site.name}</h1>
+      <p style="margin:0;font-size:19px;line-height:1.65;color:var(--fg-2)">{a.intro}</p>
+      <div class="btn-row" style="padding-top:4px">
+        <a class="btn btn-solid" href="#" data-email data-u={site.email_user} data-d={site.email_domain}>Get in touch</a>
+        <a class="btn" href="/cv.pdf">Download CV</a>
+      </div>
     </div>
+    <dl class="facts">
+      {(a.facts || []).map((f) => <div><dt>{f.label}</dt><dd>{f.text}</dd></div>)}
+      <div><dt>Elsewhere</dt><dd class="facts-links">
+        {site.links.scholar && <a href={site.links.scholar}>Scholar</a>}
+        {site.links.orcid && <a href={site.links.orcid}>ORCID</a>}
+        {site.links.github && <a href={site.links.github}>GitHub</a>}
+        {site.links.linkedin && <a href={site.links.linkedin}>LinkedIn</a>}
+      </dd></div>
+    </dl>
   </section>
 
   <section class="rule" style="padding:64px 0" aria-labelledby="h-path">

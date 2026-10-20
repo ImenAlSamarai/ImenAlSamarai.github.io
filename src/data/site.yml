@@ -65,6 +65,17 @@ about:
         signals in bond markets. My current research studies how language models reason and plan under
         uncertainty, using benchmarks where the optimal decision is known exactly — so that a model’s
         behaviour can be measured, not guessed.
+  facts:
+    - label: Now
+      text: Founder, Pontus Analytics · Independent research
+    - label: Fields
+      text: Astroparticle physics · Quantitative finance · AI
+    - label: Education
+      text: PhD, Particle Physics & Astrophysics — Aix-Marseille University
+    - label: Based in
+      text: Paris
+    - label: Languages
+      text: French, Arabic, English, Italian, Spanish
   how_i_work:
     - title: Inference on noisy data
       text: Statistical methods built to separate real effects from chance.

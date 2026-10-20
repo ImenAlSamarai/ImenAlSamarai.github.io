@@ -117,9 +117,18 @@ img { max-width: 100%; display: block; }
 .subscribe .input { flex: 1 1 200px; }
 
 /* ---------- About ---------- */
-.about-hero { display: flex; flex-wrap: wrap; gap: 56px; align-items: flex-end; padding: 96px 0 88px; }
-.about-hero img { flex: 1 1 260px; max-width: 360px; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 20%; border: 1px solid var(--line); }
-.about-hero .txt { flex: 999 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+.about-hero { display: grid; grid-template-columns: 300px minmax(0, 1fr) 280px; gap: 56px; align-items: start; padding: 88px 0 88px; }
+.about-hero img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 20%; border: 1px solid var(--line); }
+.about-hero .txt { min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+.about-name { margin: 0; font-family: var(--serif); font-weight: 300; font-size: clamp(44px, 5vw, 64px); line-height: 1; letter-spacing: -0.025em; }
+.facts { margin: 0; display: flex; flex-direction: column; border-top: 1px solid var(--fg); }
+.facts > div { padding: 14px 0; border-bottom: 1px solid var(--line); }
+.facts dt { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-2); }
+.facts dd { margin: 4px 0 0; font-size: 16px; }
+.facts-links { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.facts-links a { color: var(--accent); }
+@media (max-width: 1040px) { .about-hero { grid-template-columns: 260px minmax(0, 1fr); } .about-hero .facts { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); column-gap: 32px; } }
+@media (max-width: 640px) { .about-hero { grid-template-columns: 1fr; gap: 32px; padding: 48px 0 64px; } .about-hero img { max-width: 280px; } }
 .chapter { display: flex; flex-wrap: wrap; gap: 16px 48px; padding: 36px 0; }
 .chapter .h { flex: 1 1 220px; display: flex; flex-direction: column; gap: 8px; }
 .chapter h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 34px; line-height: 1.1; }

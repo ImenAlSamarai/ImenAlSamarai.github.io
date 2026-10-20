@@ -246,6 +246,13 @@ content:
             fields:
               - { name: title, label: Title, type: string }
               - { name: text, label: Text, type: text }
+          - name: facts
+            label: Facts panel (next to the portrait)
+            type: object
+            list: true
+            fields:
+              - { name: label, label: Label, type: string }
+              - { name: text, label: Text, type: string }
           - name: how_i_work
             label: How I work
             type: object
