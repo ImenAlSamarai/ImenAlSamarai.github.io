@@ -288,4 +288,6 @@ img { max-width: 100%; display: block; }
 .studio-card .tag { color: #D9C9A8; }
 .studio-card .t { font-style: italic; }
 .studio-card .d { color: #CFCCC4; }
-.studio-card .go { font-weight: 500; color: #D9C9A8; }
+.studio-card .go { font-weight: 500; color: #D9C9A8; margin-top: auto; }
+.fields span { white-space: nowrap; }
+@media (max-width: 760px) { .landing-id .fields { letter-spacing: 0.1em; } }

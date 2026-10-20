@@ -18,7 +18,7 @@ const items = [
     <div class="landing-text">
       <div class="landing-id">
         <img src="/images/portrait.jpg" alt={`Portrait of ${site.name}`} width="112" height="112" />
-        <p class="label">{site.fields}</p>
+        <p class="label fields">{site.fields.split(' · ').map((f, i) => <span>{i > 0 && '· '}{f}{' '}</span>)}</p>
       </div>
       <h1>Imen<br />Al Samarai</h1>
       <p class="welcome">{site.home.welcome}</p>
@@ -66,7 +66,6 @@ const items = [
           <a class="beyond-card studio-card" href="/studio/">
             <span class="tag">Studio</span>
             <span class="t">{site.home.studio_title}</span>
-            <span class="d">{site.home.studio_card}</span>
             <span class="go">Enter the studio ↗</span>
           </a>
         )}
