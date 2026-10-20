@@ -32,7 +32,8 @@ home:
     my current research focuses on AI.
   studio_line: I also draw and compose music —
   writing_line: Thoughts on science, markets — and anything else that catches my curiosity.
-  studio_card: Drawing, painting and music — the other side of my work.
+  studio_title: Space and sound
+  studio_card: Drawings, paintings and music — where curiosity takes another form.
   background:
     - title: Astroparticle physics
       text: ANTARES · Pierre Auger · Cherenkov Telescope Array · IceCube. 200+ publications, including Science.
@@ -99,4 +100,4 @@ about:
   contact_line: For collaborations, roles or ventures, I am happy to talk.
 
 studio:
-  intro: Drawing, painting and digital art — the other side of my work.
+  intro: Space and sound — drawings, paintings and music.
