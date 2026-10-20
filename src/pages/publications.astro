@@ -1,10 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
-import { site, load, getPublications } from '../lib/site.js';
+import { site, getPublications } from '../lib/site.js';
 
-const selected = load('selected.yml') || [];
 const all = getPublications();
-const fields = ['All', ...['AI', 'Physics', 'Finance'].filter((f) => selected.some((p) => p.field === f) || all.some((p) => p.field === f))];
 const byYear = new Map();
 for (const p of all) {
   const y = p.year || 'Undated';
@@ -14,12 +12,11 @@ for (const p of all) {
 const years = [...byYear.entries()];
 const PREVIEW_YEARS = 4;
 ---
-<Base title="Research" current="research" description="Publications by Imen Al Samarai in astroparticle physics, quantitative finance and artificial intelligence.">
+<Base title="Publications" current="publications" description="Publications by Imen Al Samarai in astroparticle physics, quantitative finance and artificial intelligence.">
   <section class="page-head" style="flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:32px 56px">
     <div style="flex:999 1 460px;min-width:0;display:flex;flex-direction:column;gap:20px">
-      <p class="label">Research</p>
+      <p class="label">Publications</p>
       <h1 class="page-title">Publications</h1>
-      <p class="lead">Work in astroparticle physics, quantitative finance and artificial intelligence.</p>
     </div>
     <nav class="profiles" aria-label="Research profiles">
       {site.links.scholar && <a href={site.links.scholar}><span>Google Scholar</span><span>↗︎</span></a>}
@@ -28,29 +25,7 @@ const PREVIEW_YEARS = 4;
     </nav>
   </section>
 
-  <section class="rule" style="padding:48px 0 24px" aria-labelledby="h-sel">
-    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px;margin-bottom:16px">
-      <h2 id="h-sel" class="label">Selected</h2>
-      <div class="chips" role="group" aria-label="Filter by field" data-filters>
-        {fields.map((f, i) => <button class="chip" type="button" data-field={f} aria-pressed={i === 0 ? 'true' : 'false'}>{f}</button>)}
-      </div>
-    </div>
-    {selected.map((p) => (
-      <article class="pub" data-item data-f={p.field}>
-        <div class="meta"><span class="mono" style="color:var(--fg);font-size:14px">{p.year}</span><span class="tag">{p.field}</span><span style="font-size:13px;color:var(--muted-2)">{p.role}</span></div>
-        <div class="body">
-          <h3>{p.title}</h3>
-          <span class="muted">{p.authors}</span>
-          <span class="venue">{p.venue}</span>
-          {p.link && <span class="links" style="font-family:var(--mono);font-size:13px;padding-top:4px"><a href={p.link}>{p.link.includes('doi.org') ? 'DOI ↗︎' : 'Read ↗︎'}</a></span>}
-        </div>
-      </article>
-    ))}
-    <p class="empty" data-empty hidden>No selected papers in this field yet.</p>
-    <p class="note">Most physics papers are signed by large international collaborations, with authors listed alphabetically.</p>
-  </section>
-
-  <section style="padding:88px 0 64px" aria-labelledby="h-all">
+  <section class="rule" style="padding:48px 0 64px" aria-labelledby="h-all">
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:24px">
       <h2 id="h-all" style="margin:0;font-family:var(--serif);font-weight:300;font-size:40px">All publications <span class="mono">({all.length})</span></h2>
       <label style="display:flex;align-items:center;gap:12px;font-size:15px;color:var(--muted)">Search
@@ -80,17 +55,6 @@ const PREVIEW_YEARS = 4;
 </Base>
 
 <script>
-  const chips = [...document.querySelectorAll('[data-filters] .chip')];
-  const items = [...document.querySelectorAll('[data-item]')];
-  const empty = document.querySelector('[data-empty]');
-  chips.forEach((c) => c.addEventListener('click', () => {
-    chips.forEach((x) => x.setAttribute('aria-pressed', String(x === c)));
-    const f = c.dataset.field;
-    let shown = 0;
-    items.forEach((it) => { const on = f === 'All' || it.dataset.f === f; it.hidden = !on; if (on) shown++; });
-    if (empty) empty.hidden = shown > 0;
-  }));
-
   const search = document.querySelector('[data-search]');
   const groups = [...document.querySelectorAll('[data-year]')];
   const none = document.querySelector('[data-none]');

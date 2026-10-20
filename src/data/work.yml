@@ -1,4 +1,5 @@
-# Content of the Work page.
+# Content of the Projects page ("projects").
+# "ventures" is not shown on the Projects page; it feeds the Venture item on the landing page.
 
 ventures:
   - name: Pontus Analytics
@@ -6,7 +7,7 @@ ventures:
     description: AI, machine learning and physics-simulation solutions for quantitative finance, defence and R&D.
     link: https://pontus-analytics.com
 
-research:
+projects:
   - title: Verifying Decisions Under Uncertainty
     subtitle: A value-aware evaluation framework for sequential language-model agents
     label: AI · 2026
@@ -39,8 +40,8 @@ research:
       - label: Code
         url: https://github.com/ImenAlSamarai/MBR-simulation
 
-open_source:
   - title: Multi-agent portfolio system
+    subtitle: ""
     label: Markets
     description: >-
       Conservative, growth and balanced agents coordinated by a strategic agent, with risk management,
@@ -49,9 +50,10 @@ open_source:
     image: /images/work/portfolio-system.jpg
     image_alt: Portfolio performance analysis chart
     links:
-      - label: GitHub
+      - label: Code
         url: https://github.com/ImenAlSamarai/portfolio-system-gaming
   - title: AI research intelligence platform
+    subtitle: ""
     label: AI
     description: >-
       Specialised AI agents that monitor new papers in physics, finance and biology, select the most relevant,

@@ -7,11 +7,10 @@ const { title, description = site.description, current = '', bare = false } = As
 const pageTitle = title ? `${title} — ${site.name}` : site.name;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const nav = [
-  { href: '/research/', label: 'Research', key: 'research' },
   { href: '/writing/', label: 'Writing', key: 'writing' },
-  { href: '/work/', label: 'Work', key: 'work' },
+  { href: '/projects/', label: 'Projects', key: 'projects' },
   { href: '/about/', label: 'About', key: 'about' },
-  { href: '/cv/', label: 'CV', key: 'cv' },
+  { href: '/publications/', label: 'Publications', key: 'publications' },
 ];
 const sameAs = Object.values(site.links).filter(Boolean);
 const person = {

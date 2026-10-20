@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import { load } from '../lib/site.js';
+const w = load('work.yml');
+---
+<Base title="Projects" current="projects" description="Selected projects by Imen Al Samarai: code, and the papers behind it.">
+  <section class="page-head">
+    <p class="label">Projects</p>
+    <h1 class="page-title">Selected projects</h1>
+    <p class="lead">Code, and where there is one, the paper behind it.</p>
+  </section>
+
+  {w.projects?.length > 0 && (
+    <section class="rule" style="padding:48px 0 72px" aria-labelledby="h-r">
+      <h2 id="h-r" class="sr-only">Projects</h2>
+      {w.projects.map((p) => (
+        <article class="project">
+          <img class={`img ${p.image_fit === 'contain' ? 'contain' : ''}`} src={p.image} alt={p.image_alt || ''} loading="lazy" />
+          <div class="body">
+            <span class="tag">{p.label}</span>
+            <h3>{p.title}</h3>
+            {p.subtitle && <span class="sub">{p.subtitle}</span>}
+            <p>{p.description}</p>
+            <span class="mono">{p.tools}</span>
+            <span class="links">{(p.links || []).map((l) => <a href={l.url}>{l.label} ↗︎</a>)}</span>
+          </div>
+        </article>
+      ))}
+    </section>
+  )}
+
+</Base>

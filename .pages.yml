@@ -104,7 +104,7 @@ content:
           - { name: role, label: Role, type: string }
 
   - name: selected
-    label: Research — selected papers
+    label: Landing page — selected papers
     type: file
     path: src/data/selected.yml
     format: yaml
@@ -125,7 +125,7 @@ content:
       - { name: link, label: Link (DOI, arXiv…), type: string }
 
   - name: publications_extra
-    label: Research — papers missing from the automatic list
+    label: Publications — papers missing from the automatic list
     type: file
     path: src/data/publications-extra.yml
     format: yaml
@@ -141,13 +141,13 @@ content:
         options: { values: [AI, Physics, Finance] }
 
   - name: work
-    label: Work page
+    label: Projects page
     type: file
     path: src/data/work.yml
     format: yaml
     fields:
       - name: ventures
-        label: Ventures
+        label: Ventures (shown on the landing page)
         type: object
         list: true
         fields:
@@ -155,8 +155,8 @@ content:
           - { name: role, label: My role, type: string }
           - { name: description, label: Description, type: text }
           - { name: link, label: Website, type: string }
-      - name: research
-        label: Research projects
+      - name: projects
+        label: Selected projects (code + paper)
         type: object
         list: true
         fields:
@@ -171,24 +171,6 @@ content:
             label: Image fit
             type: select
             options: { values: [cover, contain] }
-          - name: links
-            label: Links
-            type: object
-            list: true
-            fields:
-              - { name: label, label: Label, type: string }
-              - { name: url, label: URL, type: string }
-      - name: open_source
-        label: Open source
-        type: object
-        list: true
-        fields:
-          - { name: title, label: Title, type: string }
-          - { name: label, label: Label, type: string }
-          - { name: description, label: Description, type: text }
-          - { name: tools, label: Tools, type: string }
-          - { name: image, label: Image, type: image, options: { path: public/images/work } }
-          - { name: image_alt, label: Image description, type: string }
           - name: links
             label: Links
             type: object

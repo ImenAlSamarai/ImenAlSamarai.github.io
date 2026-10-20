@@ -10,7 +10,7 @@ const venture = work.ventures?.[0];
 const drawings = await getDrawings();
 const items = [
   ...selected.slice(0, 2).map((p) => ({ tag: p.field === 'AI' ? 'AI research' : p.field, title: p.title, meta: `${p.venue} · ${p.year}`, href: p.link })),
-  ...(venture ? [{ tag: 'Venture', title: venture.name, meta: venture.description, href: '/work/' }] : []),
+  ...(venture ? [{ tag: 'Venture', title: venture.name, meta: venture.description, href: venture.link || '/about/' }] : []),
 ];
 ---
 <Base>
@@ -43,8 +43,8 @@ const items = [
       ))}
     </div>
     <p class="strip-links">
-      <a class="link-accent" href="/research/">All research →</a>
-      <a class="link-accent" href="/work/">All work →</a>
+      <a class="link-accent" href="/publications/">All publications →</a>
+      <a class="link-accent" href="/projects/">All projects →</a>
       <a class="link-accent" href="/about/">More about me →</a>
     </p>
   </section>
