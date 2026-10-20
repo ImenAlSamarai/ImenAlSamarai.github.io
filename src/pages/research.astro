@@ -22,9 +22,9 @@ const PREVIEW_YEARS = 4;
       <p class="lead">Work in astroparticle physics, quantitative finance and artificial intelligence.</p>
     </div>
     <nav class="profiles" aria-label="Research profiles">
-      {site.links.scholar && <a href={site.links.scholar}><span>Google Scholar</span><span>↗</span></a>}
-      {site.links.orcid && <a href={site.links.orcid}><span>ORCID</span><span>↗</span></a>}
-      {site.links.lens && <a href={site.links.lens}><span>Lens</span><span>↗</span></a>}
+      {site.links.scholar && <a href={site.links.scholar}><span>Google Scholar</span><span>↗︎</span></a>}
+      {site.links.orcid && <a href={site.links.orcid}><span>ORCID</span><span>↗︎</span></a>}
+      {site.links.lens && <a href={site.links.lens}><span>Lens</span><span>↗︎</span></a>}
     </nav>
   </section>
 
@@ -42,7 +42,7 @@ const PREVIEW_YEARS = 4;
           <h3>{p.title}</h3>
           <span class="muted">{p.authors}</span>
           <span class="venue">{p.venue}</span>
-          {p.link && <span class="links" style="font-family:var(--mono);font-size:13px;padding-top:4px"><a href={p.link}>{p.link.includes('doi.org') ? 'DOI ↗' : 'Read ↗'}</a></span>}
+          {p.link && <span class="links" style="font-family:var(--mono);font-size:13px;padding-top:4px"><a href={p.link}>{p.link.includes('doi.org') ? 'DOI ↗︎' : 'Read ↗︎'}</a></span>}
         </div>
       </article>
     ))}

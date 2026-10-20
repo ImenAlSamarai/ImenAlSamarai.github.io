@@ -74,6 +74,13 @@ img { max-width: 100%; display: block; }
 .nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: 6px; }
 .nav .studio-link { font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--accent); }
 .theme-toggle { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--fg); cursor: pointer; }
+@media (max-width: 640px) {
+  .site-header { position: relative; padding: 20px 0 14px; gap: 12px; }
+  .nav { gap: 6px 16px; font-size: 15px; flex-wrap: nowrap; }
+  .nav .studio-link { font-size: 16px; white-space: nowrap; }
+  .theme-toggle { position: absolute; top: 14px; right: 0; }
+}
+@media (max-width: 370px) { .nav { gap: 6px 11px; font-size: 14px; } }
 .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
 .site-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 24px; padding: 40px 0 56px; border-top: 1px solid var(--fg); font-size: 15px; margin-top: 24px; }
 .site-footer nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
@@ -268,8 +275,8 @@ img { max-width: 100%; display: block; }
 .strip-links { display: flex; flex-wrap: wrap; gap: 12px 28px; margin: 28px 0 0; }
 @media (max-width: 760px) {
   .landing { grid-template-columns: 1fr; gap: 20px; padding: 16px 0 40px; }
-  .landing-art { order: -1; margin: 0 -16px; height: 150px; overflow: hidden; }
-  .landing-art .ridges { max-width: none; width: 100%; height: auto; margin-top: -110px; }
+  .landing-art { order: -1; margin: 0 -16px; height: 72px; overflow: hidden; }
+  .landing-art .ridges { max-width: none; width: 100%; height: auto; margin-top: -150px; }
   .landing-id { gap: 16px; }
   .landing-id img { width: 84px; height: 84px; }
   .contact-actions { display: grid; grid-template-columns: 1fr 1fr; }
@@ -289,6 +296,8 @@ img { max-width: 100%; display: block; }
 .studio-card .t { font-style: italic; }
 .studio-card .d { color: #CFCCC4; }
 .soon { align-self: flex-start; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 6px 10px; border-radius: 999px; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .studio-card { background: #1E2024; border-color: #2C2F35; } }
+:root[data-theme="dark"] .studio-card { background: #1E2024; border-color: #2C2F35; }
 .studio-card .soon { color: #D9C9A8; border-color: #4A4844; }
 .soon-block { display: flex; flex-direction: column; gap: 18px; padding: 32px 0; border-top: 1px solid var(--line); }
 .soon-block p { margin: 0; font-size: 18px; color: var(--fg-2); max-width: 560px; }

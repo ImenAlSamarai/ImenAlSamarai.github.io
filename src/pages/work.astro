@@ -21,7 +21,7 @@ const w = load('work.yml');
               <span class="n">{v.name}</span>
               <span style="font-size:18px;color:var(--fg-2);display:block;max-width:560px">{v.description}</span>
             </span>
-            {v.link && <span class="link-accent">{v.link.replace(/^https?:\/\//, '')} ↗</span>}
+            {v.link && <span class="link-accent">{v.link.replace(/^https?:\/\//, '')} ↗︎</span>}
           </a>
         ))}
       </div>
@@ -40,7 +40,7 @@ const w = load('work.yml');
             {p.subtitle && <span class="sub">{p.subtitle}</span>}
             <p>{p.description}</p>
             <span class="mono">{p.tools}</span>
-            <span class="links">{(p.links || []).map((l) => <a href={l.url}>{l.label} ↗</a>)}</span>
+            <span class="links">{(p.links || []).map((l) => <a href={l.url}>{l.label} ↗︎</a>)}</span>
           </div>
         </article>
       ))}
@@ -58,7 +58,7 @@ const w = load('work.yml');
             <h3>{p.title}</h3>
             <p>{p.description}</p>
             <span class="mono">{p.tools}</span>
-            <span class="links">{(p.links || []).map((l) => <a href={l.url}>{l.label} ↗</a>)}</span>
+            <span class="links">{(p.links || []).map((l) => <a href={l.url}>{l.label} ↗︎</a>)}</span>
           </article>
         ))}
       </div>
