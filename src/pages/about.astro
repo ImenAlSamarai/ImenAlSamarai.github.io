@@ -14,6 +14,7 @@ const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
       <p class="label">About</p>
       <h1 class="about-name">Dr. {site.name}</h1>
       {a.intro.split(/\n\s*\n/).map((para) => <p style="margin:0;font-size:19px;line-height:1.65;color:var(--fg-2)">{para}</p>)}
+      <p style="margin:0;font-size:19px;line-height:1.65;color:var(--fg-2)">{a.contact_line}</p>
       <div class="btn-row" style="padding-top:4px">
         <a class="btn btn-solid" href="#" data-email data-u={site.email_user} data-d={site.email_domain}>Get in touch</a>
         <a class="btn" href="/cv.pdf">Download CV</a>
@@ -22,7 +23,7 @@ const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
     </div>
   </section>
 
-  <PathSky variant="1" toggle={process.env.INCLUDE_DRAFTS === '1'} />
+  <PathSky variant="1" />
 
   <section class="rule" style="display:flex;flex-wrap:wrap;gap:56px;padding:64px 0">
     <div style="flex:1 1 100%;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:40px">
@@ -52,11 +53,4 @@ const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
     <a class="btn btn-studio" href="/studio/">Step into the Studio ↗︎</a>
   </section>
 
-  <section style="display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center;padding:64px 0 88px;border-top:1px solid var(--line)">
-    <p style="margin:0;font-size:20px;color:var(--fg-2)">{a.contact_line}</p>
-    <div class="btn-row">
-      <a class="btn btn-solid" href="#" data-email data-u={site.email_user} data-d={site.email_domain}>Get in touch</a>
-      <a class="btn" href="/cv.pdf">Download CV</a>
-    </div>
-  </section>
 </Base>
