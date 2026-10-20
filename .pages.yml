@@ -224,7 +224,8 @@ content:
         label: Homepage
         type: object
         fields:
-          - { name: welcome, label: Welcome line, type: text }
+          - { name: tagline, label: Tagline under your name, type: string }
+          - { name: welcome, label: Welcome line (not shown at the moment), type: text }
           - { name: about, label: About paragraph, type: text }
           - { name: studio_line, label: Studio sentence (before the link), type: string }
           - name: background

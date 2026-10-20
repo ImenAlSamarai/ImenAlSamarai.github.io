@@ -22,6 +22,7 @@ newsletter_form_action: ""   # e.g. https://buttondown.com/api/emails/embed-subs
 goatcounter: ""              # e.g. https://YOURNAME.goatcounter.com/count
 
 home:
+  tagline: Physicist, quant and occasional artist.
   welcome: Welcome. This is where I share my research, writing and projects across physics, finance and AI.
   about: >-
     I hold doctorates in particle physics and astrophysics and spent a decade searching for the cosmic

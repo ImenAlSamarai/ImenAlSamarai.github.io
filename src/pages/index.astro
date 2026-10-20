@@ -1,71 +1,52 @@
 ---
 import Base from '../layouts/Base.astro';
 import Ridgelines from '../components/Ridgelines.astro';
-import Subscribe from '../components/Subscribe.astro';
-import { site, load, getPosts, getDrawings, formatDate } from '../lib/site.js';
+import { site, load, getPosts, formatDate } from '../lib/site.js';
 
-const selected = (load('selected.yml') || []).slice(0, 3);
-const posts = (await getPosts()).slice(0, 2);
-const hasStudio = (await getDrawings()).length > 0;
-const hasWriting = posts.length > 0;
-const doors = [
-  { href: '/research/', t: 'Research', d: 'Selected and complete publications — astroparticle physics, finance, AI.' },
-  ...(hasWriting ? [{ href: '/writing/', t: 'Writing', d: 'Essays and notes on science, markets and machine learning.' }] : []),
-  { href: '/work/', t: 'Work', d: 'Ventures, research projects and open-source code.' },
+const selected = load('selected.yml') || [];
+const work = load('work.yml');
+const posts = await getPosts();
+const venture = work.ventures?.[0];
+const items = [
+  ...selected.slice(0, 2).map((p) => ({ tag: p.field === 'AI' ? 'AI research' : p.field, title: p.title, meta: `${p.venue} · ${p.year}`, href: p.link })),
+  ...(venture ? [{ tag: 'Venture', title: venture.name, meta: venture.description, href: '/work/' }] : []),
+  ...(posts[0] ? [{ tag: 'Latest writing', title: posts[0].data.title, meta: `${formatDate(posts[0].data.date)} · ${posts[0].data.tag}`, href: `/writing/${posts[0].id}/` }] : []),
 ];
 ---
 <Base>
-  <section class="hero">
-    <div class="hero-text">
+  <section class="landing">
+    <div class="landing-text">
+      <div class="landing-id">
+        <img src="/images/portrait.jpg" alt={`Portrait of ${site.name}`} width="112" height="112" />
+        <p class="label">{site.fields}</p>
+      </div>
       <h1>Imen<br />Al Samarai</h1>
-      <p class="label">{site.fields}</p>
-      <p class="welcome">{site.home.welcome}</p>
-      <div class="btn-row">
-        <a class="btn btn-solid" href="#" data-email data-u={site.email_user} data-d={site.email_domain}>Get in touch</a>
-        <a class="btn" href="/about/">More about me</a>
+      <p class="tagline">{site.home.tagline}</p>
+      <div class="contact-actions">
+        <a class="btn btn-solid save" href="/imen-al-samarai.vcf" download>Save my contact</a>
+        {site.links.linkedin && <a class="btn" href={site.links.linkedin}>LinkedIn</a>}
+        <a class="btn" href="#" data-email data-u={site.email_user} data-d={site.email_domain}>Email</a>
       </div>
     </div>
-    <Ridgelines />
+    <div class="landing-art"><Ridgelines /></div>
   </section>
 
-  <section style="padding:96px 0 24px" aria-labelledby="h-explore">
-    <h2 id="h-explore" class="label" style="margin-bottom:32px">Explore</h2>
-    <div class="rows">
-      {doors.map((d, i) => (
-        <a class="door" href={d.href}><span class="n">0{i + 1}</span><span><span class="t">{d.t}</span><span class="d">{d.d}</span></span><span class="arrow">→</span></a>
+  <section class="selected-strip" aria-labelledby="h-sel">
+    <h2 id="h-sel" class="label">Selected</h2>
+    <div class="strip">
+      {items.map((it) => (
+        <a class="mini" href={it.href}>
+          <span class="tag">{it.tag}</span>
+          <span class="t">{it.title}</span>
+          <span class="m">{it.meta}</span>
+        </a>
       ))}
-      {hasStudio && (
-        <a class="door studio" href="/studio/"><span class="n">0{doors.length + 1}</span><span><span class="t">Studio</span><span class="d">A separate space — drawings, moving image, sound.</span></span><span class="arrow">↗</span></a>
-      )}
     </div>
-  </section>
-
-  <section class="two-col">
-    <div>
-      <h2 class="label" style="margin-bottom:12px">Selected publications</h2>
-      <div class="rows">
-        {selected.map((p) => (
-          <a class="mini" href={p.link}><span class="t">{p.title}</span><span class="m">{p.venue} · {p.year}</span></a>
-        ))}
-      </div>
-      <p style="margin:20px 0 0"><a class="link-accent" href="/research/">All publications →</a></p>
-    </div>
-    {hasWriting && (
-      <div>
-        <h2 class="label" style="margin-bottom:12px">Latest writing</h2>
-        <div class="rows">
-          {posts.map((p) => (
-            <a class="mini" href={`/writing/${p.id}/`}>
-              <span class="m">{formatDate(p.data.date)} · {p.data.tag}</span>
-              <span class="t">{p.data.title}</span>
-              {p.data.summary && <span class="m" style="font-size:15px;color:var(--muted)">{p.data.summary}</span>}
-            </a>
-          ))}
-        </div>
-        <p style="margin:20px 0 16px"><a class="link-accent" href="/writing/">All writing →</a></p>
-        {site.newsletter_form_action && <p class="muted" style="margin:0 0 10px;font-size:15px">New articles by email</p>}
-        <Subscribe id="home-sub" />
-      </div>
-    )}
+    <p class="strip-links">
+      <a class="link-accent" href="/research/">All research →</a>
+      {posts.length > 0 && <a class="link-accent" href="/writing/">All writing →</a>}
+      <a class="link-accent" href="/work/">All work →</a>
+      <a class="link-accent" href="/about/">More about me →</a>
+    </p>
   </section>
 </Base>
