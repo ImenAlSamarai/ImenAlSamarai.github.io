@@ -3,13 +3,13 @@
 updated: October 2026
 
 experience:
-  - role: Founder
+  - role: Founder & CEO
     org: Pontus Analytics
     place: Paris
     dates: "[Year] – present"
     points:
       - AI, machine learning and physics-simulation solutions for quantitative finance, defence and R&D.
-      - Independent research on evaluating how language-model agents make decisions under uncertainty.
+      - Research on evaluating how language-model agents make decisions under uncertainty.
   - role: Director, Quantitative Research
     org: TD Securities
     place: London
@@ -80,8 +80,8 @@ languages: French, Arabic (native) · English (fluent) · Italian, Spanish (conv
 # Shown on the About page's career timeline.
 timeline:
   - when: Now
-    org: Independent research · Founder, Pontus Analytics
-    role: ""
+    org: Pontus Analytics
+    role: Founder & CEO
   - when: 2020–2024
     org: TD Securities
     role: Director, Quantitative Research
