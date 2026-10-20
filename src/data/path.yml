@@ -42,7 +42,7 @@ stops:
     when: 2016–2018
     org: CERN
     role: Senior Research Scientist
-    text: Machine-learning methods at the centre of the neutrino search, which contributed to the evidence for neutrino emission from the blazar TXS 0506+056, published in Science in 2018.
+    text: Work across two collaborations. For the Cherenkov Telescope Array, I was first author of the calibration and performance studies of the SiPM camera for the SST-1M telescope prototype. For IceCube, I applied machine-learning methods to the search for cosmic neutrino sources and co-authored the 2018 Science papers on neutrino emission from the blazar TXS 0506+056. I also supervised three PhD researchers.
     skills: [ml]
   - chapter: Markets
     when: 2018–2020
