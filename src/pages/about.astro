@@ -27,12 +27,6 @@ const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 
   <section class="rule" style="display:flex;flex-wrap:wrap;gap:56px;padding:64px 0">
     <div style="flex:1 1 100%;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:40px">
-      <div>
-        <h2 class="label" style="margin-bottom:24px">Recognition</h2>
-        <div class="rows stack">
-          {cv.recognition.map((r) => <div class="item"><b style="display:block">{r.title}</b><small class="muted" style="font-size:15px">{r.year}</small></div>)}
-        </div>
-      </div>
       {a.press?.length > 0 && (
         <div>
           <h2 class="label" style="margin-bottom:24px">Press</h2>
