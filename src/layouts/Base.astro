@@ -74,10 +74,40 @@ const person = {
       </footer>
     </div>
   )}
+  <dialog class="contact" data-contact aria-labelledby="contact-title">
+    <form method="dialog" class="contact-close"><button class="theme-toggle" aria-label="Close">✕</button></form>
+    <p class="label">Contact</p>
+    <h2 id="contact-title">Get in touch</h2>
+    <p class="muted" style="margin:0">{site.about.contact_line}</p>
+    <p class="contact-address" data-address></p>
+    <div class="btn-row">
+      <button class="btn btn-solid" type="button" data-copy>Copy address</button>
+      <a class="btn" data-mailto href="#" target="_blank" rel="noopener">Open email app</a>
+    </div>
+    <p class="mono" data-copied hidden>Copied.</p>
+  </dialog>
   <script is:inline>
-    document.querySelectorAll('[data-email]').forEach(function (a) {
-      a.href = 'mailto:' + a.dataset.u + '@' + a.dataset.d;
-    });
+    (function () {
+      var dlg = document.querySelector('[data-contact]');
+      var first = document.querySelector('[data-email]');
+      if (!dlg || !first) return;
+      var addr = first.dataset.u + '@' + first.dataset.d;
+      dlg.querySelector('[data-address]').textContent = addr;
+      dlg.querySelector('[data-mailto]').href = 'mailto:' + addr;
+      dlg.querySelector('[data-copy]').addEventListener('click', function () {
+        var done = function () { dlg.querySelector('[data-copied]').hidden = false; };
+        if (navigator.clipboard) navigator.clipboard.writeText(addr).then(done, done); else done();
+      });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+      document.querySelectorAll('[data-email]').forEach(function (a) {
+        a.setAttribute('role', 'button');
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          dlg.querySelector('[data-copied]').hidden = true;
+          dlg.showModal();
+        });
+      });
+    })();
     document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
       b.addEventListener('click', function () {
         var root = document.documentElement;

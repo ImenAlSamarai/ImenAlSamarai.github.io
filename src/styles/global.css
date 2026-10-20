@@ -233,3 +233,12 @@ img { max-width: 100%; display: block; }
   .page-title { font-size: 30pt; }
   a { color: inherit; }
 }
+
+/* ---------- Contact dialog ---------- */
+.contact { width: min(520px, calc(100vw - 32px)); padding: 36px; border: 1px solid var(--line); border-radius: 4px; background: var(--bg); color: var(--fg); display: none; flex-direction: column; gap: 16px; }
+.contact[open] { display: flex; }
+.contact::backdrop { background: rgba(10, 11, 14, 0.55); }
+.contact h2 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 34px; line-height: 1.1; }
+.contact-address { margin: 4px 0; font-family: var(--mono); font-size: clamp(14px, 4vw, 17px); overflow-wrap: anywhere; padding: 14px 16px; background: var(--panel); border: 1px solid var(--line); }
+.contact-close { position: absolute; top: 14px; right: 14px; margin: 0; }
+@media (max-width: 480px) { .contact { padding: 28px 20px; } }
