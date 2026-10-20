@@ -42,18 +42,18 @@ stops:
     when: 2016–2018
     org: CERN
     role: Senior Research Scientist
-    text: With IceCube, after the 2017 neutrino alert, I was among the researchers who went back through almost a decade of data and found a burst of 13 neutrinos from the blazar TXS 0506+056 in 2014–15, published in Science in 2018, and featured in PNAS. For the Cherenkov Telescope Array, I was first author of the calibration and performance studies of the SiPM camera for the SST-1M telescope prototype. I also supervised three PhD researchers.
+    text: With IceCube, after the 2017 neutrino alert, I was among the researchers who went back through almost a decade of data and found a burst of 13 neutrinos from the blazar TXS 0506+056 in 2014–15, published in Science in 2018. For the Cherenkov Telescope Array, I was first author of the calibration and performance studies of the SiPM camera for the SST-1M telescope prototype. I also supervised three PhD researchers.
   - chapter: Markets
     when: 2018–2020
     org: Swiss Life
     role: Lead Data Scientist & ML Engineer
-    text: "The same methods brought to finance: the data science behind a production robo-advisory engine, combining sequence models with evolutionary optimisation."
+    text: "The same methods brought to finance. I designed and deployed a production robo-advisory engine combining LSTM models and genetic algorithms, serving thousands of clients, and built the full machine-learning pipeline behind it: client profiling, rebalancing and real-time risk monitoring. I led a team of three data scientists."
     skills: [ml]
   - chapter: Markets
     when: 2020–2024
     org: TD Securities
     role: Director, Quantitative Research
-    text: A fixed-income research platform designed and built from scratch, from signal generation to backtesting and real-time analytics, adopted across trading desks. Then the quant team that extended it to other asset classes.
+    text: I built the systematic fixed-income research platform from concept to firm-wide adoption across trading desks, with machine-learning alpha signals, validated backtesting and NLP tools for central-bank sentiment. I grew the team from a single contributor to seven PhD-level researchers and extended the research to FX and commodities. Recognised with the Above and Beyond Award (2021) and the Legendary Award (2023).
     skills: [ship]
   - chapter: AI
     when: Now
