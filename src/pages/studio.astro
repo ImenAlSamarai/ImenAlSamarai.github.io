@@ -18,7 +18,12 @@ const drawings = await getDrawings();
       </section>
       <main id="main">
         <section id="drawings" class="s-section" aria-labelledby="h-dr">
-          <div class="s-row"><h2 id="h-dr">Drawings</h2><span class="s-meta">{drawings.length} {drawings.length === 1 ? 'work' : 'works'}</span></div>
+          <div class="s-row"><h2 id="h-dr">Drawings</h2><span class="s-meta">{drawings.length ? `${drawings.length} ${drawings.length === 1 ? 'work' : 'works'}` : 'Coming soon'}</span></div>
+          {drawings.length === 0 && (
+            <div class="s-grid s-soon">
+              {[1, 2, 3].map(() => <figure><div class="s-frame" aria-hidden="true"></div><figcaption><span class="s-title">Coming soon</span></figcaption></figure>)}
+            </div>
+          )}
           <div class="s-grid">
             {drawings.map((d) => (
               <figure>
@@ -55,5 +60,7 @@ const drawings = await getDrawings();
   .s-grid figcaption { display: flex; justify-content: space-between; gap: 16px; }
   .s-title { font-family: var(--serif); font-style: italic; font-size: 19px; }
   .s-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding: 40px 0 56px; border-top: 1px solid #2E2D2A; font-size: 15px; color: #B9B6AE; }
+  .s-frame { aspect-ratio: 4 / 5; border: 1px dashed #4A4844; background: #1A1A18; }
+  .s-soon .s-title { color: #A29F96; }
   @media (max-width: 640px) { .s-hero { padding: 72px 0 96px; } .s-grid figure:nth-child(n) { padding-top: 0; } }
 </style>

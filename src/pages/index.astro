@@ -49,27 +49,23 @@ const items = [
     </p>
   </section>
 
-  {(posts.length > 0 || drawings.length > 0) && (
-    <section class="beyond" aria-labelledby="h-beyond">
-      <h2 id="h-beyond" class="label">Beyond research</h2>
-      <div class="beyond-grid">
-        {posts.length > 0 && (
-          <a class="beyond-card" href="/writing/">
-            <span class="tag">Writing</span>
-            <span class="t">Essays and notes</span>
-            <span class="d">{site.home.writing_line}</span>
-            <span class="m">Latest: {posts[0].data.title}</span>
-            <span class="link-accent">Read →</span>
-          </a>
-        )}
-        {drawings.length > 0 && (
-          <a class="beyond-card studio-card" href="/studio/">
-            <span class="tag">Studio</span>
-            <span class="t">{site.home.studio_title}</span>
-            <span class="go">Enter the studio ↗</span>
-          </a>
-        )}
-      </div>
-    </section>
-  )}
+  <section class="beyond" aria-labelledby="h-beyond">
+    <h2 id="h-beyond" class="label">Beyond research</h2>
+    <div class="beyond-grid">
+      <a class="beyond-card" href="/writing/">
+        <span class="tag">Writing</span>
+        <span class="t">Essays and notes</span>
+        <span class="d">{site.home.writing_line}</span>
+        {posts.length > 0
+          ? <><span class="m">Latest: {posts[0].data.title}</span><span class="link-accent">Read →</span></>
+          : <span class="soon">Coming soon</span>}
+      </a>
+      <a class="beyond-card studio-card" href="/studio/">
+        <span class="tag">Studio</span>
+        <span class="t">{site.home.studio_title}</span>
+        {drawings.length === 0 && <span class="soon">Coming soon</span>}
+        <span class="go">Enter the studio ↗</span>
+      </a>
+    </div>
+  </section>
 </Base>

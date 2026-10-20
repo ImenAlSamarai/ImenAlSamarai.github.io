@@ -12,6 +12,13 @@ const tags = ['All', 'AI', 'Physics', 'Markets', 'Other'];
   </section>
   <section class="writing-layout">
     <div class="list">
+      {posts.length === 0 ? (
+        <div class="soon-block">
+          <span class="soon">Coming soon</span>
+          <p>The first essays are being written. Topics: AI, physics, markets — and other things that catch my curiosity.</p>
+          <div class="soon-lines" aria-hidden="true"><span></span><span></span><span></span></div>
+        </div>
+      ) : <>
       <div class="chips" role="group" aria-label="Filter by topic" style="padding-bottom:24px" data-filters>
         {tags.map((t, i) => <button class="chip" type="button" data-tag={t} aria-pressed={i === 0 ? 'true' : 'false'}>{t}</button>)}
       </div>
@@ -23,7 +30,8 @@ const tags = ['All', 'AI', 'Physics', 'Markets', 'Other'];
           <span class="tag">{p.data.tag}</span>
         </a>
       ))}
-      <p class="empty" data-empty hidden={posts.length > 0 ? true : undefined}>No articles in this topic yet.</p>
+      <p class="empty" data-empty hidden>No articles in this topic yet.</p>
+      </>}
     </div>
     <aside>
       {site.newsletter_form_action && <>

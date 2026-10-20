@@ -85,12 +85,10 @@ const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
     </div>
   </section>
 
-  {hasStudio && (
-    <section class="rule" style="display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between;align-items:flex-end;padding:88px 0">
-      <p class="big-quote">{a.studio_invite}</p>
-      <a class="btn btn-studio" href="/studio/">Step into the Studio ↗</a>
-    </section>
-  )}
+  <section class="rule" style="display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between;align-items:flex-end;padding:88px 0">
+    <p class="big-quote">{a.studio_invite}</p>
+    <a class="btn btn-studio" href="/studio/">Step into the Studio ↗</a>
+  </section>
 
   <section style="display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center;padding:64px 0 88px;border-top:1px solid var(--line)">
     <p style="margin:0;font-size:20px;color:var(--fg-2)">{a.contact_line}</p>

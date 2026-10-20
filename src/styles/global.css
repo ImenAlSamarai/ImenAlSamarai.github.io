@@ -288,6 +288,12 @@ img { max-width: 100%; display: block; }
 .studio-card .tag { color: #D9C9A8; }
 .studio-card .t { font-style: italic; }
 .studio-card .d { color: #CFCCC4; }
+.soon { align-self: flex-start; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 6px 10px; border-radius: 999px; }
+.studio-card .soon { color: #D9C9A8; border-color: #4A4844; }
+.soon-block { display: flex; flex-direction: column; gap: 18px; padding: 32px 0; border-top: 1px solid var(--line); }
+.soon-block p { margin: 0; font-size: 18px; color: var(--fg-2); max-width: 560px; }
+.soon-lines { display: flex; flex-direction: column; gap: 14px; margin-top: 12px; }
+.soon-lines span { display: block; height: 72px; border: 1px dashed var(--line); }
 .studio-card .go { font-weight: 500; color: #D9C9A8; margin-top: auto; }
 .fields span { white-space: nowrap; }
 @media (max-width: 760px) { .landing-id .fields { letter-spacing: 0.1em; } }
