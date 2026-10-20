@@ -60,7 +60,5 @@ open_source:
     image: /images/work/research-platform.jpg
     image_alt: Research platform architecture diagram
     links:
-      - label: GitHub
-        url: https://github.com/ImenAlSamarai/research-bot
-      - label: Research Radar
+      - label: Research Radar on Substack
         url: https://substack.com/@researchradar

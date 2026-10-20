@@ -70,6 +70,14 @@ const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
           {cv.recognition.map((r) => <div class="item"><b style="display:block">{r.title}</b><small class="muted" style="font-size:15px">{r.year}</small></div>)}
         </div>
       </div>
+      {a.press?.length > 0 && (
+        <div>
+          <h2 class="label" style="margin-bottom:24px">Press</h2>
+          <div class="rows stack">
+            {a.press.map((p) => <a class="item" href={p.link} style="display:flex;justify-content:space-between;font-weight:600">{p.outlet}<span class="link-accent">↗</span></a>)}
+          </div>
+        </div>
+      )}
       <div>
         <h2 class="label" style="margin-bottom:24px">Languages</h2>
         <p style="margin:0;padding-top:16px;border-top:1px solid var(--line);font-size:16px">{cv.languages}</p>

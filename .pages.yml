@@ -253,6 +253,13 @@ content:
             fields:
               - { name: label, label: Label, type: string }
               - { name: text, label: Text, type: string }
+          - name: press
+            label: Press
+            type: object
+            list: true
+            fields:
+              - { name: outlet, label: Outlet, type: string }
+              - { name: link, label: Link, type: string }
           - name: how_i_work
             label: How I work
             type: object

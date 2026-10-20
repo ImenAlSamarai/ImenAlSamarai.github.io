@@ -22,27 +22,10 @@ const doors = [
       <p class="welcome">{site.home.welcome}</p>
       <div class="btn-row">
         <a class="btn btn-solid" href="#" data-email data-u={site.email_user} data-d={site.email_domain}>Get in touch</a>
-        <a class="btn" href="/research/">Read the research</a>
+        <a class="btn" href="/about/">More about me</a>
       </div>
     </div>
     <Ridgelines />
-  </section>
-
-  <section class="split rule" aria-labelledby="h-about">
-    <h2 id="h-about" class="label side">About</h2>
-    <div class="main" style="display:flex;flex-direction:column;gap:32px;max-width:760px">
-      <p style="margin:0;font-size:18px;line-height:1.65;color:var(--fg-2)">
-        {site.home.about}
-        {hasStudio && <>{' '}{site.home.studio_line}{' '}<a class="link-u" href="/studio/">see the Studio</a>.</>}
-      </p>
-      <div class="rows">
-        {site.home.background.map((b) => <div class="bg-row"><b>{b.title}</b><span>{b.text}</span></div>)}
-      </div>
-      <div class="btn-row" style="gap:24px">
-        <a class="link-accent" href="/about/">More about me →</a>
-        <a style="font-weight:500" href="/cv.pdf">Download CV</a>
-      </div>
-    </div>
   </section>
 
   <section style="padding:96px 0 24px" aria-labelledby="h-explore">

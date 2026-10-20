@@ -76,6 +76,13 @@ about:
       text: Paris
     - label: Languages
       text: French, Arabic, English, Italian, Spanish
+  press:
+    - outlet: PNAS
+      link: https://www.pnas.org/doi/10.1073/pnas.1811817115
+    - outlet: PolyMedia (EPFL)
+      link: https://www.polymedia.ch/de/un-neutrino-revele-lorigine-des-rayons-cosmiques/
+    - outlet: Techno-Science
+      link: https://www.techno-science.net/actualite/trou-noir-massif-origine-neutrinos-cosmiques-N17564.html
   how_i_work:
     - title: Inference on noisy data
       text: Statistical methods built to separate real effects from chance.
