@@ -1,0 +1,8 @@
+# Papers to add to the full list that the automatic import (OpenAlex) does not have yet,
+# e.g. new preprints. Same fields as below.
+
+- title: "Verifying Decisions Under Uncertainty: A Value-Aware Evaluation Framework for Sequential Language-Model Agents"
+  year: 2026
+  venue: Preprint
+  link: https://github.com/ImenAlSamarai/decision-level-evaluation
+  field: AI

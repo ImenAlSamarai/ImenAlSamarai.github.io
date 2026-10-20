@@ -1,0 +1,66 @@
+# Content of the Work page.
+
+ventures:
+  - name: Pontus Analytics
+    role: Founder
+    description: AI, machine learning and physics-simulation solutions for quantitative finance, defence and R&D.
+    link: https://pontus-analytics.com
+
+research:
+  - title: Verifying Decisions Under Uncertainty
+    subtitle: A value-aware evaluation framework for sequential language-model agents
+    label: AI · 2026
+    description: >-
+      Each decision a language-model agent makes is scored against the exact Bellman-optimal policy of a
+      stochastic control problem from quantitative finance — separating the decisions where planning ahead
+      changes the answer from those where it does not.
+    tools: LLM evaluation · Stochastic control · Python
+    image: /images/work/decision-evaluation.png
+    image_alt: Difficulty surface showing where planning ahead changes the optimal decision
+    image_fit: contain
+    links:
+      - label: Paper
+        url: https://github.com/ImenAlSamarai/decision-level-evaluation/blob/main/paper/paper.pdf
+      - label: Code
+        url: https://github.com/ImenAlSamarai/decision-level-evaluation
+  - title: Molecular bremsstrahlung simulation
+    subtitle: ""
+    label: Physics · 2015
+    description: >-
+      A C++ simulation framework for detecting ultra-high-energy cosmic rays through molecular bremsstrahlung
+      radiation, implementing my published model. It supported the GIGAS experiment at the Pierre Auger Observatory.
+    tools: C++ · ROOT · Monte Carlo
+    image: /images/work/mbr-simulation.jpg
+    image_alt: Molecular bremsstrahlung radiation simulation
+    image_fit: cover
+    links:
+      - label: Paper
+        url: https://arxiv.org/abs/1409.5051
+      - label: Code
+        url: https://github.com/ImenAlSamarai/MBR-simulation
+
+open_source:
+  - title: Multi-agent portfolio system
+    label: Markets
+    description: >-
+      Conservative, growth and balanced agents coordinated by a strategic agent, with risk management,
+      drawdown analysis and a backtesting framework.
+    tools: Python · Multi-agent systems · Backtesting
+    image: /images/work/portfolio-system.jpg
+    image_alt: Portfolio performance analysis chart
+    links:
+      - label: GitHub
+        url: https://github.com/ImenAlSamarai/portfolio-system-gaming
+  - title: AI research intelligence platform
+    label: AI
+    description: >-
+      Specialised AI agents that monitor new papers in physics, finance and biology, select the most relevant,
+      and publish daily summaries on the Research Radar newsletter.
+    tools: Python · LLMs · Multi-agent AI
+    image: /images/work/research-platform.jpg
+    image_alt: Research platform architecture diagram
+    links:
+      - label: GitHub
+        url: https://github.com/ImenAlSamarai/research-bot
+      - label: Research Radar
+        url: https://substack.com/@researchradar

@@ -1,0 +1,88 @@
+---
+import Base from '../layouts/Base.astro';
+import Ridgelines from '../components/Ridgelines.astro';
+import Subscribe from '../components/Subscribe.astro';
+import { site, load, getPosts, getDrawings, formatDate } from '../lib/site.js';
+
+const selected = (load('selected.yml') || []).slice(0, 3);
+const posts = (await getPosts()).slice(0, 2);
+const hasStudio = (await getDrawings()).length > 0;
+const hasWriting = posts.length > 0;
+const doors = [
+  { href: '/research/', t: 'Research', d: 'Selected and complete publications — astroparticle physics, finance, AI.' },
+  ...(hasWriting ? [{ href: '/writing/', t: 'Writing', d: 'Essays and notes on science, markets and machine learning.' }] : []),
+  { href: '/work/', t: 'Work', d: 'Ventures, research projects and open-source code.' },
+];
+---
+<Base>
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Imen<br />Al Samarai</h1>
+      <p class="label">{site.fields}</p>
+      <p class="welcome">{site.home.welcome}</p>
+      <div class="btn-row">
+        <a class="btn btn-solid" href="#" data-email data-u={site.email_user} data-d={site.email_domain}>Get in touch</a>
+        <a class="btn" href="/research/">Read the research</a>
+      </div>
+    </div>
+    <Ridgelines />
+  </section>
+
+  <section class="split rule" aria-labelledby="h-about">
+    <h2 id="h-about" class="label side">About</h2>
+    <div class="main" style="display:flex;flex-direction:column;gap:32px;max-width:760px">
+      <p style="margin:0;font-size:18px;line-height:1.65;color:var(--fg-2)">
+        {site.home.about}
+        {hasStudio && <>{' '}{site.home.studio_line}{' '}<a class="link-u" href="/studio/">see the Studio</a>.</>}
+      </p>
+      <div class="rows">
+        {site.home.background.map((b) => <div class="bg-row"><b>{b.title}</b><span>{b.text}</span></div>)}
+      </div>
+      <div class="btn-row" style="gap:24px">
+        <a class="link-accent" href="/about/">More about me →</a>
+        <a style="font-weight:500" href="/cv.pdf">Download CV</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:96px 0 24px" aria-labelledby="h-explore">
+    <h2 id="h-explore" class="label" style="margin-bottom:32px">Explore</h2>
+    <div class="rows">
+      {doors.map((d, i) => (
+        <a class="door" href={d.href}><span class="n">0{i + 1}</span><span><span class="t">{d.t}</span><span class="d">{d.d}</span></span><span class="arrow">→</span></a>
+      ))}
+      {hasStudio && (
+        <a class="door studio" href="/studio/"><span class="n">0{doors.length + 1}</span><span><span class="t">Studio</span><span class="d">A separate space — drawings, moving image, sound.</span></span><span class="arrow">↗</span></a>
+      )}
+    </div>
+  </section>
+
+  <section class="two-col">
+    <div>
+      <h2 class="label" style="margin-bottom:12px">Selected publications</h2>
+      <div class="rows">
+        {selected.map((p) => (
+          <a class="mini" href={p.link}><span class="t">{p.title}</span><span class="m">{p.venue} · {p.year}</span></a>
+        ))}
+      </div>
+      <p style="margin:20px 0 0"><a class="link-accent" href="/research/">All publications →</a></p>
+    </div>
+    {hasWriting && (
+      <div>
+        <h2 class="label" style="margin-bottom:12px">Latest writing</h2>
+        <div class="rows">
+          {posts.map((p) => (
+            <a class="mini" href={`/writing/${p.id}/`}>
+              <span class="m">{formatDate(p.data.date)} · {p.data.tag}</span>
+              <span class="t">{p.data.title}</span>
+              {p.data.summary && <span class="m" style="font-size:15px;color:var(--muted)">{p.data.summary}</span>}
+            </a>
+          ))}
+        </div>
+        <p style="margin:20px 0 16px"><a class="link-accent" href="/writing/">All writing →</a></p>
+        {site.newsletter_form_action && <p class="muted" style="margin:0 0 10px;font-size:15px">New articles by email</p>}
+        <Subscribe id="home-sub" />
+      </div>
+    )}
+  </section>
+</Base>

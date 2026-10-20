@@ -1,0 +1,81 @@
+# General settings and the short texts used across the site.
+# Edit in Pages CMS ("Site settings & texts") or directly here.
+
+name: Imen Al Samarai
+fields: Physics · Markets · AI
+location: Paris
+description: Imen Al Samarai — research, writing and projects across physics, finance and artificial intelligence.
+
+# Contact e-mail, split in two so spam bots cannot read it from the page.
+email_user: imen.alsamarai
+email_domain: gmail.com
+
+links:
+  scholar: https://scholar.google.com/citations?user=Bgu3sL8AAAAJ
+  orcid: https://orcid.org/0009-0001-0060-9225
+  lens: ""   # paste your Lens profile link here to show it on the Research page
+  github: https://github.com/ImenAlSamarai
+  linkedin: https://www.linkedin.com/in/imenalsamarai
+
+# Optional services — leave empty to hide them.
+newsletter_form_action: ""   # e.g. https://buttondown.com/api/emails/embed-subscribe/YOURNAME
+goatcounter: ""              # e.g. https://YOURNAME.goatcounter.com/count
+
+home:
+  welcome: Welcome. This is where I share my research, writing and projects across physics, finance and AI.
+  about: >-
+    I hold doctorates in particle physics and astrophysics and spent a decade searching for the cosmic
+    sources of neutrinos within international collaborations. I then moved to quantitative finance,
+    building machine-learning systems for an insurer and an alpha research platform for a global
+    investment bank, where I led a team of quants. Machine learning has been my working tool throughout;
+    my current research focuses on AI.
+  studio_line: I also draw and compose music —
+  background:
+    - title: Astroparticle physics
+      text: ANTARES · Pierre Auger · Cherenkov Telescope Array · IceCube. 200+ publications, including Science.
+    - title: Quantitative finance
+      text: Swiss Life · TD Securities. Data science and ML engineering; quantitative research and team leadership.
+    - title: Artificial intelligence
+      text: Research on how language models reason and plan under uncertainty.
+
+about:
+  intro: >-
+    I am a scientist and quantitative researcher. Over fifteen years my work has moved from astroparticle
+    physics to quantitative finance and now to artificial intelligence. The fields changed; the problem did
+    not: extracting reliable signal from noisy, complex data, and turning it into systems people can use.
+  chapters:
+    - title: Physics
+      text: >-
+        My research began with the ANTARES neutrino telescope, deep in the Mediterranean, and continued with
+        the Pierre Auger Observatory, the Cherenkov Telescope Array and IceCube at the South Pole — with
+        positions at Aix-Marseille University, Michigan State University, LPNHE in Paris and CERN. The common
+        thread was the search for the cosmic sources of high-energy neutrinos: faint signals buried in
+        overwhelming backgrounds. Machine-learning methods were central to that search, which contributed to
+        the evidence for neutrino emission from the blazar TXS 0506+056, published in Science in 2018.
+    - title: Markets
+      text: >-
+        In 2018 I brought the same methods to finance. At a major insurer I led the data science behind a
+        production robo-advisory engine, combining sequence models with evolutionary optimisation. At a
+        global investment bank I then designed and built a fixed-income research platform from scratch —
+        from signal generation to backtesting and real-time analytics — adopted across trading desks, and
+        built the quant team that extended it to other asset classes.
+    - title: Artificial intelligence
+      text: >-
+        Machine learning has run through all of this work, from classifying particle events to detecting
+        signals in bond markets. My current research studies how language models reason and plan under
+        uncertainty, using benchmarks where the optimal decision is known exactly — so that a model’s
+        behaviour can be measured, not guessed.
+  how_i_work:
+    - title: Inference on noisy data
+      text: Statistical methods built to separate real effects from chance.
+    - title: Simulation
+      text: Monte Carlo methods and models of systems too complex to solve on paper.
+    - title: Machine learning
+      text: From classical methods to deep learning, reinforcement learning and language models.
+    - title: Systems that ship
+      text: Production platforms taken from concept to adoption, and the teams to run them.
+  studio_invite: There is another side to my work — drawing, digital art and music. If you are curious, the Studio is open.
+  contact_line: For collaborations, roles or ventures, I am happy to talk.
+
+studio:
+  intro: Drawing, painting and digital art — the other side of my work.

@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+import { load } from '../lib/site.js';
+const w = load('work.yml');
+---
+<Base title="Work" current="work" description="Ventures, research projects and open-source code by Imen Al Samarai.">
+  <section class="page-head">
+    <p class="label">Work</p>
+    <h1 class="page-title">Ventures and projects</h1>
+    <p class="lead">Companies, research projects and open-source code.</p>
+  </section>
+
+  {w.ventures?.length > 0 && (
+    <section class="rule" style="padding:48px 0 72px" aria-labelledby="h-v">
+      <h2 id="h-v" class="label" style="margin-bottom:28px">Ventures</h2>
+      <div style="display:flex;flex-direction:column;gap:20px">
+        {w.ventures.map((v) => (
+          <a class="venture" href={v.link}>
+            <span style="flex:999 1 400px;min-width:0">
+              <span class="label" style="font-size:12px">{v.role}</span>
+              <span class="n">{v.name}</span>
+              <span style="font-size:18px;color:var(--fg-2);display:block;max-width:560px">{v.description}</span>
+            </span>
+            {v.link && <span class="link-accent">{v.link.replace(/^https?:\/\//, '')} ↗</span>}
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {w.research?.length > 0 && (
+    <section class="rule" style="padding:48px 0 72px" aria-labelledby="h-r">
+      <h2 id="h-r" class="label">Research projects</h2>
+      {w.research.map((p) => (
+        <article class="project">
+          <img class={`img ${p.image_fit === 'contain' ? 'contain' : ''}`} src={p.image} alt={p.image_alt || ''} loading="lazy" />
+          <div class="body">
+            <span class="tag">{p.label}</span>
+            <h3>{p.title}</h3>
+            {p.subtitle && <span class="sub">{p.subtitle}</span>}
+            <p>{p.description}</p>
+            <span class="mono">{p.tools}</span>
+            <span class="links">{(p.links || []).map((l) => <a href={l.url}>{l.label} ↗</a>)}</span>
+          </div>
+        </article>
+      ))}
+    </section>
+  )}
+
+  {w.open_source?.length > 0 && (
+    <section class="rule" style="padding:48px 0 88px" aria-labelledby="h-o">
+      <h2 id="h-o" class="label" style="margin-bottom:28px">Open source</h2>
+      <div class="oss">
+        {w.open_source.map((p) => (
+          <article>
+            <img src={p.image} alt={p.image_alt || ''} loading="lazy" />
+            <span class="tag">{p.label}</span>
+            <h3>{p.title}</h3>
+            <p>{p.description}</p>
+            <span class="mono">{p.tools}</span>
+            <span class="links">{(p.links || []).map((l) => <a href={l.url}>{l.label} ↗</a>)}</span>
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+</Base>

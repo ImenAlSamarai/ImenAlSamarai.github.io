@@ -1,0 +1,11 @@
+---
+import { site } from '../lib/site.js';
+const { id = 'sub', label = 'New articles by email', box = false } = Astro.props;
+---
+{site.newsletter_form_action && (
+  <form class="subscribe" action={site.newsletter_form_action} method="post" target="_blank">
+    <label for={id} class="sr-only">Email address</label>
+    <input id={id} class="input" type="email" name="email" placeholder="you@example.com" required />
+    <button class="btn btn-solid" type="submit">Subscribe</button>
+  </form>
+)}

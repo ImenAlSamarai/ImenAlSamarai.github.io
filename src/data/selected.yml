@@ -1,0 +1,74 @@
+# Papers featured at the top of the Research page (the first three also appear on the homepage).
+# role: Sole author · Lead author · Co-author · Collaboration
+# field: AI · Physics · Finance
+
+- title: "Verifying Decisions Under Uncertainty: A Value-Aware Evaluation Framework for Sequential Language-Model Agents"
+  year: 2026
+  field: AI
+  role: Sole author
+  authors: I. Al Samarai
+  venue: Preprint
+  link: https://github.com/ImenAlSamarai/decision-level-evaluation
+- title: Neutrino emission from the direction of the blazar TXS 0506+056 prior to the IceCube-170922A alert
+  year: 2018
+  field: Physics
+  role: Collaboration
+  authors: IceCube Collaboration
+  venue: Science
+  link: https://doi.org/10.1126/science.aat2890
+- title: Multimessenger observations of a flaring blazar coincident with high-energy neutrino IceCube-170922A
+  year: 2018
+  field: Physics
+  role: Collaboration
+  authors: IceCube, Fermi-LAT, MAGIC and partner collaborations
+  venue: Science
+  link: https://doi.org/10.1126/science.aat1378
+- title: Observation of a large-scale anisotropy in the arrival directions of cosmic rays above 8 × 10¹⁸ eV
+  year: 2017
+  field: Physics
+  role: Collaboration
+  authors: Pierre Auger Collaboration
+  venue: Science
+  link: https://doi.org/10.1126/science.aan4338
+- title: Measurement of the multi-TeV neutrino interaction cross-section with IceCube using Earth absorption
+  year: 2017
+  field: Physics
+  role: Collaboration
+  authors: IceCube Collaboration
+  venue: Nature
+  link: https://doi.org/10.1038/nature24459
+- title: Multi-messenger Observations of a Binary Neutron Star Merger
+  year: 2017
+  field: Physics
+  role: Collaboration
+  authors: LIGO, Virgo, Fermi GBM, ANTARES, IceCube, Pierre Auger and partner collaborations
+  venue: The Astrophysical Journal Letters
+  link: https://doi.org/10.3847/2041-8213/aa91c9
+- title: Performance of a small size telescope (SST-1M) camera for gamma-ray astronomy with the Cherenkov Telescope Array
+  year: 2017
+  field: Physics
+  role: Lead author
+  authors: I. Al Samarai et al.
+  venue: International Cosmic Ray Conference
+  link: https://doi.org/10.22323/1.301.0758
+- title: Molecular bremsstrahlung radiation at GHz frequencies in air
+  year: 2016
+  field: Physics
+  role: Lead author
+  authors: I. Al Samarai et al.
+  venue: Physical Review D
+  link: https://doi.org/10.1103/physrevd.93.052004
+- title: An estimate of the spectral intensity expected from the molecular Bremsstrahlung radiation in extensive air showers
+  year: 2015
+  field: Physics
+  role: Lead author
+  authors: I. Al Samarai et al.
+  venue: Astroparticle Physics
+  link: https://doi.org/10.1016/j.astropartphys.2015.01.004
+- title: "GIGAS: A set of microwave sensor arrays to detect molecular bremsstrahlung radiation from extensive air shower"
+  year: 2018
+  field: Physics
+  role: Co-author
+  authors: Small team (17 authors)
+  venue: Nuclear Instruments and Methods A
+  link: https://doi.org/10.1016/j.nima.2018.01.055

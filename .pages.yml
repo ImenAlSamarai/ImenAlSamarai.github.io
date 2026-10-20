@@ -1,0 +1,262 @@
+# Pages CMS configuration — https://pagescms.org
+# Sign in at https://app.pagescms.org with GitHub, open this repository, and edit through forms.
+# Every save is a commit; the site rebuilds and goes live in about two minutes.
+
+media:
+  input: public/images
+  output: /images
+
+content:
+  - name: writing
+    label: Writing
+    type: collection
+    path: src/content/writing
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, date, tag, draft]
+      primary: title
+      sort: [date]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: date, label: Date, type: date, required: true }
+      - name: tag
+        label: Topic
+        type: select
+        options: { values: [AI, Physics, Markets, Other] }
+      - { name: summary, label: Summary (one or two sentences), type: text }
+      - { name: draft, label: Draft (hidden from the public site), type: boolean, default: true }
+      - name: body
+        label: Article
+        type: code
+        options: { language: markdown }
+
+  - name: studio
+    label: Studio — drawings
+    type: collection
+    path: src/content/studio
+    view:
+      fields: [title, year, draft]
+      primary: title
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: year, label: Year, type: string }
+      - { name: medium, label: Medium, type: string }
+      - name: image
+        label: Image
+        type: image
+        required: true
+        options: { path: public/images/studio }
+      - { name: order, label: Order (1 = first), type: number }
+      - { name: draft, label: Draft (hidden from the public site), type: boolean, default: false }
+
+  - name: cv
+    label: CV
+    type: file
+    path: src/data/cv.yml
+    format: yaml
+    fields:
+      - { name: updated, label: Last updated, type: string }
+      - name: experience
+        label: Experience
+        type: object
+        list: true
+        fields:
+          - { name: role, label: Role, type: string }
+          - { name: org, label: Organisation, type: string }
+          - { name: place, label: Place, type: string }
+          - { name: dates, label: Dates, type: string }
+          - { name: points, label: Bullet points, type: text, list: true }
+      - name: education
+        label: Education
+        type: object
+        list: true
+        fields:
+          - { name: degree, label: Degree, type: string }
+          - { name: school, label: School, type: string }
+          - { name: detail, label: Detail, type: string }
+          - { name: dates, label: Dates, type: string }
+      - { name: publications_line, label: Publications line, type: string }
+      - name: skills
+        label: Skills
+        type: object
+        list: true
+        fields:
+          - { name: group, label: Group, type: string }
+          - { name: items, label: Items, type: text }
+      - name: recognition
+        label: Recognition
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: year, label: Year, type: string }
+      - { name: languages, label: Languages, type: string }
+      - name: timeline
+        label: About page — career timeline
+        type: object
+        list: true
+        fields:
+          - { name: when, label: When, type: string }
+          - { name: org, label: Organisation, type: string }
+          - { name: role, label: Role, type: string }
+
+  - name: selected
+    label: Research — selected papers
+    type: file
+    path: src/data/selected.yml
+    format: yaml
+    list: true
+    fields:
+      - { name: title, label: Title, type: string }
+      - { name: year, label: Year, type: number }
+      - name: field
+        label: Field
+        type: select
+        options: { values: [AI, Physics, Finance] }
+      - name: role
+        label: My role
+        type: select
+        options: { values: [Sole author, Lead author, Co-author, Collaboration] }
+      - { name: authors, label: Authors, type: string }
+      - { name: venue, label: Journal or venue, type: string }
+      - { name: link, label: Link (DOI, arXiv…), type: string }
+
+  - name: publications_extra
+    label: Research — papers missing from the automatic list
+    type: file
+    path: src/data/publications-extra.yml
+    format: yaml
+    list: true
+    fields:
+      - { name: title, label: Title, type: string }
+      - { name: year, label: Year, type: number }
+      - { name: venue, label: Journal or venue, type: string }
+      - { name: link, label: Link, type: string }
+      - name: field
+        label: Field
+        type: select
+        options: { values: [AI, Physics, Finance] }
+
+  - name: work
+    label: Work page
+    type: file
+    path: src/data/work.yml
+    format: yaml
+    fields:
+      - name: ventures
+        label: Ventures
+        type: object
+        list: true
+        fields:
+          - { name: name, label: Name, type: string }
+          - { name: role, label: My role, type: string }
+          - { name: description, label: Description, type: text }
+          - { name: link, label: Website, type: string }
+      - name: research
+        label: Research projects
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: subtitle, label: Subtitle, type: string }
+          - { name: label, label: "Label (e.g. AI · 2026)", type: string }
+          - { name: description, label: Description, type: text }
+          - { name: tools, label: Tools, type: string }
+          - { name: image, label: Image, type: image, options: { path: public/images/work } }
+          - { name: image_alt, label: Image description, type: string }
+          - name: image_fit
+            label: Image fit
+            type: select
+            options: { values: [cover, contain] }
+          - name: links
+            label: Links
+            type: object
+            list: true
+            fields:
+              - { name: label, label: Label, type: string }
+              - { name: url, label: URL, type: string }
+      - name: open_source
+        label: Open source
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Title, type: string }
+          - { name: label, label: Label, type: string }
+          - { name: description, label: Description, type: text }
+          - { name: tools, label: Tools, type: string }
+          - { name: image, label: Image, type: image, options: { path: public/images/work } }
+          - { name: image_alt, label: Image description, type: string }
+          - name: links
+            label: Links
+            type: object
+            list: true
+            fields:
+              - { name: label, label: Label, type: string }
+              - { name: url, label: URL, type: string }
+
+  - name: site
+    label: Site settings & texts
+    type: file
+    path: src/data/site.yml
+    format: yaml
+    fields:
+      - { name: name, label: Name, type: string }
+      - { name: fields, label: Fields line, type: string }
+      - { name: location, label: Location, type: string }
+      - { name: description, label: Search-engine description, type: text }
+      - { name: email_user, label: "E-mail (part before @)", type: string }
+      - { name: email_domain, label: "E-mail (part after @)", type: string }
+      - name: links
+        label: Profile links
+        type: object
+        fields:
+          - { name: scholar, label: Google Scholar, type: string }
+          - { name: orcid, label: ORCID, type: string }
+          - { name: lens, label: Lens, type: string }
+          - { name: github, label: GitHub, type: string }
+          - { name: linkedin, label: LinkedIn, type: string }
+      - { name: newsletter_form_action, label: Newsletter form address (Buttondown), type: string }
+      - { name: goatcounter, label: GoatCounter address (analytics), type: string }
+      - name: home
+        label: Homepage
+        type: object
+        fields:
+          - { name: welcome, label: Welcome line, type: text }
+          - { name: about, label: About paragraph, type: text }
+          - { name: studio_line, label: Studio sentence (before the link), type: string }
+          - name: background
+            label: Background rows
+            type: object
+            list: true
+            fields:
+              - { name: title, label: Title, type: string }
+              - { name: text, label: Text, type: text }
+      - name: about
+        label: About page
+        type: object
+        fields:
+          - { name: intro, label: Introduction, type: text }
+          - name: chapters
+            label: The path
+            type: object
+            list: true
+            fields:
+              - { name: title, label: Title, type: string }
+              - { name: text, label: Text, type: text }
+          - name: how_i_work
+            label: How I work
+            type: object
+            list: true
+            fields:
+              - { name: title, label: Title, type: string }
+              - { name: text, label: Text, type: text }
+          - { name: studio_invite, label: Studio invitation, type: text }
+          - { name: contact_line, label: Contact line, type: string }
+      - name: studio
+        label: Studio
+        type: object
+        fields:
+          - { name: intro, label: Studio introduction, type: text }

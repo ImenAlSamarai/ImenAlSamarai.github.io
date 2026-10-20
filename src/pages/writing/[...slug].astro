@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import Subscribe from '../../components/Subscribe.astro';
+import { render } from 'astro:content';
+import { site, getPosts, formatDate, readingTime } from '../../lib/site.js';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, newer: posts[i - 1] || null, older: posts[i + 1] || null },
+  }));
+}
+const { post, newer, older } = Astro.props;
+const { Content } = await render(post);
+---
+<Base title={post.data.title} current="writing" description={post.data.summary || site.description}>
+  <article class="article">
+    <a href="/writing/" class="muted" style="font-size:15px">← All writing</a>
+    <div class="mono" style="display:flex;flex-wrap:wrap;gap:16px"><span class="tag">{post.data.tag}</span><span>{formatDate(post.data.date)}</span><span>{readingTime(post.body)} min read</span></div>
+    <h1>{post.data.title}</h1>
+    {post.data.summary && <p class="standfirst">{post.data.summary}</p>}
+    <div class="prose"><Content /></div>
+    {site.newsletter_form_action && (
+      <section class="subscribe-box">
+        <div style="flex:1 1 260px"><span style="font-family:var(--serif);font-size:22px;display:block">New articles by email</span><span class="muted" style="font-size:15px">No more than one email per article.</span></div>
+        <div style="flex:1 1 280px"><Subscribe id="art-sub" /></div>
+      </section>
+    )}
+    {(newer || older) && (
+      <nav class="pager" aria-label="More articles">
+        {older ? <a href={`/writing/${older.id}/`}><span class="mono">← Previous</span><span class="t">{older.data.title}</span></a> : <span />}
+        {newer ? <a href={`/writing/${newer.id}/`} style="text-align:right"><span class="mono">Next →</span><span class="t">{newer.data.title}</span></a> : <span />}
+      </nav>
+    )}
+  </article>
+</Base>

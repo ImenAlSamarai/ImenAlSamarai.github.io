@@ -1,0 +1,80 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, load, getDrawings } from '../lib/site.js';
+const cv = load('cv.yml');
+const a = site.about;
+const hasStudio = (await getDrawings()).length > 0;
+const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
+---
+<Base title="About" current="about">
+  <section class="about-hero">
+    <img src="/images/portrait.jpg" alt={`Portrait of ${site.name}`} width="720" height="900" />
+    <div class="txt">
+      <p class="label">About</p>
+      <p style="margin:0;font-size:19px;line-height:1.65;color:var(--fg-2);max-width:620px">{a.intro}</p>
+    </div>
+  </section>
+
+  <section class="rule" style="padding:64px 0" aria-labelledby="h-path">
+    <h2 id="h-path" class="label" style="margin-bottom:24px">The path</h2>
+    <div class="rows">
+      {a.chapters.map((c, i) => (
+        <article class="chapter">
+          <div class="h"><span class="mono">{roman[i]}</span><h3>{c.title}</h3></div>
+          <p>{c.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section style="padding:64px 0" aria-labelledby="h-how">
+    <h2 id="h-how" class="label" style="margin-bottom:32px">How I work</h2>
+    <div class="grid4">
+      {a.how_i_work.map((h) => <div><h3>{h.title}</h3><p>{h.text}</p></div>)}
+    </div>
+  </section>
+
+  <section class="rule" style="display:flex;flex-wrap:wrap;gap:56px;padding:64px 0">
+    <div style="flex:3 1 420px;min-width:0">
+      <h2 class="label" style="margin-bottom:24px">Career</h2>
+      <div class="rows">
+        {cv.timeline.map((t) => (
+          <div class="tl"><span class="mono">{t.when}</span><span><b>{t.org}</b>{t.role && <small>{t.role}</small>}</span></div>
+        ))}
+      </div>
+    </div>
+    <div style="flex:2 1 300px;min-width:0;display:flex;flex-direction:column;gap:40px">
+      <div>
+        <h2 class="label" style="margin-bottom:24px">Education</h2>
+        <div class="rows stack">
+          {cv.education.map((e) => <div class="item"><b style="display:block">{e.degree}</b><small class="muted" style="font-size:15px">{e.school} · {e.dates.split('–').pop().trim()}</small></div>)}
+        </div>
+      </div>
+      <div>
+        <h2 class="label" style="margin-bottom:24px">Recognition</h2>
+        <div class="rows stack">
+          {cv.recognition.map((r) => <div class="item"><b style="display:block">{r.title}</b><small class="muted" style="font-size:15px">{r.year}</small></div>)}
+        </div>
+      </div>
+      <div>
+        <h2 class="label" style="margin-bottom:24px">Languages</h2>
+        <p style="margin:0;padding-top:16px;border-top:1px solid var(--line);font-size:16px">{cv.languages}</p>
+      </div>
+    </div>
+  </section>
+
+  {hasStudio && (
+    <section class="rule" style="display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between;align-items:flex-end;padding:88px 0">
+      <p class="big-quote">{a.studio_invite}</p>
+      <a class="btn btn-studio" href="/studio/">Step into the Studio ↗</a>
+    </section>
+  )}
+
+  <section style="display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center;padding:64px 0 88px;border-top:1px solid var(--line)">
+    <p style="margin:0;font-size:20px;color:var(--fg-2)">{a.contact_line}</p>
+    <div class="btn-row">
+      <a class="btn btn-solid" href="#" data-email data-u={site.email_user} data-d={site.email_domain}>Get in touch</a>
+      <a class="btn" href="/cv.pdf">Download CV</a>
+    </div>
+  </section>
+</Base>

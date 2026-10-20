@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, load } from '../lib/site.js';
+const cv = load('cv.yml');
+---
+<Base title="CV" current="cv" description="Curriculum vitae of Imen Al Samarai.">
+  <section class="page-head" style="flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:28px">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <p class="label no-print">CV</p>
+      <h1 class="page-title"><span class="no-print">Curriculum vitae</span><span class="print-only">{site.name}</span></h1>
+      <span class="print-only" style="font-size:10pt">imenalsamarai.github.io · {site.email_user}@{site.email_domain} · {site.links.linkedin?.replace(/^https?:\/\/(www\.)?/, '')} · {site.location}</span>
+      <span class="mono">Last updated {cv.updated}</span>
+    </div>
+    <a class="btn btn-solid no-print" href="/cv.pdf" download>Download PDF ↓</a>
+  </section>
+
+  <section class="split rule" aria-labelledby="h-exp">
+    <h2 id="h-exp" class="label side">Experience</h2>
+    <div class="main">
+      {cv.experience.map((j) => (
+        <article class="job">
+          <div class="top"><h3>{j.role}</h3><span class="mono">{j.dates}</span></div>
+          <span style="font-size:17px;font-weight:600">{j.org} <span style="font-weight:400;color:var(--muted-2)">· {j.place}</span></span>
+          <ul>{(j.points || []).map((pt) => <li>{pt}</li>)}</ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="split rule" aria-labelledby="h-edu">
+    <h2 id="h-edu" class="label side">Education</h2>
+    <div class="main">
+      {cv.education.map((e) => (
+        <div class="edu"><span><span class="d">{e.degree}</span><span class="muted">{e.school}{e.detail && ` · ${e.detail}`}</span></span><span class="mono">{e.dates}</span></div>
+      ))}
+    </div>
+  </section>
+
+  <section class="split rule" aria-labelledby="h-pub">
+    <h2 id="h-pub" class="label side">Publications</h2>
+    <div class="main" style="display:flex;flex-direction:column;gap:12px">
+      <p style="margin:0;font-size:17px;color:var(--fg-2)">{cv.publications_line}</p>
+      <a class="link-accent no-print" href="/research/">Selected and complete list →</a>
+    </div>
+  </section>
+
+  <section class="split rule" aria-labelledby="h-sk">
+    <h2 id="h-sk" class="label side">Skills</h2>
+    <div class="main skills">
+      {cv.skills.map((s) => <div><h3>{s.group}</h3><p>{s.items}</p></div>)}
+    </div>
+  </section>
+
+  <section class="split rule" aria-labelledby="h-rec">
+    <h2 id="h-rec" class="label side">Recognition &amp; languages</h2>
+    <div class="main">
+      {cv.recognition.map((r) => <div class="kv"><span>{r.title}</span><span class="mono">{r.year}</span></div>)}
+      <p style="margin:0;padding-top:18px;font-size:16px;color:var(--fg-2)">{cv.languages}</p>
+    </div>
+  </section>
+</Base>

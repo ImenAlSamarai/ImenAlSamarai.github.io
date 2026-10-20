@@ -1,0 +1,48 @@
+---
+import Base from '../../layouts/Base.astro';
+import Subscribe from '../../components/Subscribe.astro';
+import { site, getPosts, formatDate, readingTime } from '../../lib/site.js';
+const posts = await getPosts();
+const tags = ['All', 'AI', 'Physics', 'Markets', 'Other'];
+---
+<Base title="Writing" current="writing" description="Essays and notes by Imen Al Samarai on science, markets and machine learning.">
+  <section class="page-head">
+    <p class="label">Writing</p>
+    <h1 class="page-title">Essays and notes</h1>
+  </section>
+  <section class="writing-layout">
+    <div class="list">
+      <div class="chips" role="group" aria-label="Filter by topic" style="padding-bottom:24px" data-filters>
+        {tags.map((t, i) => <button class="chip" type="button" data-tag={t} aria-pressed={i === 0 ? 'true' : 'false'}>{t}</button>)}
+      </div>
+      {posts.map((p) => (
+        <a class="post-card" href={`/writing/${p.id}/`} data-post data-tag={p.data.tag}>
+          <span class="mono" style="display:flex;gap:16px"><span>{formatDate(p.data.date)}</span><span>{readingTime(p.body)} min read</span>{p.data.draft && <span>Draft</span>}</span>
+          <span class="t">{p.data.title}</span>
+          {p.data.summary && <span class="s">{p.data.summary}</span>}
+          <span class="tag">{p.data.tag}</span>
+        </a>
+      ))}
+      <p class="empty" data-empty hidden={posts.length > 0 ? true : undefined}>No articles in this topic yet.</p>
+    </div>
+    <aside>
+      {site.newsletter_form_action && <>
+        <h2 style="margin:0;font-family:var(--serif);font-weight:400;font-size:24px">New articles by email</h2>
+        <p class="muted" style="margin:0;font-size:16px">No more than one email per article.</p>
+        <Subscribe id="w-sub" />
+      </>}
+      <a class="link-accent" href="/rss.xml">RSS feed</a>
+    </aside>
+  </section>
+</Base>
+<script>
+  const chips = [...document.querySelectorAll('[data-filters] .chip')];
+  const posts = [...document.querySelectorAll('[data-post]')];
+  const empty = document.querySelector('[data-empty]');
+  chips.forEach((c) => c.addEventListener('click', () => {
+    chips.forEach((x) => x.setAttribute('aria-pressed', String(x === c)));
+    let n = 0;
+    posts.forEach((p) => { const on = c.dataset.tag === 'All' || p.dataset.tag === c.dataset.tag; p.hidden = !on; if (on) n++; });
+    if (empty) empty.hidden = n > 0;
+  }));
+</script>

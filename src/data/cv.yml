@@ -1,0 +1,99 @@
+# Your CV. The CV page and the downloadable PDF are both generated from this file.
+
+updated: October 2026
+
+experience:
+  - role: Founder
+    org: Pontus Analytics
+    place: Paris
+    dates: "[Year] – present"
+    points:
+      - AI, machine learning and physics-simulation solutions for quantitative finance, defence and R&D.
+      - Independent research on evaluating how language-model agents make decisions under uncertainty.
+  - role: Director, Quantitative Research
+    org: TD Securities
+    place: London
+    dates: Oct 2020 – Jun 2024
+    points:
+      - Built the systematic fixed-income research platform from concept to firm-wide adoption across trading desks.
+      - Grew the team from individual contributor to seven PhD-level researchers, extending research to FX and commodities.
+      - Developed machine-learning alpha signals with validated backtesting, and NLP tools for central-bank sentiment.
+  - role: Lead Data Scientist & ML Engineer
+    org: Swiss Life
+    place: Paris
+    dates: Nov 2018 – Oct 2020
+    points:
+      - Designed and deployed a production robo-advisory engine combining LSTM models and genetic algorithms, serving thousands of clients.
+      - Built the full ML pipeline — client profiling, rebalancing, real-time risk monitoring — and led a team of three data scientists.
+  - role: Senior Research Scientist
+    org: CERN
+    place: Geneva
+    dates: Aug 2016 – Nov 2018
+    points:
+      - Machine-learning methods in the search for the cosmic sources of neutrinos, contributing to results published in Science.
+      - Coordinated work across international collaborations and supervised three PhD researchers.
+  - role: Researcher
+    org: LPNHE
+    place: Paris
+    dates: May 2013 – Aug 2016
+    points:
+      - Developed a phenomenological model and a C++ simulation framework adopted across four research projects.
+      - Co-led competitive technical proposals for experimental deployment.
+  - role: Visiting Scientist · Assistant Professor
+    org: Michigan State University · Aix-Marseille University
+    place: East Lansing · Marseille
+    dates: Jan 2012 – Apr 2013
+    points:
+      - Built real-time image-processing pipelines for autonomous telescope networks detecting transient events.
+      - Taught physics, mathematics and statistics.
+
+education:
+  - degree: PhD, Particle Physics & Astrophysics
+    school: Aix-Marseille University
+    detail: Signal detection in high-noise astrophysical data
+    dates: 2009 – 2012
+  - degree: MSc, Particle Physics
+    school: Université Paris 7 Denis Diderot
+    detail: ""
+    dates: "2008"
+
+publications_line: 200+ publications in astroparticle physics and AI, including Science and Nature.
+
+skills:
+  - group: Methods
+    items: Statistical inference, Monte Carlo simulation, signal processing, econometrics, portfolio optimisation
+  - group: Machine learning
+    items: Classical ML, deep learning, reinforcement learning, LLMs and agentic systems; PyTorch, TensorFlow, scikit-learn
+  - group: Engineering
+    items: Python, C++, SQL, R; Docker, AWS, Spark, Airflow; Bloomberg and Reuters APIs
+
+recognition:
+  - title: Legendary Award, TD Securities
+    year: "2023"
+  - title: Above and Beyond Award, TD Securities
+    year: "2021"
+  - title: NSF press release on the Science neutrino result
+    year: "2018"
+
+languages: French, Arabic (native) · English (fluent) · Italian, Spanish (conversational)
+
+# Shown on the About page's career timeline.
+timeline:
+  - when: Now
+    org: Independent research · Founder, Pontus Analytics
+    role: ""
+  - when: 2020–2024
+    org: TD Securities
+    role: Director, Quantitative Research
+  - when: 2018–2020
+    org: Swiss Life
+    role: Lead Data Scientist & ML Engineer
+  - when: 2016–2018
+    org: CERN
+    role: Senior Research Scientist
+  - when: 2013–2016
+    org: LPNHE, Paris
+    role: Researcher
+  - when: 2012–2013
+    org: Michigan State University · Aix-Marseille University
+    role: Visiting Scientist · Assistant Professor
