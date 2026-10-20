@@ -228,6 +228,8 @@ content:
           - { name: welcome, label: Welcome line under your name, type: text }
           - { name: about, label: About paragraph, type: text }
           - { name: studio_line, label: Studio sentence (before the link), type: string }
+          - { name: writing_line, label: Beyond research — Writing card text, type: string }
+          - { name: studio_card, label: Beyond research — Studio card text, type: string }
           - name: background
             label: Background rows
             type: object

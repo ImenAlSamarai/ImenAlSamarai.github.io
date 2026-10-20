@@ -1,16 +1,16 @@
 ---
 import Base from '../layouts/Base.astro';
 import Ridgelines from '../components/Ridgelines.astro';
-import { site, load, getPosts, formatDate } from '../lib/site.js';
+import { site, load, getPosts, getDrawings, formatDate } from '../lib/site.js';
 
 const selected = load('selected.yml') || [];
 const work = load('work.yml');
 const posts = await getPosts();
 const venture = work.ventures?.[0];
+const drawings = await getDrawings();
 const items = [
   ...selected.slice(0, 2).map((p) => ({ tag: p.field === 'AI' ? 'AI research' : p.field, title: p.title, meta: `${p.venue} · ${p.year}`, href: p.link })),
   ...(venture ? [{ tag: 'Venture', title: venture.name, meta: venture.description, href: '/work/' }] : []),
-  ...(posts[0] ? [{ tag: 'Latest writing', title: posts[0].data.title, meta: `${formatDate(posts[0].data.date)} · ${posts[0].data.tag}`, href: `/writing/${posts[0].id}/` }] : []),
 ];
 ---
 <Base>
@@ -44,9 +44,33 @@ const items = [
     </div>
     <p class="strip-links">
       <a class="link-accent" href="/research/">All research →</a>
-      {posts.length > 0 && <a class="link-accent" href="/writing/">All writing →</a>}
       <a class="link-accent" href="/work/">All work →</a>
       <a class="link-accent" href="/about/">More about me →</a>
     </p>
   </section>
+
+  {(posts.length > 0 || drawings.length > 0) && (
+    <section class="beyond" aria-labelledby="h-beyond">
+      <h2 id="h-beyond" class="label">Beyond research</h2>
+      <div class="beyond-grid">
+        {posts.length > 0 && (
+          <a class="beyond-card" href="/writing/">
+            <span class="tag">Writing</span>
+            <span class="t">Essays and notes</span>
+            <span class="d">{site.home.writing_line}</span>
+            <span class="m">Latest: {posts[0].data.title}</span>
+            <span class="link-accent">Read →</span>
+          </a>
+        )}
+        {drawings.length > 0 && (
+          <a class="beyond-card studio-card" href="/studio/">
+            <span class="tag">Studio</span>
+            <span class="t">A separate space</span>
+            <span class="d">{site.home.studio_card}</span>
+            <span class="go">Enter the studio ↗</span>
+          </a>
+        )}
+      </div>
+    </section>
+  )}
 </Base>
