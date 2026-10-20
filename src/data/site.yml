@@ -23,7 +23,7 @@ goatcounter: ""              # e.g. https://YOURNAME.goatcounter.com/count
 
 home:
   tagline: Physicist, quant and occasional artist.
-  welcome: Welcome. This is where I share my research, writing and projects across physics, finance and AI.
+  welcome: Welcome to my page, where I share my research, writing and projects across physics, finance and AI.
   about: >-
     I hold doctorates in particle physics and astrophysics and spent a decade searching for the cosmic
     sources of neutrinos within international collaborations. I then moved to quantitative finance,
@@ -40,10 +40,10 @@ home:
       text: Research on how language models reason and plan under uncertainty.
 
 about:
-  intro: >-
-    I am a scientist and quantitative researcher. Over fifteen years my work has moved from astroparticle
-    physics to quantitative finance and now to artificial intelligence. The fields changed; the problem did
-    not: extracting reliable signal from noisy, complex data, and turning it into systems people can use.
+  intro: |-
+    I am a scientist and quantitative researcher, applying machine learning and AI where it makes a real difference. After fifteen years of research — in astroparticle physics, then in finance — I founded Pontus Analytics, which builds AI, machine-learning and physics-simulation solutions for quantitative finance, defence and R&D.
+
+    What drives me is extracting reliable signal from noisy, complex data, and turning it into systems people can use. Away from work, I am an avid reader, I compose and play music, and I make visual art.
   chapters:
     - title: Physics
       text: >-

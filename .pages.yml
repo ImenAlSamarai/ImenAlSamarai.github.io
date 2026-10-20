@@ -224,8 +224,8 @@ content:
         label: Homepage
         type: object
         fields:
-          - { name: tagline, label: Tagline under your name, type: string }
-          - { name: welcome, label: Welcome line (not shown at the moment), type: text }
+          - { name: tagline, label: Tagline (not shown at the moment), type: string }
+          - { name: welcome, label: Welcome line under your name, type: text }
           - { name: about, label: About paragraph, type: text }
           - { name: studio_line, label: Studio sentence (before the link), type: string }
           - name: background
@@ -239,7 +239,7 @@ content:
         label: About page
         type: object
         fields:
-          - { name: intro, label: Introduction, type: text }
+          - { name: intro, label: Introduction (leave an empty line between paragraphs), type: text }
           - name: chapters
             label: The path
             type: object
