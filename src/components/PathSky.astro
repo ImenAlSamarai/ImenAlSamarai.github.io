@@ -4,8 +4,7 @@
 import { load } from '../lib/site.js';
 const { variant = '1', toggle = false } = Astro.props;
 const data = load('path.yml');
-const stops = data.stops.map((s) => ({ ...s, skills: s.skills || [] }));
-const skills = data.skills;
+const stops = data.stops;
 ---
 <section class="path-sky" data-variant={variant} aria-labelledby="h-path">
   <div class="ps-head">
@@ -19,10 +18,6 @@ const skills = data.skills;
   </div>
   <div class="ps-journey" style={`height:${stops.length * 65 + 30}vh`}>
     <div class="ps-pin">
-      <div class="ps-inv">
-        <span class="label">How I work</span>
-        {skills.map((k) => <span class="ps-slot" data-k={k.key}><i></i><span class="l">{k.name}</span><span class="s">{k.short}</span></span>)}
-      </div>
       <div class="ps-sky"><svg role="group" aria-label="Career stops"></svg></div>
       <div class="ps-card">
         {stops.map((s) => (
@@ -32,14 +27,13 @@ const skills = data.skills;
             <span class="ps-role">{s.role}</span>
             <p>{s.text}</p>
             {s.tags?.length > 0 && <ul class="ps-tags" aria-label="Areas">{s.tags.map((t) => <li>{t}</li>)}</ul>}
-            {s.skills.length > 0 && <div class="ps-picked">{s.skills.map((k) => <span>+ {skills.find((x) => x.key === k)?.name}</span>)}</div>}
           </article>
         ))}
       </div>
     </div>
   </div>
   <p class="ps-end">That is the path so far.</p>
-  <script type="application/json" class="ps-data" set:html={JSON.stringify({ stops: stops.map(({ chapter, when, org, skills }) => ({ chapter, when, org, skills })) })}></script>
+  <script type="application/json" class="ps-data" set:html={JSON.stringify({ stops: stops.map(({ chapter, when, org }) => ({ chapter, when, org })) })}></script>
 </section>
 
 <style is:global>
@@ -52,13 +46,6 @@ const skills = data.skills;
   .ps-switch button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
   .ps-journey { position: relative; }
   .ps-pin { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; gap: 14px; padding: 20px 0 28px; }
-  .ps-inv { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
-  .ps-inv .label { margin-right: 6px; }
-  .ps-slot { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 0 12px; border: 1px dashed var(--line); font-family: var(--mono); font-size: 12px; color: var(--muted-2); transition: background .3s, color .3s, border-color .3s; }
-  .ps-slot i { width: 8px; height: 8px; border: 1px solid var(--muted-2); flex: none; }
-  .ps-slot.got { border-style: solid; border-color: var(--accent); background: var(--soft); color: var(--fg); }
-  .ps-slot.got i { background: var(--accent); border-color: var(--accent); }
-  .ps-slot .s { display: none; }
   .ps-sky { position: relative; height: clamp(130px, 25vh, 270px); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .ps-sky svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; shape-rendering: crispEdges; }
   .ps-sky .pc { fill: var(--line); } .ps-sky .pc.done { fill: var(--accent); }
@@ -77,19 +64,15 @@ const skills = data.skills;
   .ps-stop h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 34px; line-height: 1.1; text-wrap: balance; }
   .ps-role { font-size: 16px; color: var(--muted-2); }
   .ps-stop p { margin: 4px 0 0; color: var(--fg-2); max-width: 62ch; font-size: 18px; line-height: 1.6; }
-  .ps-tags { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font-family: var(--mono); font-size: 12px; color: var(--muted-2); max-width: 80ch; }
-  .ps-tags li { border: 1px solid var(--line); padding: 2px 8px; }
-  .ps-picked { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 6px; }
-  .ps-picked span { font-family: var(--mono); font-size: 12px; border: 1px solid var(--accent); color: var(--accent); padding: 4px 10px; border-radius: 999px; }
+  .ps-tags { list-style: none; margin: 0; padding: 6px 0 0; display: flex; flex-wrap: wrap; gap: 8px; max-width: 80ch; }
+  .ps-tags li { font-family: var(--mono); font-size: 12px; border: 1px solid var(--accent); color: var(--accent); padding: 4px 10px; border-radius: 999px; }
   .ps-end { margin: 0; padding: 8px 0 48px; font-family: var(--serif); font-size: 24px; color: var(--fg-2); }
   @media (max-width: 860px) {
     .ps-sky .yr { display: none; }
     .ps-sky .chl { font-size: 15px; }
-    .ps-inv { gap: 6px; } .ps-inv .label { display: none; }
-    .ps-slot { min-height: 28px; padding: 0 8px; gap: 6px; } .ps-slot .l { display: none; } .ps-slot .s { display: inline; }
     .ps-stop h3 { font-size: 24px; } .ps-stop p { font-size: 15px; line-height: 1.55; }
     .ps-sky { height: clamp(110px, 18vh, 170px); }
-    .ps-tags { gap: 2px 14px; font-size: 11px; } .ps-tags li { border: 0; padding: 0; }
+    .ps-tags { gap: 6px; } .ps-tags li { font-size: 11px; padding: 3px 8px; }
     .ps-pin { gap: 10px; padding: 12px 0 16px; }
   }
   @media (max-height: 740px) {
@@ -102,7 +85,7 @@ const skills = data.skills;
   @media (max-height: 660px) {
     .ps-sky { height: 90px; }
     .ps-stop p { font-size: 14px; }
-    .ps-tags, .ps-slot { font-size: 11px; }
+    .ps-tags li { font-size: 10.5px; }
   }
   @media (prefers-reduced-motion: reduce) { .path-sky * { transition: none !important; } }
 </style>
@@ -133,8 +116,7 @@ const skills = data.skills;
     const { stops } = JSON.parse(root.querySelector('.ps-data').textContent);
     const N = stops.length;
     const journey = root.querySelector('.ps-journey'), sky = root.querySelector('.ps-sky'), svg = sky.querySelector('svg');
-    const cards = [...root.querySelectorAll('.ps-stop')], slots = [...root.querySelectorAll('.ps-slot')];
-    const skillAt = {}; stops.forEach((s, i) => s.skills.forEach((k) => { if (!(k in skillAt)) skillAt[k] = i; }));
+    const cards = [...root.querySelectorAll('.ps-stop')];
     let variant = root.dataset.variant, S = null, idle, blink = false;
 
     function build() {
@@ -188,7 +170,6 @@ const skills = data.skills;
       const active = Math.round(t);
       S.stars.forEach((s, k) => { s.classList.toggle('past', k <= t + 0.02); s.classList.toggle('active', k === active); });
       cards.forEach((c, k) => c.classList.toggle('active', k === active));
-      slots.forEach((s) => s.classList.toggle('got', s.dataset.k in skillAt && t >= skillAt[s.dataset.k] - 0.02));
     }
     root.querySelectorAll('.ps-switch button').forEach((b) => b.addEventListener('click', () => {
       variant = b.dataset.v; root.querySelectorAll('.ps-switch button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); build();

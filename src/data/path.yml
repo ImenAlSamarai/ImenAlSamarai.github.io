@@ -1,19 +1,5 @@
 # The path on the About page: one entry per stop, in order.
-# "skills" lists which "How I work" items light up at that stop (keys from the skills list below).
-
-skills:
-  - key: noise
-    name: Inference on noisy data
-    short: Noisy data
-  - key: sim
-    name: Simulation
-    short: Simulation
-  - key: ml
-    name: Machine learning
-    short: ML
-  - key: ship
-    name: Systems that ship
-    short: Shipping
+# "tags" are the small labels shown under each stop.
 
 stops:
   - chapter: Education
@@ -27,7 +13,6 @@ stops:
     role: PhD, Particle Physics & Astrophysics
     text: A thesis on signal detection in high-noise astrophysical data, with the ANTARES neutrino telescope deep in the Mediterranean.
     tags: [Experimental physics, Fibre optics, Silicon photon detectors, Particle simulation, High-energy physics]
-    skills: [noise]
   - chapter: Physics
     when: 2012–2013
     org: Michigan State University · Aix-Marseille University
@@ -40,26 +25,24 @@ stops:
     role: Postdoctoral Researcher
     text: 'The astrophysical neutrinos I searched for during my thesis are closely tied to the highest-energy cosmic rays. Following that thread, I joined the Pierre Auger Observatory, spread across the Pampa Amarilla in Mendoza, Argentina, to detect them. I also explored the radio detection of cosmic rays: I developed the first theoretical model of the emission, deployed radio antennas in the pampa with my own hands, and analysed the data they collected.'
     tags: [Phenomenology, Theoretical physics, Radio detection, Signal processing, GHz signals]
-    skills: [sim]
   - chapter: Physics
     when: 2016–2018
     org: CERN
     role: Postdoctoral Researcher
     text: 'Back to neutrinos, on a far larger detector than ANTARES: IceCube, buried in the ice at the South Pole. After the 2017 neutrino alert, I was among the researchers who went back through almost a decade of data and found a burst of 13 neutrinos from the blazar TXS 0506+056 in 2014–15, published in Science in 2018. In parallel, I worked on the Cherenkov Telescope Array, as first author of the calibration and performance studies of the SiPM camera for the SST-1M telescope prototype. I also supervised three PhD researchers.'
+    tags: [Machine learning, Random forests, Neutrino source searches, Multi-messenger astronomy, Big-data analysis, SiPM cameras, Detector calibration, PhD supervision]
   - chapter: Markets
     when: 2018–2020
     org: Swiss Life
     role: Lead Data Scientist & ML Engineer
     text: 'At CERN I had joined the finance club, where physicists discussed how their methods carry over to financial markets. It caught my curiosity, and I moved to finance to explore markets first-hand. At Swiss Life I designed and deployed a production robo-advisory engine combining LSTM networks and genetic algorithms, serving thousands of clients, and built the full machine-learning pipeline behind it: client profiling, automated rebalancing and real-time risk monitoring. I led a team of three data scientists.'
     tags: [Production deployment, Financial data APIs, Data analysis, Databases, Docker & Kubernetes, LSTM networks, Genetic algorithms]
-    skills: [ml]
   - chapter: Markets
     when: 2020–2024
     org: TD Securities
     role: Director, Quantitative Research
     text: As Director of Quantitative Research, I built TD’s systematic fixed-income research platform from concept to firm-wide adoption across trading desks, with machine-learning alpha signals, validated backtesting frameworks and production NLP tools for central-bank sentiment. I grew the team from a single contributor to seven PhD-level researchers and expanded the research to multi-asset strategies in FX and commodities. The work earned the Above and Beyond Award (2021) and the Legendary Award (2023) for systematic research leadership.
     tags: [Team leadership, Macro, Fixed income, Systematic trading, Bloomberg & Reuters data, NLP, Databases]
-    skills: [ship]
   - chapter: AI
     when: Now
     org: Pontus Analytics
