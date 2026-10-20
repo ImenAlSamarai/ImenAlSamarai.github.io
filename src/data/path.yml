@@ -1,0 +1,62 @@
+# The path on the About page: one entry per stop, in order.
+# "skills" lists which "How I work" items light up at that stop (keys from the skills list below).
+
+skills:
+  - key: noise
+    name: Inference on noisy data
+    short: Noisy data
+  - key: sim
+    name: Simulation
+    short: Simulation
+  - key: ml
+    name: Machine learning
+    short: ML
+  - key: ship
+    name: Systems that ship
+    short: Shipping
+
+stops:
+  - chapter: Education
+    when: "2008"
+    org: Université Paris 7 Denis Diderot
+    role: MSc, Particle Physics
+    text: A master’s degree in particle physics in Paris, and the start of the path.
+  - chapter: Education
+    when: 2009–2012
+    org: Aix-Marseille University
+    role: PhD, Particle Physics & Astrophysics
+    text: A thesis on signal detection in high-noise astrophysical data, with the ANTARES neutrino telescope deep in the Mediterranean.
+    skills: [noise]
+  - chapter: Physics
+    when: 2012–2013
+    org: Michigan State University · Aix-Marseille University
+    role: Visiting Scientist · Assistant Professor
+    text: The search for the cosmic sources of high-energy neutrinos continues, across two continents.
+  - chapter: Physics
+    when: 2013–2016
+    org: LPNHE, Paris
+    role: Researcher
+    text: The Pierre Auger Observatory, and a Monte Carlo simulation of molecular bremsstrahlung radiation from ultra-high-energy cosmic rays.
+    skills: [sim]
+  - chapter: Physics
+    when: 2016–2018
+    org: CERN
+    role: Senior Research Scientist
+    text: Machine-learning methods at the centre of the neutrino search, which contributed to the evidence for neutrino emission from the blazar TXS 0506+056, published in Science in 2018.
+    skills: [ml]
+  - chapter: Markets
+    when: 2018–2020
+    org: Swiss Life
+    role: Lead Data Scientist & ML Engineer
+    text: "The same methods brought to finance: the data science behind a production robo-advisory engine, combining sequence models with evolutionary optimisation."
+    skills: [ship]
+  - chapter: Markets
+    when: 2020–2024
+    org: TD Securities
+    role: Director, Quantitative Research
+    text: A fixed-income research platform designed and built from scratch, from signal generation to backtesting and real-time analytics, adopted across trading desks. Then the quant team that extended it to other asset classes.
+  - chapter: AI
+    when: Now
+    org: Pontus Analytics
+    role: Founder & CEO
+    text: Research on how language models reason and plan under uncertainty, measured against decisions whose optimum is known exactly. Pontus builds AI, machine-learning and physics-simulation solutions for finance, defence and R&D.

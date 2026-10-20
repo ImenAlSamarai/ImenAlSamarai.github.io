@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import PathSky from '../components/PathSky.astro';
 import { site, load, getDrawings } from '../lib/site.js';
 const cv = load('cv.yml');
 const a = site.about;
@@ -21,41 +22,10 @@ const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
     </div>
   </section>
 
-  <section class="rule" style="padding:64px 0" aria-labelledby="h-path">
-    <h2 id="h-path" class="label" style="margin-bottom:24px">The path</h2>
-    <div class="rows">
-      {a.chapters.map((c, i) => (
-        <article class="chapter">
-          <div class="h"><span class="mono">{roman[i]}</span><h3>{c.title}</h3></div>
-          <p>{c.text}</p>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section style="padding:64px 0" aria-labelledby="h-how">
-    <h2 id="h-how" class="label" style="margin-bottom:32px">How I work</h2>
-    <div class="grid4">
-      {a.how_i_work.map((h) => <div><h3>{h.title}</h3><p>{h.text}</p></div>)}
-    </div>
-  </section>
+  <PathSky variant="1" toggle={process.env.INCLUDE_DRAFTS === '1'} />
 
   <section class="rule" style="display:flex;flex-wrap:wrap;gap:56px;padding:64px 0">
-    <div style="flex:3 1 420px;min-width:0">
-      <h2 class="label" style="margin-bottom:24px">Career</h2>
-      <div class="rows">
-        {cv.timeline.map((t) => (
-          <div class="tl"><span class="mono">{t.when}</span><span><b>{t.org}</b>{t.role && <small>{t.role}</small>}</span></div>
-        ))}
-      </div>
-    </div>
-    <div style="flex:2 1 300px;min-width:0;display:flex;flex-direction:column;gap:40px">
-      <div>
-        <h2 class="label" style="margin-bottom:24px">Education</h2>
-        <div class="rows stack">
-          {cv.education.map((e) => <div class="item"><b style="display:block">{e.degree}</b><small class="muted" style="font-size:15px">{e.school} · {e.dates.split('–').pop().trim()}</small></div>)}
-        </div>
-      </div>
+    <div style="flex:1 1 100%;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:40px">
       <div>
         <h2 class="label" style="margin-bottom:24px">Recognition</h2>
         <div class="rows stack">
