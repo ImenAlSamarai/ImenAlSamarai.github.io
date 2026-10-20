@@ -23,7 +23,7 @@ goatcounter: ""              # e.g. https://YOURNAME.goatcounter.com/count
 
 home:
   tagline: Physicist, quant and occasional artist.
-  welcome: Welcome to my page, where I share my research, writing and projects across physics, finance and AI.
+  welcome: "Welcome to my page: research, writing and projects across physics, finance and AI — and a little art."
   about: >-
     I hold doctorates in particle physics and astrophysics and spent a decade searching for the cosmic
     sources of neutrinos within international collaborations. I then moved to quantitative finance,
