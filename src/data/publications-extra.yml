@@ -6,3 +6,21 @@
   venue: Preprint
   link: https://github.com/ImenAlSamarai/decision-level-evaluation
   field: AI
+
+# Dates and venues aligned with Google Scholar (the conference proceedings appeared in 2021).
+- title: The SST-1M project for the Cherenkov Telescope Array
+  year: 2021
+  venue: 36th International Cosmic Ray Conference (PoS ICRC2019)
+  link: https://doi.org/10.22323/1.358.0694
+- title: Calibration and operation of SiPM-based cameras for gamma-ray astronomy in presence of high night-sky light
+  year: 2021
+  venue: 36th International Cosmic Ray Conference (PoS ICRC2019)
+  link: https://doi.org/10.22323/1.358.0617
+- title: Science with the Cherenkov Telescope Array
+  year: 2019
+  venue: World Scientific
+  link: https://doi.org/10.1142/10986
+- title: Introduction to CTA Science
+  year: 2019
+  venue: Science with the Cherenkov Telescope Array (World Scientific)
+  link: https://doi.org/10.1142/10986

@@ -56,7 +56,7 @@ export function getPublications() {
   const key = (t) => t.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 80);
   const map = new Map();
   for (const p of auto) {
-    if (/^(erratum|corrigendum)/i.test(p.title)) continue;
+    if (/^(erratum|corrigendum|submitter)/i.test(p.title)) continue;
     map.set(key(p.title), {
       title: p.title,
       year: p.year,

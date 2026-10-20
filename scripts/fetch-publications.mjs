@@ -7,10 +7,19 @@ const OUT = 'src/data/publications.json';
 const base = `https://api.openalex.org/works?filter=author.id:${AUTHOR}&per-page=200&select=title,publication_year,cited_by_count,primary_location,doi,type`;
 
 async function main() {
-  const res = await fetch(base + (process.env.OPENALEX_KEY ? `&api_key=${process.env.OPENALEX_KEY}` : ''));
-  if (!res.ok) throw new Error(`OpenAlex HTTP ${res.status}`);
-  const data = await res.json();
-  if (!Array.isArray(data.results) || data.results.length === 0) throw new Error('No results');
+  // OpenAlex returns at most 200 works per page: follow the cursor until every page is read.
+  const results = [];
+  let cursor = '*';
+  while (cursor) {
+    const res = await fetch(`${base}&cursor=${encodeURIComponent(cursor)}` + (process.env.OPENALEX_KEY ? `&api_key=${process.env.OPENALEX_KEY}` : ''));
+    if (!res.ok) throw new Error(`OpenAlex HTTP ${res.status}`);
+    const page = await res.json();
+    if (!Array.isArray(page.results)) throw new Error('Unexpected response');
+    results.push(...page.results);
+    cursor = page.results.length ? page.meta?.next_cursor : null;
+  }
+  if (results.length === 0) throw new Error('No results');
+  const data = { results };
   const seen = new Map();
   const score = (r) => (r.type === 'article' ? 2 : 0) + (r.venue ? 1 : 0) + (r.doi ? 1 : 0);
   for (const w of data.results) {
