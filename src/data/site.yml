@@ -33,44 +33,39 @@ home:
   studio_line: I also draw and compose music —
   writing_line: Thoughts on science, markets — and anything else that catches my curiosity.
   studio_title: Space and sound
-  # Landing page, middle: what I do now, then one proof per field.
-  now:
-    title: Founder & CEO, Pontus Analytics
-    text: Scientific and AI advisory for teams building advanced products, from Monte Carlo simulation to reinforcement-learning evaluation.
-    link: https://pontus-analytics.com
-    link_label: Pontus Analytics ↗︎
-    research: Verifying Decisions Under Uncertainty
-    research_link: https://github.com/ImenAlSamarai/decision-level-evaluation/blob/main/paper/paper.pdf
-  threads:
+  # Landing page, middle. Personal: the work itself, not the career (About) or the company (Pontus website).
+  currently:
+    text: I am studying whether language models plan ahead or simply react, by testing them on decisions whose best answer is known exactly.
+    link: https://github.com/ImenAlSamarai/decision-level-evaluation/blob/main/paper/paper.pdf
+    link_label: Read the preprint ↗︎
+  pontus_line: I also run Pontus Analytics, a scientific and AI advisory.
+  pontus_link: https://pontus-analytics.com
+  # One piece of work per field (options A and C).
+  fields_work:
     - field: Physics
-      proof: Part of the IceCube team that traced high-energy neutrinos to the blazar TXS 0506+056.
-      meta: Science · 2018
+      question: Where do the highest-energy particles in the universe come from?
+      title: Neutrino emission from the blazar TXS 0506+056
+      meta: IceCube · Science · 2018
       link: https://doi.org/10.1126/science.aat2890
       link_label: Read the paper ↗︎
       more: /publications/
       more_label: All publications
     - field: Markets
-      proof: Built TD Securities’ systematic fixed-income research platform, adopted across trading desks, and the PhD research team behind it.
-      meta: TD Securities · Swiss Life
-      link: /about/#h-path
-      link_label: See the path →
-      more: /cv/
-      more_label: CV
+      question: Can several simple strategies, coordinated well, beat one clever one?
+      title: Multi-agent portfolio system
+      meta: Open-source code
+      link: https://github.com/ImenAlSamarai/portfolio-system-gaming
+      link_label: View the code ↗︎
+      more: /projects/
+      more_label: All projects
     - field: AI
-      proof: Measuring how language models plan under uncertainty, against decisions whose optimum is known exactly.
+      question: Do language models plan ahead, or just react?
+      title: Verifying Decisions Under Uncertainty
       meta: Preprint · 2026
       link: https://github.com/ImenAlSamarai/decision-level-evaluation
       link_label: Paper and code ↗︎
       more: /projects/
       more_label: All projects
-  studio_card: Drawings, paintings and music — where curiosity takes another form.
-  background:
-    - title: Astroparticle physics
-      text: ANTARES · Pierre Auger · Cherenkov Telescope Array · IceCube. 200+ publications, including Science.
-    - title: Quantitative finance
-      text: Swiss Life · TD Securities. Data science and ML engineering; quantitative research and team leadership.
-    - title: Artificial intelligence
-      text: Research on how language models reason and plan under uncertainty.
 
 about:
   intro: |-

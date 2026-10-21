@@ -1,21 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
 import Ridgelines from '../components/Ridgelines.astro';
-import { site, getPosts, getDrawings, formatDate } from '../lib/site.js';
+import { site, load, getPosts, getDrawings, formatDate } from '../lib/site.js';
 
 const posts = await getPosts();
 const drawings = await getDrawings();
 const preview = process.env.INCLUDE_DRAFTS === '1';
 const choice = 'A';
-const now = site.home.now;
-const threads = site.home.threads;
-// Option B: newest items of any kind (papers, projects, essays).
-const latest = [
-  ...posts.filter((p) => !p.data.draft).slice(0, 2).map((p) => ({ date: formatDate(p.data.date), type: 'Essay', title: p.data.title, href: `/writing/${p.id}/` })),
-  { date: '2026', type: 'AI research', title: 'Verifying Decisions Under Uncertainty', href: now.research_link },
-  { date: '2026', type: 'Project', title: 'AI research intelligence platform', href: '/projects/' },
-  { date: '2021', type: 'Physics', title: 'The SST-1M project for the Cherenkov Telescope Array', href: '/publications/' },
-].slice(0, 4);
+const cur = site.home.currently;
+const fw = site.home.fields_work;
+// Option B: projects with an image, newest first.
+const feat = (load('work.yml').projects || []).filter((p) => p.image).slice(0, 3).map((p) => {
+  const main = (p.links || []).find((l) => /code/i.test(l.label)) || (p.links || [])[0];
+  return { ...p, href: main ? main.url : '/projects/', cta: main ? `${main.label} ↗︎` : 'More →' };
+});
 ---
 <Base>
   <section class="landing">
@@ -39,60 +37,67 @@ const latest = [
   {preview && (
     <div class="opt-switch" role="group" aria-label="Preview: landing option">
       <span class="label">Preview · middle of the page</span>
-      <button type="button" data-opt="A" aria-pressed="true">A · Now + three fields</button>
-      <button type="button" data-opt="B" aria-pressed="false">B · Now + latest</button>
-      <button type="button" data-opt="C" aria-pressed="false">C · Minimal</button>
+      <button type="button" data-opt="A" aria-pressed="true">A · Currently + one piece per field</button>
+      <button type="button" data-opt="B" aria-pressed="false">B · Featured work (images)</button>
+      <button type="button" data-opt="C" aria-pressed="false">C · Questions</button>
     </div>
   )}
 
   {(preview || choice === 'A') && (
-    <section class="mid" data-opt-view="A" aria-label="What I do now">
-      <a class="now-card" href={now.link}>
-        <span class="label">Now</span>
-        <span class="now-t">{now.title}</span>
-        <span class="now-d">{now.text}</span>
-        <span class="link-accent">{now.link_label}</span>
-      </a>
+    <section class="mid" data-opt-view="A" aria-label="Current work">
+      <div class="now-card">
+        <span class="label">Currently</span>
+        <p class="now-big">{cur.text}</p>
+        <a class="link-accent" href={cur.link}>{cur.link_label}</a>
+      </div>
       <div class="threads">
-        {threads.map((t) => (
+        {fw.map((t) => (
           <article class="thread">
             <span class="tag">{t.field}</span>
-            <p class="proof">{t.proof}</p>
+            <a class="proof" href={t.link}>{t.title}</a>
             <span class="m">{t.meta}</span>
             <span class="thread-links"><a class="link-accent" href={t.link}>{t.link_label}</a><a href={t.more}>{t.more_label} →</a></span>
           </article>
         ))}
       </div>
+      <p class="pontus-line">{site.home.pontus_line} <a class="link-accent" href={site.home.pontus_link}>pontus-analytics.com ↗︎</a></p>
     </section>
   )}
 
   {(preview || choice === 'B') && (
-    <section class="mid" data-opt-view="B" hidden={preview ? true : undefined} aria-label="What I do now">
-      <a class="now-card" href={now.link}>
-        <span class="label">Now</span>
-        <span class="now-t">{now.title}</span>
-        <span class="now-d">{now.text}</span>
-        <span class="link-accent">{now.link_label}</span>
-      </a>
-      <h2 class="label" style="margin:40px 0 8px">Latest</h2>
-      <div class="latest">
-        {latest.map((it) => (
-          <a class="latest-row" href={it.href}>
-            <span class="m">{it.date}</span>
-            <span class="tag">{it.type}</span>
-            <span class="t">{it.title}</span>
-            <span class="arrow" aria-hidden="true">→</span>
+    <section class="mid" data-opt-view="B" hidden={preview ? true : undefined} aria-label="Featured work">
+      <div class="mid-head">
+        <h2 class="label">Featured work</h2>
+        <a class="link-accent" href="/projects/">All projects →</a>
+      </div>
+      <div class="feat">
+        {feat.map((p) => (
+          <a class="feat-card" href={p.href}>
+            <img src={p.image} alt={p.image_alt || ''} loading="lazy" class={p.image_fit === 'contain' ? 'contain' : ''} />
+            <span class="tag">{p.label}</span>
+            <span class="t">{p.title}</span>
+            <span class="link-accent">{p.cta}</span>
           </a>
         ))}
       </div>
+      <p class="pontus-line">{cur.text} <a class="link-accent" href={cur.link}>{cur.link_label}</a></p>
+      <p class="pontus-line">{site.home.pontus_line} <a class="link-accent" href={site.home.pontus_link}>pontus-analytics.com ↗︎</a></p>
     </section>
   )}
 
   {(preview || choice === 'C') && (
-    <section class="mid mid-c" data-opt-view="C" hidden={preview ? true : undefined} aria-label="What I do now">
-      <span class="label">Now</span>
-      <p class="now-big">{now.title}. {now.text} Currently researching how language models plan under uncertainty.</p>
-      <span class="thread-links"><a class="link-accent" href={now.link}>{now.link_label}</a><a href={now.research_link}>Read the preprint ↗︎</a></span>
+    <section class="mid" data-opt-view="C" hidden={preview ? true : undefined} aria-label="Questions I work on">
+      <h2 class="label">Questions I work on</h2>
+      <div class="qs">
+        {fw.map((t) => (
+          <a class="q-row" href={t.link}>
+            <span class="tag">{t.field}</span>
+            <span class="q">{t.question}</span>
+            <span class="m">{t.title} · {t.meta}</span>
+          </a>
+        ))}
+      </div>
+      <p class="pontus-line">{site.home.pontus_line} <a class="link-accent" href={site.home.pontus_link}>pontus-analytics.com ↗︎</a></p>
     </section>
   )}
 
