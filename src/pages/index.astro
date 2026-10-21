@@ -17,9 +17,15 @@ const posts = (await getCollection('writing', (e) => !e.data.draft)).filter((p) 
 const art = (await getCollection('studio', (e) => !e.data.draft)).map((p) => ({
   field: 'Arts', type: p.data.kind, sort: Number(p.data.year) || 0, date: String(p.data.year || ''), title: p.data.title, venue: p.data.medium || '', href: '/studio/',
 }));
-const all = [...pubs, ...posts, ...art].sort((a, b) => b.sort - a.sort);
+const subs = (load('substack.yml') || []).map((p) => { const d = new Date(p.date); return {
+  field: p.field, type: p.type || 'Note', sort: d.getFullYear() + d.getMonth() * 0.083 + d.getDate() * 0.0027, date: formatDate(d), title: p.title, venue: 'Substack', summary: p.summary || '', href: p.url,
+}; });
+const all = [...pubs, ...posts, ...subs, ...art].sort((a, b) => b.sort - a.sort);
 const SUM = load('summaries.yml') || {};
-const latest = all.slice(0, 5).map((i) => ({ ...i, summary: i.summary || SUM[i.href] || '' }));
+// One item per field and type (e.g. the newest Physics publication and the newest Physics note), newest first.
+const seen = new Set();
+const picked = all.filter((i) => { const k = i.field + '|' + i.type; if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, 6);
+const latest = picked.map((i) => ({ ...i, summary: i.summary || SUM[i.href] || '' }));
 const missing = FIELDS.filter((f) => !all.some((i) => i.field === f));
 const cols = FIELDS.map((f) => ({ field: f, items: all.filter((i) => i.field === f).slice(0, 2) }));
 const EMPTY = {
@@ -69,6 +75,6 @@ const MORE = { Physics: ['/publications/', 'All publications'], Markets: ['/writ
         </p>
       )}
     </div>
-    <p class="lt-more"><a class="link-accent" href="/publications/">All publications →</a></p>
+    <p class="lt-more"><a class="link-accent" href="/publications/">All publications →</a><a class="link-accent" href="/writing/">All writing →</a></p>
   </section>
 </Base>

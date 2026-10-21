@@ -397,4 +397,4 @@ img { max-width: 100%; display: block; }
 .lt:hover .lt-t { color: var(--accent); }
 .lt-soon { display: flex; flex-wrap: wrap; gap: 6px 20px; align-items: baseline; margin: 0; padding: 18px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 15px; }
 .lt-soon a { color: var(--accent); }
-.lt-more { margin: 16px 0 0; }
+.lt-more { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 16px 0 0; }
