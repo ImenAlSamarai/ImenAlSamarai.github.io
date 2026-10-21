@@ -8,6 +8,7 @@ ventures:
     link: https://pontus-analytics.com
 
 projects:
+  # Order = order on the Open source page. Leave "image" out to show a text panel instead.
   - title: Verifying Decisions Under Uncertainty
     subtitle: A value-aware evaluation framework for sequential language-model agents
     label: AI · 2026
@@ -24,6 +25,43 @@ projects:
         url: https://github.com/ImenAlSamarai/decision-level-evaluation/blob/main/paper/paper.pdf
       - label: Code
         url: https://github.com/ImenAlSamarai/decision-level-evaluation
+  - title: SST-1M telescope simulation
+    subtitle: ""
+    label: Physics · 2016–2018
+    description: >-
+      The simulation chain for the SST-1M telescope proposed for the Cherenkov Telescope Array: light from
+      simulated air showers is traced through the telescope optics and the camera response is modelled,
+      adapted to the SST-1M design, with scripts to run it at scale on a computing cluster. Built with
+      V. Coco and A. Porcelli.
+    tools: C++ · Python · Monte Carlo · Cluster computing
+    panel: GORCA_SST1M
+    links:
+      - label: Code
+        url: https://github.com/ImenAlSamarai/GORCA_SST1M
+  - title: Economic causal analysis
+    subtitle: ""
+    label: Markets · 2025
+    description: >-
+      Economic variables linked in a directed acyclic graph, so that a shock, such as a rate rise, can be
+      followed through the chain with time lags, non-linear effects and its uncertainty carried along —
+      for counterfactual and scenario analysis.
+    tools: Python · Causal graphs · NetworkX · Scenario analysis
+    panel: economic-causal-analysis
+    links:
+      - label: Code
+        url: https://github.com/ImenAlSamarai/economic-causal-analysis
+  - title: Quant learning platform
+    subtitle: ""
+    label: AI · 2025
+    description: >-
+      Paste a quant job description: the platform extracts the skills it asks for, builds a staged learning
+      path in linear algebra, calculus, probability and statistics, and generates explanations with formulas
+      and Python examples, tracking progress against the job.
+    tools: Python · FastAPI · PostgreSQL · Pinecone · React · LLMs
+    panel: Quants_Learn
+    links:
+      - label: Code
+        url: https://github.com/ImenAlSamarai/Quants_Learn
   - title: Molecular bremsstrahlung simulation
     subtitle: ""
     label: Physics · 2015
@@ -39,28 +77,15 @@ projects:
         url: https://arxiv.org/abs/1409.5051
       - label: Code
         url: https://github.com/ImenAlSamarai/MBR-simulation
-
   - title: Multi-agent portfolio system
     subtitle: ""
-    label: Markets
+    label: Markets · 2025
     description: >-
-      Conservative, growth and balanced agents coordinated by a strategic agent, with risk management,
-      drawdown analysis and a backtesting framework.
+      An exploration of AI-driven decisions in portfolio management: conservative, growth and balanced agents
+      coordinated by a strategic agent, with risk controls, drawdown analysis and backtesting.
     tools: Python · Multi-agent systems · Backtesting
     image: /images/work/portfolio-system.jpg
     image_alt: Portfolio performance analysis chart
     links:
       - label: Code
         url: https://github.com/ImenAlSamarai/portfolio-system-gaming
-  - title: AI research intelligence platform
-    subtitle: ""
-    label: AI
-    description: >-
-      Specialised AI agents that monitor new papers in physics, finance and biology, select the most relevant,
-      and publish daily summaries on the Research Radar newsletter.
-    tools: Python · LLMs · Multi-agent AI
-    image: /images/work/research-platform.jpg
-    image_alt: Research platform architecture diagram
-    links:
-      - label: Research Radar on Substack
-        url: https://substack.com/@researchradar

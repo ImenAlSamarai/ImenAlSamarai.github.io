@@ -15,7 +15,9 @@ const w = load('work.yml');
       <h2 id="h-r" class="sr-only">Projects</h2>
       {w.projects.map((p) => (
         <article class="project">
-          <img class={`img ${p.image_fit === 'contain' ? 'contain' : ''}`} src={p.image} alt={p.image_alt || ''} loading="lazy" />
+          {p.image
+            ? <img class={`img ${p.image_fit === 'contain' ? 'contain' : ''}`} src={p.image} alt={p.image_alt || ''} loading="lazy" />
+            : <div class="img img-panel" aria-hidden="true"><span class="ip-field">{p.label.split(' · ')[0]}</span><span class="ip-repo">github.com/ImenAlSamarai/<b>{p.panel || p.title}</b></span></div>}
           <div class="body">
             <span class="tag">{p.label}</span>
             <h3>{p.title}</h3>
