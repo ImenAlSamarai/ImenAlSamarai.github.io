@@ -8,84 +8,100 @@ ventures:
     link: https://pontus-analytics.com
 
 projects:
-  # Order = order on the Open source page. Leave "image" out to show a text panel instead.
+  # Order = order on the Open source page.
+  # field, year, language: shown above the title. caption: line under the figure.
+  # The first link is shown as the main (filled) button.
   - title: Verifying Decisions Under Uncertainty
     subtitle: A value-aware evaluation framework for sequential language-model agents
+    field: AI
+    year: "2026"
+    language: Python
     label: AI · 2026
     description: >-
       Each decision a language-model agent makes is scored against the exact Bellman-optimal policy of a
       stochastic control problem from quantitative finance — separating the decisions where planning ahead
-      changes the answer from those where it does not.
+      changes the answer from those where it does not, and measuring what each mistake costs.
     tools: LLM evaluation · Stochastic control · Python
     image: /images/work/decision-evaluation.png
-    image_alt: Difficulty surface showing where planning ahead changes the optimal decision
+    image_alt: Heat maps of continuation-sensitive decisions and expected utility gap
     image_fit: contain
+    caption: Where planning ahead changes the optimal decision, and the expected value lost by acting greedily, across the benchmark.
     links:
-      - label: Paper
+      - label: Read the paper
         url: https://github.com/ImenAlSamarai/decision-level-evaluation/blob/main/paper/paper.pdf
-      - label: Code
+      - label: View the code
         url: https://github.com/ImenAlSamarai/decision-level-evaluation
-  - title: SST-1M telescope simulation
-    subtitle: ""
-    label: Physics · 2016–2018
+  - title: Molecular bremsstrahlung simulation
+    subtitle: Radio detection of cosmic-ray air showers
+    field: Physics
+    year: "2015"
+    language: C++
+    label: Physics · 2015
     description: >-
-      The simulation chain for the SST-1M telescope proposed for the Cherenkov Telescope Array: light from
-      simulated air showers is traced through the telescope optics and the camera response is modelled,
-      adapted to the SST-1M design, with scripts to run it at scale on a computing cluster. Built with
-      V. Coco and A. Porcelli.
-    tools: C++ · Python · Monte Carlo · Cluster computing
-    panel: GORCA_SST1M
+      A C++ simulation of how well an array of radio antennas can detect ultra-high-energy cosmic rays
+      through molecular bremsstrahlung radiation, implementing my published model. It supported the GIGAS
+      experiment at the Pierre Auger Observatory.
+    tools: C++ · ROOT · Monte Carlo
+    image: /images/work/mbr-simulation.jpg
+    image_alt: An extensive air shower reaching a ground array
+    image_fit: cover
+    caption: An extensive air shower reaching a ground array (illustration).
     links:
-      - label: Code
-        url: https://github.com/ImenAlSamarai/GORCA_SST1M
+      - label: Read the paper
+        url: https://arxiv.org/abs/1409.5051
+      - label: View the code
+        url: https://github.com/ImenAlSamarai/MBR-simulation
   - title: Economic causal analysis
-    subtitle: ""
+    subtitle: Following economic shocks through a causal graph
+    field: Markets
+    year: "2025"
+    language: Python
     label: Markets · 2025
     description: >-
-      Economic variables linked in a directed acyclic graph, so that a shock, such as a rate rise, can be
+      Economic variables are linked in a directed acyclic graph, so that a shock, such as a rate rise, can be
       followed through the chain with time lags, non-linear effects and its uncertainty carried along —
       for counterfactual and scenario analysis.
     tools: Python · Causal graphs · NetworkX · Scenario analysis
-    panel: economic-causal-analysis
+    image: /images/work/economic-causal.png
+    image_alt: Causal graph linking policy rate, oil price, stock market, GDP growth, unemployment, consumer confidence and inflation
+    image_fit: contain
+    caption: The example model in the repository — seven variables and nine weighted causal links.
     links:
-      - label: Code
+      - label: View the code
         url: https://github.com/ImenAlSamarai/economic-causal-analysis
-  - title: Quant learning platform
-    subtitle: ""
+  - title: Quant learning and hiring platform
+    subtitle: Learning paths built from real job descriptions
+    field: AI
+    year: "2025"
+    language: Python · React
     label: AI · 2025
     description: >-
-      Paste a quant job description: the platform extracts the skills it asks for, builds a staged learning
-      path in linear algebra, calculus, probability and statistics, and generates explanations with formulas
-      and Python examples, tracking progress against the job.
+      Paste a quant or ML job description: the platform extracts the skills it asks for and builds a staged
+      learning path in linear algebra, calculus, probability and statistics, with AI-generated lessons,
+      formulas and Python examples. Candidates track their progress; recruiters see verified readiness
+      rather than a polished CV.
     tools: Python · FastAPI · PostgreSQL · Pinecone · React · LLMs
-    panel: Quants_Learn
+    image: /images/work/learning-platform.jpg
+    image_alt: The platform's learning-path page with linear algebra, calculus, probability and statistics
+    image_fit: contain
+    caption: The learning-path page, running locally.
     links:
-      - label: Code
+      - label: View the code
         url: https://github.com/ImenAlSamarai/Quants_Learn
-  - title: Molecular bremsstrahlung simulation
-    subtitle: ""
-    label: Physics · 2015
-    description: >-
-      A C++ simulation framework for detecting ultra-high-energy cosmic rays through molecular bremsstrahlung
-      radiation, implementing my published model. It supported the GIGAS experiment at the Pierre Auger Observatory.
-    tools: C++ · ROOT · Monte Carlo
-    image: /images/work/mbr-simulation.jpg
-    image_alt: Molecular bremsstrahlung radiation simulation
-    image_fit: cover
-    links:
-      - label: Paper
-        url: https://arxiv.org/abs/1409.5051
-      - label: Code
-        url: https://github.com/ImenAlSamarai/MBR-simulation
   - title: Multi-agent portfolio system
-    subtitle: ""
+    subtitle: Coordinated AI agents for allocation and risk
+    field: Markets
+    year: "2025"
+    language: Python
     label: Markets · 2025
     description: >-
       An exploration of AI-driven decisions in portfolio management: conservative, growth and balanced agents
       coordinated by a strategic agent, with risk controls, drawdown analysis and backtesting.
     tools: Python · Multi-agent systems · Backtesting
     image: /images/work/portfolio-system.jpg
-    image_alt: Portfolio performance analysis chart
+    image_alt: Backtest charts of portfolio value, return distribution, drawdown and rolling Sharpe ratio
+    image_fit: contain
+    caption: Backtest output — portfolio value, daily returns, drawdown and rolling Sharpe ratio.
     links:
-      - label: Code
+      - label: View the code
         url: https://github.com/ImenAlSamarai/portfolio-system-gaming

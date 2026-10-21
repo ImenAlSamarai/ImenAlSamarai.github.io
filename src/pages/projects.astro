@@ -11,20 +11,21 @@ const w = load('work.yml');
   </section>
 
   {w.projects?.length > 0 && (
-    <section class="rule" style="padding:48px 0 72px" aria-labelledby="h-r">
+    <section class="rule pj-list" aria-labelledby="h-r">
       <h2 id="h-r" class="sr-only">Projects</h2>
-      {w.projects.map((p) => (
-        <article class="project">
-          {p.image
-            ? <img class={`img ${p.image_fit === 'contain' ? 'contain' : ''}`} src={p.image} alt={p.image_alt || ''} loading="lazy" />
-            : <div class="img img-panel" aria-hidden="true"><span class="ip-field">{p.label.split(' · ')[0]}</span><span class="ip-repo">github.com/ImenAlSamarai/<b>{p.panel || p.title}</b></span></div>}
-          <div class="body">
-            <span class="tag">{p.label}</span>
+      {w.projects.map((p, k) => (
+        <article class="pj">
+          <figure class="pj-fig">
+            <div class={`pj-frame ${p.image_fit === 'contain' ? 'contain' : ''}`}><img src={p.image} alt={p.image_alt || ''} loading="lazy" /></div>
+            {p.caption && <figcaption>{p.caption}</figcaption>}
+          </figure>
+          <div class="pj-body">
+            <div class="pj-meta"><span class="pj-n">{String(k + 1).padStart(2, '0')}</span><span class="kind">{p.field}</span><span class="m">{p.year}</span><span class="m">{p.language}</span></div>
             <h3>{p.title}</h3>
-            {p.subtitle && <span class="sub">{p.subtitle}</span>}
-            <p>{p.description}</p>
-            <span class="mono">{p.tools}</span>
-            <span class="links">{(p.links || []).map((l) => <a href={l.url}>{l.label} ↗︎</a>)}</span>
+            {p.subtitle && <p class="pj-sub">{p.subtitle}</p>}
+            <p class="pj-d">{p.description}</p>
+            <p class="pj-tools"><span>Built with</span> {p.tools}</p>
+            <div class="pj-links">{(p.links || []).map((l, i) => <a class={`btn ${i === 0 ? 'btn-solid' : ''}`} href={l.url}>{l.label} ↗︎</a>)}</div>
           </div>
         </article>
       ))}
