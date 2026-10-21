@@ -5,6 +5,7 @@ import { site, load, getPublications, formatDate } from '../lib/site.js';
 import { getCollection } from 'astro:content';
 
 const h = site.home;
+const preview = process.env.INCLUDE_DRAFTS === '1';
 
 // Latest: published items only (drafts never appear here, even in the preview).
 const FIELDS = ['Physics', 'Markets', 'AI', 'Arts'];
@@ -20,12 +21,21 @@ const art = (await getCollection('studio', (e) => !e.data.draft)).map((p) => ({
 const subs = (load('substack.yml') || []).map((p) => { const d = new Date(p.date); return {
   field: p.field, type: p.type || 'Note', sort: d.getFullYear() + d.getMonth() * 0.083 + d.getDate() * 0.0027, date: formatDate(d), title: p.title, venue: p.source || 'Substack', summary: p.summary || '', href: p.url,
 }; });
-const all = [...pubs, ...posts, ...subs, ...art].sort((a, b) => b.sort - a.sort);
+// Preview only: sample Arts items so the final look can be judged. Never built into the live site.
+const samples = preview ? [
+  { field: 'Arts', type: 'Music', sort: 2026.8, date: '2026', title: 'Placeholder: title of a music piece', venue: 'Piano · 4 min', summary: 'Placeholder: one line about the piece, how it was made or what it is about.', href: '/studio/' },
+  { field: 'Arts', type: 'Visual', sort: 2026.79, date: '2026', title: 'Placeholder: title of a drawing or painting', venue: 'Ink on paper', summary: 'Placeholder: one line about the work, the medium or what inspired it.', href: '/studio/' },
+] : [];
+const all = [...pubs, ...posts, ...subs, ...art, ...samples].sort((a, b) => b.sort - a.sort);
 const SUM = load('summaries.yml') || {};
 // One item per field and type (e.g. the newest Physics publication and the newest Physics note), newest first.
 const seen = new Set();
 const picked = all.filter((i) => { const k = i.field + '|' + i.type; if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, 6);
-const latest = picked.map((i) => ({ ...i, summary: i.summary || SUM[i.href] || '' }));
+const TYPES = ['Publication', 'Note', 'Essay', 'Music', 'Visual'];
+// Filter pool: the "All" view plus the 4 newest items of each type.
+const pool = [...new Set([...picked, ...TYPES.flatMap((ty) => all.filter((i) => i.type === ty).slice(0, 4))])].sort((a, b) => b.sort - a.sort);
+const latest = pool.map((i) => ({ ...i, inAll: picked.includes(i), summary: i.summary || SUM[i.href] || '' }));
+const FILTERS = ['All', ...TYPES.filter((ty) => all.some((i) => i.type === ty))];
 const missing = FIELDS.filter((f) => !all.some((i) => i.field === f));
 const cols = FIELDS.map((f) => ({ field: f, items: all.filter((i) => i.field === f).slice(0, 2) }));
 const EMPTY = {
@@ -59,17 +69,22 @@ const MORE = { Physics: ['/publications/', 'All publications'], Markets: ['/writ
   </section>
 
   <section class="mid" aria-labelledby="h-latest">
-    <h2 id="h-latest" class="label">Latest</h2>
+    <div class="mid-head">
+      <h2 id="h-latest" class="label">Latest</h2>
+      <div class="chips" role="group" aria-label="Filter by kind" data-lt-filter>
+        {FILTERS.map((f, k) => <button class="chip" type="button" data-f={f} aria-pressed={k === 0 ? 'true' : 'false'}>{f === 'Visual' ? 'Visual work' : f}</button>)}
+      </div>
+    </div>
     <div class="latest">
       {latest.map((i) => (
-        <a class={`lt${i.type === 'Publication' ? ' lt-pub' : ''}`} href={i.href}>
-          <span class="lt-meta"><span class={`kind kind-${i.type.toLowerCase()}`}>{i.type}</span><span class="tag">{i.field}</span><span class="m">{i.date}{i.venue && ` · ${i.venue}`}</span></span>
+        <a class="lt" href={i.href} data-type={i.type} data-all={i.inAll ? '1' : '0'} hidden={i.inAll ? undefined : true}>
+          <span class="lt-meta"><span class={`kind kind-${i.type.toLowerCase()}`}>{i.type === 'Visual' ? 'Visual work' : i.type}</span><span class="tag">{i.field}</span><span class="m">{i.date}{i.venue && ` · ${i.venue}`}</span></span>
           <span class="lt-t">{i.title}</span>
           {i.summary && <span class="lt-s">{i.summary}</span>}
         </a>
       ))}
       {missing.length > 0 && (
-        <p class="lt-soon">
+        <p class="lt-soon" data-all="1">
           <span class="m">Coming soon</span>
           {missing.map((f) => <a href={EMPTY[f].href}>{f === 'Arts' ? 'Arts: music and visual work' : f === 'Markets' ? 'Markets: notes and essays' : f}</a>)}
         </p>
@@ -77,4 +92,15 @@ const MORE = { Physics: ['/publications/', 'All publications'], Markets: ['/writ
     </div>
     <p class="lt-more"><a class="link-accent" href="/publications/">All publications →</a><a class="link-accent" href="/writing/">All writing →</a></p>
   </section>
+  <script is:inline>
+    document.querySelectorAll('[data-lt-filter] .chip').forEach(function (c, _, chips) {
+      c.addEventListener('click', function () {
+        chips.forEach(function (x) { x.setAttribute('aria-pressed', String(x === c)); });
+        var f = c.dataset.f;
+        document.querySelectorAll('.latest [data-all]').forEach(function (r) {
+          r.hidden = f === 'All' ? r.dataset.all !== '1' : r.dataset.type !== f;
+        });
+      });
+    });
+  </script>
 </Base>
