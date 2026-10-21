@@ -2,7 +2,7 @@
 # Edit in Pages CMS ("Site settings & texts") or directly here.
 
 name: Imen Al Samarai
-fields: Physics · Markets · AI · Arts
+fields: Physics · Markets · AI
 location: Paris
 description: Imen Al Samarai — research, writing and projects across physics, finance and artificial intelligence.
 
@@ -23,7 +23,7 @@ goatcounter: ""              # e.g. https://YOURNAME.goatcounter.com/count
 
 home:
   tagline: Physicist, quant and occasional artist.
-  welcome: "Welcome to my personal page: research, writing and projects across physics, finance and AI — and a little art."
+  welcome: "Welcome to my personal page: research, writing and projects across physics, finance and AI."
   about: >-
     I hold doctorates in particle physics and astrophysics and spent a decade searching for the cosmic
     sources of neutrinos within international collaborations. I then moved to quantitative finance,
@@ -105,4 +105,5 @@ menu:
   - { label: Writing, href: /writing/, key: writing }
   - { label: Publications, href: /publications/, key: publications }
   - { label: About, href: /about/, key: about }
-  - { label: Studio, href: /studio/, key: studio, external: true }
+  # Studio is switched off for now. To bring it back: add this line again and rename src/pages/_studio.astro to studio.astro.
+  # - { label: Studio, href: /studio/, key: studio, external: true }
