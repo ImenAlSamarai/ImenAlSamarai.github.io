@@ -11,11 +11,6 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
 <section class="path-sky" data-variant={variant} aria-labelledby="h-path">
   <div class="ps-head">
     <h2 id="h-path" class="label">The path</h2>
-    <div class="ps-steps" role="group" aria-label="Move along the path">
-      <button type="button" data-step="-1" aria-label="Previous stop">←</button>
-      <span class="ps-count" aria-live="polite"></span>
-      <button type="button" data-step="1" aria-label="Next stop">→</button>
-    </div>
     {toggle && (
       <div class="ps-switch" role="group" aria-label="Preview: choose a style">
         <button type="button" data-v="map" aria-pressed={variant === 'map' ? 'true' : 'false'}>World map</button>
@@ -26,6 +21,11 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
   <div class="ps-journey" style={`height:${stops.length * 65 + 30}vh`}>
     <div class={`ps-pin${aside ? ' has-aside' : ''}`}>
       <div class="ps-main">
+      <div class="ps-steps" role="group" aria-label="Move along the path">
+      <button type="button" data-step="-1" aria-label="Previous stop">←</button>
+      <span class="ps-count" aria-live="polite"></span>
+      <button type="button" data-step="1" aria-label="Next stop">→</button>
+      </div>
       <div class="ps-sky"><svg role="group" aria-label="Career stops"></svg></div>
       <div class="ps-card">
         {stops.map((s) => (
@@ -52,7 +52,7 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
   :root[data-theme="dark"] .path-sky { --walker: #EDE4D3; }
   .ps-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
   .ps-switch { display: flex; gap: 8px; }
-  .ps-steps { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .ps-steps { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-bottom: -6px; }
   .ps-steps button { width: 40px; height: 40px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); font: inherit; font-size: 18px; cursor: pointer; }
   .ps-steps button:hover { border-color: var(--accent); color: var(--accent); }
   .ps-steps button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
