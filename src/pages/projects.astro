@@ -3,10 +3,11 @@ import Base from '../layouts/Base.astro';
 import { load } from '../lib/site.js';
 const w = load('work.yml');
 ---
-<Base title="Research" current="projects" description="Selected projects by Imen Al Samarai: code, and the papers behind it.">
+<Base title="Open source" current="projects" description="Open-source code by Imen Al Samarai: the code behind her papers and tools she has built, free to read, run and reuse.">
   <section class="page-head">
-    <p class="label">Research</p>
-    <h1 class="page-title">Selected projects</h1>
+    <p class="label">Open source</p>
+    <h1 class="page-title">Code and tools</h1>
+    <p class="page-intro">The code behind my papers and tools I have built, in physics, markets and AI. All of it is public on GitHub: free to read, run and reuse.</p>
   </section>
 
   {w.projects?.length > 0 && (
