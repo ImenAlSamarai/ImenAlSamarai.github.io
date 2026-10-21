@@ -1,17 +1,21 @@
 ---
 import Base from '../layouts/Base.astro';
 import Ridgelines from '../components/Ridgelines.astro';
-import { site, load, getPosts, getDrawings, formatDate } from '../lib/site.js';
+import { site, getPosts, getDrawings, formatDate } from '../lib/site.js';
 
-const selected = load('selected.yml') || [];
-const work = load('work.yml');
 const posts = await getPosts();
-const venture = work.ventures?.[0];
 const drawings = await getDrawings();
-const items = [
-  ...selected.slice(0, 2).map((p) => ({ tag: p.field === 'AI' ? 'AI research' : p.field, title: p.title, meta: `${p.venue} · ${p.year}`, href: p.link })),
-  ...(venture ? [{ tag: 'Venture', title: venture.name, meta: venture.description, href: venture.link || '/about/' }] : []),
-];
+const preview = process.env.INCLUDE_DRAFTS === '1';
+const choice = 'A';
+const now = site.home.now;
+const threads = site.home.threads;
+// Option B: newest items of any kind (papers, projects, essays).
+const latest = [
+  ...posts.filter((p) => !p.data.draft).slice(0, 2).map((p) => ({ date: formatDate(p.data.date), type: 'Essay', title: p.data.title, href: `/writing/${p.id}/` })),
+  { date: '2026', type: 'AI research', title: 'Verifying Decisions Under Uncertainty', href: now.research_link },
+  { date: '2026', type: 'Project', title: 'AI research intelligence platform', href: '/projects/' },
+  { date: '2021', type: 'Physics', title: 'The SST-1M project for the Cherenkov Telescope Array', href: '/publications/' },
+].slice(0, 4);
 ---
 <Base>
   <section class="landing">
@@ -31,23 +35,66 @@ const items = [
     <div class="landing-art"><Ridgelines /></div>
   </section>
 
-  <section class="selected-strip" aria-labelledby="h-sel">
-    <h2 id="h-sel" class="label">Selected</h2>
-    <div class="strip">
-      {items.map((it) => (
-        <a class="mini" href={it.href}>
-          <span class="tag">{it.tag}</span>
-          <span class="t">{it.title}</span>
-          <span class="m">{it.meta}</span>
-        </a>
-      ))}
+  {/* Preview builds show all three options with a switch; the live site shows the chosen one. */}
+  {preview && (
+    <div class="opt-switch" role="group" aria-label="Preview: landing option">
+      <span class="label">Preview · middle of the page</span>
+      <button type="button" data-opt="A" aria-pressed="true">A · Now + three fields</button>
+      <button type="button" data-opt="B" aria-pressed="false">B · Now + latest</button>
+      <button type="button" data-opt="C" aria-pressed="false">C · Minimal</button>
     </div>
-    <p class="strip-links">
-      <a class="link-accent" href="/publications/">All publications →</a>
-      <a class="link-accent" href="/projects/">All projects →</a>
-      <a class="link-accent" href="/about/">More about me →</a>
-    </p>
-  </section>
+  )}
+
+  {(preview || choice === 'A') && (
+    <section class="mid" data-opt-view="A" aria-label="What I do now">
+      <a class="now-card" href={now.link}>
+        <span class="label">Now</span>
+        <span class="now-t">{now.title}</span>
+        <span class="now-d">{now.text}</span>
+        <span class="link-accent">{now.link_label}</span>
+      </a>
+      <div class="threads">
+        {threads.map((t) => (
+          <article class="thread">
+            <span class="tag">{t.field}</span>
+            <p class="proof">{t.proof}</p>
+            <span class="m">{t.meta}</span>
+            <span class="thread-links"><a class="link-accent" href={t.link}>{t.link_label}</a><a href={t.more}>{t.more_label} →</a></span>
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {(preview || choice === 'B') && (
+    <section class="mid" data-opt-view="B" hidden={preview ? true : undefined} aria-label="What I do now">
+      <a class="now-card" href={now.link}>
+        <span class="label">Now</span>
+        <span class="now-t">{now.title}</span>
+        <span class="now-d">{now.text}</span>
+        <span class="link-accent">{now.link_label}</span>
+      </a>
+      <h2 class="label" style="margin:40px 0 8px">Latest</h2>
+      <div class="latest">
+        {latest.map((it) => (
+          <a class="latest-row" href={it.href}>
+            <span class="m">{it.date}</span>
+            <span class="tag">{it.type}</span>
+            <span class="t">{it.title}</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {(preview || choice === 'C') && (
+    <section class="mid mid-c" data-opt-view="C" hidden={preview ? true : undefined} aria-label="What I do now">
+      <span class="label">Now</span>
+      <p class="now-big">{now.title}. {now.text} Currently researching how language models plan under uncertainty.</p>
+      <span class="thread-links"><a class="link-accent" href={now.link}>{now.link_label}</a><a href={now.research_link}>Read the preprint ↗︎</a></span>
+    </section>
+  )}
 
   <section class="beyond" aria-labelledby="h-beyond">
     <h2 id="h-beyond" class="label">Beyond research</h2>
@@ -68,4 +115,14 @@ const items = [
       </a>
     </div>
   </section>
+  {preview && (
+    <script is:inline>
+      document.querySelectorAll('[data-opt]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          document.querySelectorAll('[data-opt]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+          document.querySelectorAll('[data-opt-view]').forEach(function (v) { v.hidden = v.dataset.optView !== b.dataset.opt; });
+        });
+      });
+    </script>
+  )}
 </Base>

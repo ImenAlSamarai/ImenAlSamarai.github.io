@@ -33,6 +33,36 @@ home:
   studio_line: I also draw and compose music —
   writing_line: Thoughts on science, markets — and anything else that catches my curiosity.
   studio_title: Space and sound
+  # Landing page, middle: what I do now, then one proof per field.
+  now:
+    title: Founder & CEO, Pontus Analytics
+    text: Scientific and AI advisory for teams building advanced products, from Monte Carlo simulation to reinforcement-learning evaluation.
+    link: https://pontus-analytics.com
+    link_label: Pontus Analytics ↗︎
+    research: Verifying Decisions Under Uncertainty
+    research_link: https://github.com/ImenAlSamarai/decision-level-evaluation/blob/main/paper/paper.pdf
+  threads:
+    - field: Physics
+      proof: Part of the IceCube team that traced high-energy neutrinos to the blazar TXS 0506+056.
+      meta: Science · 2018
+      link: https://doi.org/10.1126/science.aat2890
+      link_label: Read the paper ↗︎
+      more: /publications/
+      more_label: All publications
+    - field: Markets
+      proof: Built TD Securities’ systematic fixed-income research platform, adopted across trading desks, and the PhD research team behind it.
+      meta: TD Securities · Swiss Life
+      link: /about/#h-path
+      link_label: See the path →
+      more: /cv/
+      more_label: CV
+    - field: AI
+      proof: Measuring how language models plan under uncertainty, against decisions whose optimum is known exactly.
+      meta: Preprint · 2026
+      link: https://github.com/ImenAlSamarai/decision-level-evaluation
+      link_label: Paper and code ↗︎
+      more: /projects/
+      more_label: All projects
   studio_card: Drawings, paintings and music — where curiosity takes another form.
   background:
     - title: Astroparticle physics
