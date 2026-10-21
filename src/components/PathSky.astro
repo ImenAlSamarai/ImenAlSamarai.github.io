@@ -11,6 +11,11 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
 <section class="path-sky" data-variant={variant} aria-labelledby="h-path">
   <div class="ps-head">
     <h2 id="h-path" class="label">The path</h2>
+    <div class="ps-steps" role="group" aria-label="Move along the path">
+      <button type="button" data-step="-1" aria-label="Previous stop">←</button>
+      <span class="ps-count" aria-live="polite"></span>
+      <button type="button" data-step="1" aria-label="Next stop">→</button>
+    </div>
     {toggle && (
       <div class="ps-switch" role="group" aria-label="Preview: choose a style">
         <button type="button" data-v="map" aria-pressed={variant === 'map' ? 'true' : 'false'}>World map</button>
@@ -47,6 +52,13 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
   :root[data-theme="dark"] .path-sky { --walker: #EDE4D3; }
   .ps-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
   .ps-switch { display: flex; gap: 8px; }
+  .ps-steps { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .ps-steps button { width: 40px; height: 40px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); font: inherit; font-size: 18px; cursor: pointer; }
+  .ps-steps button:hover { border-color: var(--accent); color: var(--accent); }
+  .ps-steps button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .ps-count { font-family: var(--mono); font-size: 13px; color: var(--muted-2); min-width: 3.2em; text-align: center; font-variant-numeric: tabular-nums; }
+  .path-sky.step .ps-journey { height: auto !important; }
+  .path-sky.step .ps-pin { position: relative; height: 820px; }
   .ps-switch button { min-height: 40px; padding: 0 12px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); font: inherit; font-size: 14px; cursor: pointer; }
   .ps-switch button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
   .ps-journey { position: relative; }
@@ -230,8 +242,32 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
       S = { u, walk, stopIdx, trail, stars, walker, sprite, lastIdx: -1, frame: 0 };
       drawChar(sprite, 0, false); update();
     }
-    function progress() { const r = journey.getBoundingClientRect(), span = r.height - innerHeight; return Math.max(0, Math.min(1, -r.top / span)) * (N - 1); }
-    function goTo(i) { const top = journey.getBoundingClientRect().top + scrollY, span = journey.offsetHeight - innerHeight; scrollTo({ top: top + span * i / (N - 1), behavior: reduce ? 'auto' : 'smooth' }); }
+    // Step mode: when the page cannot scroll by itself (e.g. shown inside an embedded preview),
+    // the walk is driven by the arrows and the stars instead of the scroll position.
+    let stepMode = false, tNow = 0, tTarget = 0, anim = 0;
+    function checkMode() {
+      const scrollable = document.documentElement.scrollHeight - innerHeight > 200 && innerHeight < 3000;
+      stepMode = !scrollable; root.classList.toggle('step', stepMode);
+    }
+    function progress() {
+      if (stepMode) return tNow;
+      const r = journey.getBoundingClientRect(), span = r.height - innerHeight; return Math.max(0, Math.min(1, -r.top / span)) * (N - 1);
+    }
+    function animate() {
+      const d = tTarget - tNow;
+      if (Math.abs(d) < 0.01 || reduce) { tNow = tTarget; update(); anim = 0; return; }
+      tNow += Math.sign(d) * Math.min(Math.abs(d), 0.025); update(); anim = requestAnimationFrame(animate);
+    }
+    function goTo(i) {
+      i = Math.max(0, Math.min(N - 1, i));
+      if (stepMode) { tTarget = i; if (!anim) anim = requestAnimationFrame(animate); return; }
+      const top = journey.getBoundingClientRect().top + scrollY, span = journey.offsetHeight - innerHeight; scrollTo({ top: top + span * i / (N - 1), behavior: reduce ? 'auto' : 'smooth' });
+    }
+    const countEl = root.querySelector('.ps-count');
+    root.querySelectorAll('[data-step]').forEach((b) => b.addEventListener('click', () => {
+      const cur = stepMode ? Math.round(tTarget) : Math.round(progress());
+      goTo(cur + Number(b.dataset.step));
+    }));
     function update() {
       if (!S) return;
       const t = progress(), i = Math.min(Math.floor(t), N - 2), f = t - i;
@@ -244,6 +280,7 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
         S.lastIdx = idx;
       }
       const active = Math.round(t);
+      if (countEl) countEl.textContent = `${active + 1} / ${N}`;
       S.stars.forEach((s, k) => { s.classList.toggle('past', k <= t + 0.02); s.classList.toggle('active', k === active); });
       cards.forEach((c, k) => c.classList.toggle('active', k === active));
       if (S.map) {
@@ -257,7 +294,8 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
     }));
     let ticking = false;
     addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; update(); }); } }, { passive: true });
-    let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(build, 120); });
+    let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { checkMode(); build(); }, 120); });
+    checkMode();
     if (!reduce) setInterval(() => { if (!S) return; blink = true; drawChar(S.sprite, S.frame, true); setTimeout(() => { blink = false; drawChar(S.sprite, S.frame, false); }, 150); }, 3400);
     build();
     document.fonts && document.fonts.ready.then(build);
