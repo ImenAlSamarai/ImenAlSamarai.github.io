@@ -210,12 +210,24 @@ content:
           - { name: linkedin, label: LinkedIn, type: string }
       - { name: newsletter_form_action, label: Newsletter form address (Buttondown), type: string }
       - { name: goatcounter, label: GoatCounter address (analytics), type: string }
+      - name: menu
+        label: Top menu (drag to reorder)
+        type: object
+        list: true
+        fields:
+          - { name: label, label: Name shown, type: string }
+          - { name: href, label: "Address (e.g. /about/)", type: string }
+          - { name: key, label: Page key (for the underline), type: string }
+          - { name: external, label: Put at the end in italic with ↗, type: boolean }
       - name: home
         label: Homepage
         type: object
         fields:
           - { name: tagline, label: Tagline (not shown at the moment), type: string }
           - { name: welcome, label: Welcome line under your name, type: text }
+          - { name: role, label: Role line under your name, type: string }
+          - { name: pontus_cta, label: Pontus link text, type: string }
+          - { name: pontus_link, label: Pontus link address, type: string }
           - { name: about, label: About paragraph, type: text }
           - { name: studio_line, label: Studio sentence (before the link), type: string }
           - { name: writing_line, label: Beyond research — Writing card text, type: string }

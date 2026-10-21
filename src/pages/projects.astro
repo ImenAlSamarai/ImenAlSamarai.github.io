@@ -2,25 +2,32 @@
 import Base from '../layouts/Base.astro';
 import { load } from '../lib/site.js';
 const w = load('work.yml');
+// Newest first (by year); projects from the same year keep their order in work.yml.
+const projects = [...(w.projects || [])].sort((a, b) => Number(b.year || 0) - Number(a.year || 0));
 ---
-<Base title="Projects" current="projects" description="Selected projects by Imen Al Samarai: code, and the papers behind it.">
+<Base title="Open source" current="projects" description="Open-source code by Imen Al Samarai: the code behind her papers and tools she has built, free to read, run and reuse.">
   <section class="page-head">
-    <h1 class="page-title">Selected projects</h1>
+    <p class="label">Open source</p>
+    <h1 class="page-title">Code and tools</h1>
+    <p class="page-intro">The code behind my papers and tools I have built, in physics, markets and AI. All of it is public on GitHub: free to read, run and reuse.</p>
   </section>
 
-  {w.projects?.length > 0 && (
-    <section class="rule" style="padding:48px 0 72px" aria-labelledby="h-r">
+  {projects.length > 0 && (
+    <section class="rule pj-list" aria-labelledby="h-r">
       <h2 id="h-r" class="sr-only">Projects</h2>
-      {w.projects.map((p) => (
-        <article class="project">
-          <img class={`img ${p.image_fit === 'contain' ? 'contain' : ''}`} src={p.image} alt={p.image_alt || ''} loading="lazy" />
-          <div class="body">
-            <span class="tag">{p.label}</span>
+      {projects.map((p, k) => (
+        <article class="pj">
+          <figure class="pj-fig">
+            <div class={`pj-frame ${p.image_fit === 'contain' ? 'contain' : ''}`}><img src={p.image} alt={p.image_alt || ''} loading="lazy" /></div>
+            {p.caption && <figcaption>{p.caption}</figcaption>}
+          </figure>
+          <div class="pj-body">
+            <div class="pj-meta"><span class="pj-n">{String(k + 1).padStart(2, '0')}</span><span class="kind">{p.field}</span><span class="m">{p.year}</span><span class="m">{p.language}</span></div>
             <h3>{p.title}</h3>
-            {p.subtitle && <span class="sub">{p.subtitle}</span>}
-            <p>{p.description}</p>
-            <span class="mono">{p.tools}</span>
-            <span class="links">{(p.links || []).map((l) => <a href={l.url}>{l.label} ↗︎</a>)}</span>
+            {p.subtitle && <p class="pj-sub">{p.subtitle}</p>}
+            <p class="pj-d">{p.description}</p>
+            <p class="pj-tools"><span>Built with</span> {p.tools}</p>
+            <div class="pj-links">{(p.links || []).map((l, i) => <a class={`btn ${i === 0 ? 'btn-solid' : ''}`} href={l.url}>{l.label} ↗︎</a>)}</div>
           </div>
         </article>
       ))}

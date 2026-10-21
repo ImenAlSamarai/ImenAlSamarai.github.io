@@ -5,7 +5,7 @@ import rehypeKatex from 'rehype-katex';
 
 export default defineConfig({
   site: 'https://imenalsamarai.github.io',
-  redirects: { '/research': '/publications', '/work': '/projects' },
+  redirects: { '/research': '/projects', '/work': '/projects' },
   integrations: [sitemap()],
   markdown: {
     remarkPlugins: [remarkMath],

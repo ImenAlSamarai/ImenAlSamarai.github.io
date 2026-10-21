@@ -97,3 +97,12 @@ about:
 
 studio:
   intro: Space and sound — drawings, paintings and music.
+
+# Top menu, in order. Change the order by moving lines; rename with "label"; remove a line to hide it.
+# key: used to underline the current page. external: true puts it at the end in italic with ↗.
+menu:
+  - { label: Open source, href: /projects/, key: projects }
+  - { label: Writing, href: /writing/, key: writing }
+  - { label: Publications, href: /publications/, key: publications }
+  - { label: About, href: /about/, key: about }
+  - { label: Studio, href: /studio/, key: studio, external: true }
