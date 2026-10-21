@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import { load } from '../lib/site.js';
 const w = load('work.yml');
+// Newest first (by year); projects from the same year keep their order in work.yml.
+const projects = [...(w.projects || [])].sort((a, b) => Number(b.year || 0) - Number(a.year || 0));
 ---
 <Base title="Open source" current="projects" description="Open-source code by Imen Al Samarai: the code behind her papers and tools she has built, free to read, run and reuse.">
   <section class="page-head">
@@ -10,10 +12,10 @@ const w = load('work.yml');
     <p class="page-intro">The code behind my papers and tools I have built, in physics, markets and AI. All of it is public on GitHub: free to read, run and reuse.</p>
   </section>
 
-  {w.projects?.length > 0 && (
+  {projects.length > 0 && (
     <section class="rule pj-list" aria-labelledby="h-r">
       <h2 id="h-r" class="sr-only">Projects</h2>
-      {w.projects.map((p, k) => (
+      {projects.map((p, k) => (
         <article class="pj">
           <figure class="pj-fig">
             <div class={`pj-frame ${p.image_fit === 'contain' ? 'contain' : ''}`}><img src={p.image} alt={p.image_alt || ''} loading="lazy" /></div>
