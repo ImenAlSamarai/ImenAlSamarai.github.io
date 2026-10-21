@@ -23,7 +23,7 @@ const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
     </div>
   </section>
 
-  <PathSky variant="1">
+  <PathSky variant={process.env.INCLUDE_DRAFTS === '1' ? 'A' : '1'} toggle={process.env.INCLUDE_DRAFTS === '1'}>
     <Fragment slot="aside">
       {a.press?.length > 0 && (
         <div>

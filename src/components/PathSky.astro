@@ -1,6 +1,7 @@
 ---
 // The path: a pinned pixel sky with a small walker; one stop of text at a time below.
-// Data lives in src/data/path.yml. `variant`: "1" pixel sky, "2" dot matrix. `toggle`: show a variant switch (preview only).
+// Data lives in src/data/path.yml. `variant`: "1" pixel sky + walker (original), "A" line + point, "B" timeline rail, "C" pixel sky + light.
+// `toggle`: show a style switch (preview only).
 import { load } from '../lib/site.js';
 const { variant = '1', toggle = false } = Astro.props;
 const data = load('path.yml');
@@ -13,8 +14,10 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
     <h2 id="h-path" class="label">The path</h2>
     {toggle && (
       <div class="ps-switch" role="group" aria-label="Preview: choose a style">
-        <button type="button" data-v="1" aria-pressed={variant === '1' ? 'true' : 'false'}>1 · Pixel sky</button>
-        <button type="button" data-v="2" aria-pressed={variant === '2' ? 'true' : 'false'}>2 · Dot matrix</button>
+        <button type="button" data-v="A" aria-pressed={variant === 'A' ? 'true' : 'false'}>A · Line and point</button>
+        <button type="button" data-v="B" aria-pressed={variant === 'B' ? 'true' : 'false'}>B · Timeline rail</button>
+        <button type="button" data-v="C" aria-pressed={variant === 'C' ? 'true' : 'false'}>C · Pixel sky, no figure</button>
+        <button type="button" data-v="1" aria-pressed={variant === '1' ? 'true' : 'false'}>Current</button>
       </div>
     )}
   </div>
@@ -73,6 +76,19 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
   .ps-sky .st .hit { fill: transparent; } .ps-sky .st:focus-visible .hit { fill: var(--soft); }
   .ps-sky .yr { font-family: var(--mono); font-size: 11px; fill: var(--muted-2); }
   .ps-sky .st.active .yr { fill: var(--fg); font-weight: 500; }
+  .path-sky[data-variant="A"] .ps-sky svg, .path-sky[data-variant="B"] .ps-sky svg { shape-rendering: geometricPrecision; }
+  .ps-sky .vl { fill: none; stroke: var(--line); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+  .ps-sky .vd { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .ps-sky .vs { fill: var(--bg); stroke: var(--fg); stroke-width: 1.5; transition: r .25s; }
+  .ps-sky .st.past .vs { fill: var(--accent); stroke: var(--accent); }
+  .ps-sky .st.active .vs { r: 6; }
+  .ps-sky .vt { stroke: var(--line); stroke-width: 1; }
+  .ps-sky .st.past .vt { stroke: var(--accent); }
+  .ps-sky .mk { fill: var(--accent); } .ps-sky .mk-halo { fill: var(--accent); opacity: .16; }
+  .ps-sky .mk-needle { stroke: var(--accent); stroke-width: 1.5; }
+  .ps-sky .lightc { fill: var(--accent); } .ps-sky .glow { fill: var(--accent); opacity: .22; }
+  @media (prefers-reduced-motion: no-preference) { .ps-sky .glow { animation: ps-pulse 2.4s ease-in-out infinite; } }
+  @keyframes ps-pulse { 0%, 100% { opacity: .08; } 50% { opacity: .3; } }
   .ps-sky .chl { font-family: var(--serif); font-style: italic; font-size: 20px; fill: var(--fg-2); }
   .ps-pin.has-aside { display: grid; grid-template-columns: minmax(0, 1fr) 260px; grid-template-rows: minmax(0, 1fr); column-gap: 56px; }
   .ps-main { min-width: 0; min-height: 0; flex: 1; display: flex; flex-direction: column; gap: 14px; }
@@ -148,43 +164,79 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
     const cards = [...root.querySelectorAll('.ps-stop')];
     let variant = root.dataset.variant, S = null, idle, blink = false;
 
+    function labels(g, xPx, yPx, i, H, gap) {
+      const lines = [stops[i].when, ...(stops[i].place ? stops[i].place.split(' · ') : [])];
+      const below = yPx + gap + 12 + (lines.length - 1) * 13 < H - 2;
+      const y0 = below ? yPx + gap + 12 : yPx - gap - 4 - (lines.length - 1) * 13;
+      lines.forEach((txt, k) => { const tx = el('text', { x: xPx, y: y0 + k * 13, 'text-anchor': 'middle', class: k ? 'pl' : 'yr' }, g); tx.textContent = txt; });
+    }
+    function wire(g, i) {
+      const go = () => goTo(i);
+      g.addEventListener('click', go);
+      g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    }
+    function chapters(xs, Wpx, y = 24) {
+      const chFirst = {}; stops.forEach((s, i) => { if (!(s.chapter in chFirst)) chFirst[s.chapter] = i; });
+      Object.entries(chFirst).forEach(([name, i]) => {
+        const last = i === N - 1, x = last ? Wpx - 4 : xs[i] - (i === 0 ? 0 : 12);
+        const tx = el('text', { x: Math.max(4, x), y, 'text-anchor': last ? 'end' : 'start', class: 'chl' }, svg); tx.textContent = name;
+      });
+    }
     function build() {
       const W = sky.clientWidth, H = sky.clientHeight; if (!W || !H) return;
+      svg.replaceChildren();
+      if (variant === 'A' || variant === 'B') {
+        svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+        const m = W < 500 ? 22 : 64;
+        const rail = variant === 'B';
+        const pts = stops.map((_, i) => [m + (W - 2 * m) * i / (N - 1), rail ? H * 0.55 : H * (0.1 + YS[i % YS.length] * 0.85)]);
+        const d = 'M' + pts.map((p) => p.map((v) => v.toFixed(1)).join(' ')).join(' L');
+        el('path', { d, class: 'vl' }, svg);
+        const done = el('path', { d, class: 'vd' }, svg);
+        const seg = [0]; for (let i = 1; i < N; i++) seg.push(seg[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+        done.style.strokeDasharray = `${seg[N - 1]} ${seg[N - 1]}`;
+        const stars = pts.map(([x, y], i) => {
+          const g = el('g', { class: 'st', tabindex: '0', role: 'button', 'aria-label': `${stops[i].when}, ${stops[i].org}` }, svg);
+          el('rect', { x: x - 22, y: y - 34, width: 44, height: 68, class: 'hit' }, g);
+          if (rail) el('line', { x1: x, x2: x, y1: y - 7, y2: y + 7, class: 'vt' }, g);
+          el('circle', { cx: x, cy: y, r: 4, class: 'vs' }, g);
+          labels(g, x, y, i, H, rail ? 14 : 12);
+          wire(g, i); return g;
+        });
+        chapters(pts.map((p) => p[0]), W);
+        const mk = el('g', {}, svg);
+        if (rail) el('line', { x1: 0, x2: 0, y1: -H * 0.55 + 34, y2: -9, class: 'mk-needle' }, mk);
+        el('circle', { r: rail ? 0 : 11, class: 'mk-halo' }, mk); el('circle', { r: rail ? 5 : 5.5, class: 'mk' }, mk);
+        S = { vec: true, pts, seg, done, stars, mk };
+        update(); return;
+      }
       const u = W < 500 ? 2 : 3, cols = Math.floor(W / u), rows = Math.floor(H / u);
-      svg.setAttribute('viewBox', `0 0 ${cols * u} ${rows * u}`); svg.replaceChildren();
+      svg.setAttribute('viewBox', `0 0 ${cols * u} ${rows * u}`);
       const cell = (x, y, cls, p = svg) => el('rect', { x: x * u, y: y * u, width: u, height: u, class: cls }, p);
       const margin = Math.round((W < 500 ? 18 : 56) / u);
       const sp = stops.map((_, i) => [Math.round(margin + (cols - 2 * margin) * i / (N - 1)), Math.round(rows * YS[i % YS.length])]);
       const bgG = el('g', {}, svg), pathG = el('g', {}, svg), r = rng(7);
-      if (variant === '1') for (let k = 0; k < cols * rows / 140; k++) cell(Math.floor(r() * cols), Math.floor(r() * rows), r() < 0.3 ? 'bg' : 'bg dim', bgG);
-      else for (let x = 2; x < cols; x += 6) for (let y = 2; y < rows; y += 6) cell(x, y, 'bg dim', bgG);
+      for (let k = 0; k < cols * rows / 140; k++) cell(Math.floor(r() * cols), Math.floor(r() * rows), r() < 0.3 ? 'bg' : 'bg dim', bgG);
       let walk = [sp[0]]; const stopIdx = [0];
       for (let i = 1; i < N; i++) { walk = walk.concat(line(sp[i - 1], sp[i])); stopIdx.push(walk.length - 1); }
-      const trail = walk.map(([x, y], k) => (variant === '1' || k % 3 === 0 ? cell(x, y, 'pc', pathG) : null));
-      const chFirst = {}; stops.forEach((s, i) => { if (!(s.chapter in chFirst)) chFirst[s.chapter] = i; });
+      const trail = walk.map(([x, y]) => cell(x, y, 'pc', pathG));
       const stars = sp.map(([x, y], i) => {
         const g = el('g', { class: 'st', tabindex: '0', role: 'button', 'aria-label': `${stops[i].when}, ${stops[i].org}` }, svg);
         el('rect', { x: (x - 6) * u, y: (y - 14) * u, width: 13 * u, height: 22 * u, class: 'hit' }, g);
-        let shape;
-        if (variant === '1') { shape = [[0,0],[1,0],[-1,0],[0,1],[0,-1],[2,0],[-2,0],[0,2],[0,-2]]; [[2,2],[-2,-2],[2,-2],[-2,2],[3,0],[-3,0],[0,3],[0,-3]].forEach(([a, b]) => cell(x + a, y + b, 'spark', g)); }
-        else { shape = []; for (let a = -2; a <= 2; a++) for (let b = -2; b <= 2; b++) if (Math.abs(a) === 2 || Math.abs(b) === 2) shape.push([a, b]); [[-1,-1],[0,-1],[1,-1],[-1,0],[0,0],[1,0],[-1,1],[0,1],[1,1]].forEach(([a, b]) => cell(x + a, y + b, 'spark', g)); }
-        shape.forEach(([a, b]) => cell(x + a, y + b, 's', g));
-        const lines = [stops[i].when, ...(stops[i].place ? stops[i].place.split(' · ') : [])];
-        const below = (y + 5) * u + 12 + (lines.length - 1) * 13 < rows * u - 2;
-        const y0 = below ? (y + 5) * u + 12 : (y - 5) * u - 4 - (lines.length - 1) * 13;
-        lines.forEach((txt, k) => { const t = el('text', { x: x * u, y: y0 + k * 13, 'text-anchor': 'middle', class: k ? 'pl' : 'yr' }, g); t.textContent = txt; });
-        const go = () => goTo(i);
-        g.addEventListener('click', go);
-        g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
-        return g;
+        [[2,2],[-2,-2],[2,-2],[-2,2],[3,0],[-3,0],[0,3],[0,-3]].forEach(([a, b]) => cell(x + a, y + b, 'spark', g));
+        [[0,0],[1,0],[-1,0],[0,1],[0,-1],[2,0],[-2,0],[0,2],[0,-2]].forEach(([a, b]) => cell(x + a, y + b, 's', g));
+        labels(g, x * u, y * u, i, rows * u, 5 * u);
+        wire(g, i); return g;
       });
-      Object.entries(chFirst).forEach(([name, i]) => {
-        const last = i === N - 1, x = last ? cols * u - 4 : sp[i][0] * u - (i === 0 ? 0 : 4 * u);
-        const t = el('text', { x: Math.max(4, x), y: 24, 'text-anchor': last ? 'end' : 'start', class: 'chl' }, svg); t.textContent = name;
-      });
+      chapters(sp.map((p) => p[0] * u), cols * u);
       const walker = el('g', {}, svg), sprite = el('g', {}, walker);
-      S = { u, walk, stopIdx, trail, stars, walker, sprite, lastIdx: -1, frame: 0 };
-      drawChar(sprite, 0, false); update();
+      if (variant === 'C') {
+        [[-2,-2],[-1,-2],[0,-2],[1,-2],[2,-2],[-2,2],[-1,2],[0,2],[1,2],[2,2],[-2,-1],[-2,0],[-2,1],[2,-1],[2,0],[2,1]].forEach(([a, b]) => el('rect', { x: a, y: b, width: 1, height: 1, class: 'glow' }, sprite));
+        [[-1,-1],[0,-1],[1,-1],[-1,0],[0,0],[1,0],[-1,1],[0,1],[1,1]].forEach(([a, b]) => el('rect', { x: a, y: b, width: 1, height: 1, class: 'lightc' }, sprite));
+      }
+      S = { vec: false, light: variant === 'C', u, walk, stopIdx, trail, stars, walker, sprite, lastIdx: -1, frame: 0 };
+      if (!S.light) drawChar(sprite, 0, false);
+      update();
     }
     // Step mode: when the page cannot scroll by itself (e.g. shown inside an embedded preview),
     // the walk is driven by the arrows and the stars instead of the scroll position.
@@ -215,15 +267,24 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
     function update() {
       if (!S) return;
       const t = progress(), i = Math.min(Math.floor(t), N - 2), f = t - i;
-      const idx = Math.round(S.stopIdx[i] + (S.stopIdx[i + 1] - S.stopIdx[i]) * f);
-      const [x, y] = S.walk[idx], nx = S.walk[Math.min(idx + 1, S.walk.length - 1)][0], face = nx < x ? -1 : 1, u = S.u;
-      S.walker.setAttribute('transform', `translate(${x * u + (face < 0 ? u : 0)},${y * u}) scale(${face * u},${u})`);
-      if (idx !== S.lastIdx) {
-        S.trail.forEach((c, k) => c && c.classList.toggle('done', k <= idx));
-        if (!reduce && S.lastIdx >= 0) { S.frame = Math.floor(idx / 2) % 2; drawChar(S.sprite, S.frame, blink); clearTimeout(idle); idle = setTimeout(() => { S.frame = 0; drawChar(S.sprite, 0, blink); }, 200); }
-        S.lastIdx = idx;
-      }
       const active = Math.round(t);
+      if (S.vec) {
+        const [x0, y0] = S.pts[i], [x1, y1] = S.pts[i + 1];
+        const x = x0 + (x1 - x0) * f, y = y0 + (y1 - y0) * f;
+        S.mk.setAttribute('transform', `translate(${x.toFixed(1)},${y.toFixed(1)})`);
+        const L = S.seg[i] + (S.seg[i + 1] - S.seg[i]) * f;
+        S.done.style.strokeDashoffset = String(S.seg[N - 1] - L);
+      } else {
+        const idx = Math.round(S.stopIdx[i] + (S.stopIdx[i + 1] - S.stopIdx[i]) * f);
+        const [x, y] = S.walk[idx], nx = S.walk[Math.min(idx + 1, S.walk.length - 1)][0], face = nx < x ? -1 : 1, u = S.u;
+        if (S.light) S.walker.setAttribute('transform', `translate(${x * u},${y * u}) scale(${u},${u})`);
+        else S.walker.setAttribute('transform', `translate(${x * u + (face < 0 ? u : 0)},${y * u}) scale(${face * u},${u})`);
+        if (idx !== S.lastIdx) {
+          S.trail.forEach((c, k) => c && c.classList.toggle('done', k <= idx));
+          if (!S.light && !reduce && S.lastIdx >= 0) { S.frame = Math.floor(idx / 2) % 2; drawChar(S.sprite, S.frame, blink); clearTimeout(idle); idle = setTimeout(() => { S.frame = 0; drawChar(S.sprite, 0, blink); }, 200); }
+          S.lastIdx = idx;
+        }
+      }
       if (countEl) countEl.textContent = `${active + 1} / ${N}`;
       S.stars.forEach((s, k) => { s.classList.toggle('past', k <= t + 0.02); s.classList.toggle('active', k === active); });
       cards.forEach((c, k) => c.classList.toggle('active', k === active));
@@ -235,7 +296,7 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
     addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; update(); }); } }, { passive: true });
     let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { checkMode(); build(); }, 120); });
     checkMode();
-    if (!reduce) setInterval(() => { if (!S) return; blink = true; drawChar(S.sprite, S.frame, true); setTimeout(() => { blink = false; drawChar(S.sprite, S.frame, false); }, 150); }, 3400);
+    if (!reduce) setInterval(() => { if (!S || S.vec || S.light) return; blink = true; drawChar(S.sprite, S.frame, true); setTimeout(() => { blink = false; drawChar(S.sprite, S.frame, false); }, 150); }, 3400);
     build();
     document.fonts && document.fonts.ready.then(build);
   });
