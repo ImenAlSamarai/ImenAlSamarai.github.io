@@ -5,6 +5,8 @@ import { load } from '../lib/site.js';
 const { variant = '1', toggle = false } = Astro.props;
 const data = load('path.yml');
 const stops = data.stops;
+// Optional side panel (Press, Languages…) that stays still while the path moves.
+const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
 ---
 <section class="path-sky" data-variant={variant} aria-labelledby="h-path">
   <div class="ps-head">
@@ -17,12 +19,13 @@ const stops = data.stops;
     )}
   </div>
   <div class="ps-journey" style={`height:${stops.length * 65 + 30}vh`}>
-    <div class="ps-pin">
+    <div class={`ps-pin${aside ? ' has-aside' : ''}`}>
+      <div class="ps-main">
       <div class="ps-sky"><svg role="group" aria-label="Career stops"></svg></div>
       <div class="ps-card">
         {stops.map((s) => (
           <article class="ps-stop">
-            <span class="ps-when">{s.chapter} · {s.when}</span>
+            <span class="ps-when">{s.chapter} · {s.when}{s.place && <span class="ps-place"> · {s.place}</span>}</span>
             <h3>{s.org}</h3>
             <span class="ps-role">{s.role}</span>
             <p>{s.text}</p>
@@ -30,10 +33,13 @@ const stops = data.stops;
           </article>
         ))}
       </div>
+      </div>
+      {aside && <aside class="ps-aside" set:html={aside} />}
     </div>
   </div>
   <p class="ps-end">That is the path so far.</p>
-  <script type="application/json" class="ps-data" set:html={JSON.stringify({ stops: stops.map(({ chapter, when, org }) => ({ chapter, when, org })) })}></script>
+  {aside && <div class="ps-aside-after" set:html={aside} />}
+  <script type="application/json" class="ps-data" set:html={JSON.stringify({ stops: stops.map(({ chapter, when, org, place }) => ({ chapter, when, org, place })) })}></script>
 </section>
 
 <style is:global>
@@ -57,6 +63,12 @@ const stops = data.stops;
   .ps-sky .yr { font-family: var(--mono); font-size: 11px; fill: var(--muted-2); }
   .ps-sky .st.active .yr { fill: var(--fg); font-weight: 500; }
   .ps-sky .chl { font-family: var(--serif); font-style: italic; font-size: 20px; fill: var(--fg-2); }
+  .ps-pin.has-aside { display: grid; grid-template-columns: minmax(0, 1fr) 260px; grid-template-rows: minmax(0, 1fr); column-gap: 56px; }
+  .ps-main { min-width: 0; min-height: 0; flex: 1; display: flex; flex-direction: column; gap: 14px; }
+  .ps-aside { display: flex; flex-direction: column; gap: 36px; padding-top: 4px; align-self: start; }
+  .ps-aside-after { display: none; }
+  .ps-sky .pl { font-family: var(--serif); font-style: italic; font-size: 12px; fill: var(--muted-2); }
+  .ps-sky .st.active .pl { fill: var(--fg-2); }
   .ps-card { position: relative; flex: 1; min-height: 0; }
   .ps-stop { position: absolute; inset: 0 0 auto 0; display: flex; flex-direction: column; gap: 8px; padding-top: 6px; opacity: 0; transform: translateY(8px); transition: opacity .35s, transform .35s; pointer-events: none; }
   .ps-stop.active { opacity: 1; transform: none; pointer-events: auto; }
@@ -67,7 +79,13 @@ const stops = data.stops;
   .ps-tags { list-style: none; margin: 0; padding: 6px 0 0; display: flex; flex-wrap: wrap; gap: 8px; max-width: 80ch; }
   .ps-tags li { font-family: var(--mono); font-size: 12px; border: 1px solid var(--accent); color: var(--accent); padding: 4px 10px; border-radius: 999px; }
   .ps-end { margin: 0; padding: 8px 0 48px; font-family: var(--serif); font-size: 24px; color: var(--fg-2); }
+  @media (max-width: 960px) {
+    .ps-pin.has-aside { display: flex; }
+    .ps-aside { display: none; }
+    .ps-aside-after { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; padding: 8px 0 32px; }
+  }
   @media (max-width: 860px) {
+    .ps-sky .pl { display: none; }
     .ps-sky .yr { display: none; }
     .ps-sky .chl { font-size: 15px; }
     .ps-stop h3 { font-size: 24px; } .ps-stop p { font-size: 15px; line-height: 1.55; }
@@ -141,6 +159,7 @@ const stops = data.stops;
         else { shape = []; for (let a = -2; a <= 2; a++) for (let b = -2; b <= 2; b++) if (Math.abs(a) === 2 || Math.abs(b) === 2) shape.push([a, b]); [[-1,-1],[0,-1],[1,-1],[-1,0],[0,0],[1,0],[-1,1],[0,1],[1,1]].forEach(([a, b]) => cell(x + a, y + b, 'spark', g)); }
         shape.forEach(([a, b]) => cell(x + a, y + b, 's', g));
         const t = el('text', { x: x * u, y: (y + 5) * u + 12, 'text-anchor': 'middle', class: 'yr' }, g); t.textContent = stops[i].when;
+        if (stops[i].place) { const pl = el('text', { x: x * u, y: (y + 5) * u + 26, 'text-anchor': 'middle', class: 'pl' }, g); pl.textContent = stops[i].place.split(' · ')[0]; }
         const go = () => goTo(i);
         g.addEventListener('click', go);
         g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
