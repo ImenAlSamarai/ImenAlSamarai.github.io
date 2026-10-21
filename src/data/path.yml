@@ -18,14 +18,14 @@ stops:
   - chapter: Physics
     when: 2012–2013
     org: Michigan State University · Aix-Marseille University
-    place: Michigan, USA · Marseille
+    place: East Lansing · Marseille
     role: Visiting Scientist · Assistant Professor
     text: With my team, I installed the first neutrino alert system to trigger a network of robotic telescopes around the globe. I also taught statistics, physics and mathematics to undergraduate and graduate students.
     tags: [Optical astronomy, Robotic telescopes, Global alert networks, Algorithm optimisation, Teaching]
   - chapter: Physics
     when: 2013–2016
     org: LPNHE, Paris
-    place: Paris · Mendoza
+    place: Paris
     role: Postdoctoral Researcher
     text: 'The astrophysical neutrinos I searched for during my thesis are closely tied to the highest-energy cosmic rays. Following that thread, I joined the Pierre Auger Observatory, spread across the Pampa Amarilla in Mendoza, Argentina, to detect them. I also explored the radio detection of cosmic rays: I developed the first theoretical model of the emission, deployed radio antennas in the pampa with my own hands, and analysed the data they collected.'
     tags: [Phenomenology, Theoretical physics, Radio detection, Signal processing, GHz signals]

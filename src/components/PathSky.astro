@@ -37,7 +37,6 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
       {aside && <aside class="ps-aside" set:html={aside} />}
     </div>
   </div>
-  <p class="ps-end">That is the path so far.</p>
   {aside && <div class="ps-aside-after" set:html={aside} />}
   <script type="application/json" class="ps-data" set:html={JSON.stringify({ stops: stops.map(({ chapter, when, org, place }) => ({ chapter, when, org, place })) })}></script>
 </section>
@@ -158,8 +157,10 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
         if (variant === '1') { shape = [[0,0],[1,0],[-1,0],[0,1],[0,-1],[2,0],[-2,0],[0,2],[0,-2]]; [[2,2],[-2,-2],[2,-2],[-2,2],[3,0],[-3,0],[0,3],[0,-3]].forEach(([a, b]) => cell(x + a, y + b, 'spark', g)); }
         else { shape = []; for (let a = -2; a <= 2; a++) for (let b = -2; b <= 2; b++) if (Math.abs(a) === 2 || Math.abs(b) === 2) shape.push([a, b]); [[-1,-1],[0,-1],[1,-1],[-1,0],[0,0],[1,0],[-1,1],[0,1],[1,1]].forEach(([a, b]) => cell(x + a, y + b, 'spark', g)); }
         shape.forEach(([a, b]) => cell(x + a, y + b, 's', g));
-        const t = el('text', { x: x * u, y: (y + 5) * u + 12, 'text-anchor': 'middle', class: 'yr' }, g); t.textContent = stops[i].when;
-        if (stops[i].place) { const pl = el('text', { x: x * u, y: (y + 5) * u + 26, 'text-anchor': 'middle', class: 'pl' }, g); pl.textContent = stops[i].place.split(' · ')[0]; }
+        const lines = [stops[i].when, ...(stops[i].place ? stops[i].place.split(' · ') : [])];
+        const below = (y + 5) * u + 12 + (lines.length - 1) * 13 < rows * u - 2;
+        const y0 = below ? (y + 5) * u + 12 : (y - 5) * u - 4 - (lines.length - 1) * 13;
+        lines.forEach((txt, k) => { const t = el('text', { x: x * u, y: y0 + k * 13, 'text-anchor': 'middle', class: k ? 'pl' : 'yr' }, g); t.textContent = txt; });
         const go = () => goTo(i);
         g.addEventListener('click', go);
         g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
