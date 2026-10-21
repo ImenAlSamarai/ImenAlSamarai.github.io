@@ -1,10 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import PathSky from '../components/PathSky.astro';
-import { site, load, getDrawings } from '../lib/site.js';
+import { site, load } from '../lib/site.js';
 const cv = load('cv.yml');
 const a = site.about;
-const hasStudio = (await getDrawings()).length > 0;
 const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 ---
 <Base title="About" current="about">
@@ -40,9 +39,5 @@ const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
     </Fragment>
   </PathSky>
 
-  <section class="rule" style="display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between;align-items:flex-end;padding:88px 0">
-    <p class="big-quote">{a.studio_invite}</p>
-    <a class="btn btn-studio" href="/studio/">Step into the Studio ↗︎</a>
-  </section>
 
 </Base>
