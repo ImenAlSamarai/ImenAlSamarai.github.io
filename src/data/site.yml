@@ -33,39 +33,11 @@ home:
   studio_line: I also draw and compose music —
   writing_line: Thoughts on science, markets — and anything else that catches my curiosity.
   studio_title: Space and sound
-  # Landing page, middle. Personal: the work itself, not the career (About) or the company (Pontus website).
-  currently:
-    text: I am studying whether language models plan ahead or simply react, by testing them on decisions whose best answer is known exactly.
-    link: https://github.com/ImenAlSamarai/decision-level-evaluation/blob/main/paper/paper.pdf
-    link_label: Read the preprint ↗︎
-  pontus_line: I also run Pontus Analytics, a scientific and AI advisory.
+  # Landing page, under the name.
+  personal_line: This is my personal page.
+  role: Scientist, founder and CEO of Pontus Analytics.
+  pontus_cta: For collaborations and client projects, visit Pontus Analytics
   pontus_link: https://pontus-analytics.com
-  # One piece of work per field (options A and C).
-  fields_work:
-    - field: Physics
-      question: Where do the highest-energy particles in the universe come from?
-      title: Neutrino emission from the blazar TXS 0506+056
-      meta: IceCube · Science · 2018
-      link: https://doi.org/10.1126/science.aat2890
-      link_label: Read the paper ↗︎
-      more: /publications/
-      more_label: All publications
-    - field: Markets
-      question: Can several simple strategies, coordinated well, beat one clever one?
-      title: Multi-agent portfolio system
-      meta: Open-source code
-      link: https://github.com/ImenAlSamarai/portfolio-system-gaming
-      link_label: View the code ↗︎
-      more: /projects/
-      more_label: All projects
-    - field: AI
-      question: Do language models plan ahead, or just react?
-      title: Verifying Decisions Under Uncertainty
-      meta: Preprint · 2026
-      link: https://github.com/ImenAlSamarai/decision-level-evaluation
-      link_label: Paper and code ↗︎
-      more: /projects/
-      more_label: All projects
 
 about:
   intro: |-

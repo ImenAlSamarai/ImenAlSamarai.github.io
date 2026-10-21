@@ -26,6 +26,10 @@ content:
         label: Topic
         type: select
         options: { values: [AI, Physics, Markets, Other] }
+      - name: type
+        label: Type
+        type: select
+        options: { values: [Essay, Note] }
       - { name: summary, label: Summary (one or two sentences), type: text }
       - { name: draft, label: Draft (hidden from the public site), type: boolean, default: true }
       - name: body
@@ -44,6 +48,10 @@ content:
       - { name: title, label: Title, type: string, required: true }
       - { name: year, label: Year, type: string }
       - { name: medium, label: Medium, type: string }
+      - name: kind
+        label: Kind
+        type: select
+        options: { values: [Visual, Music] }
       - name: image
         label: Image
         type: image
