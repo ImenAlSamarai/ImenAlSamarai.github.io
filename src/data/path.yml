@@ -25,7 +25,7 @@ stops:
   - chapter: Physics
     when: 2013–2016
     org: LPNHE, Paris
-    place: Paris
+    place: Paris · Mendoza
     role: Postdoctoral Researcher
     text: 'The astrophysical neutrinos I searched for during my thesis are closely tied to the highest-energy cosmic rays. Following that thread, I joined the Pierre Auger Observatory, spread across the Pampa Amarilla in Mendoza, Argentina, to detect them. I also explored the radio detection of cosmic rays: I developed the first theoretical model of the emission, deployed radio antennas in the pampa with my own hands, and analysed the data they collected.'
     tags: [Phenomenology, Theoretical physics, Radio detection, Signal processing, GHz signals]

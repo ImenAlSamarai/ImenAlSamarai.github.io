@@ -13,8 +13,8 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
     <h2 id="h-path" class="label">The path</h2>
     {toggle && (
       <div class="ps-switch" role="group" aria-label="Preview: choose a style">
-        <button type="button" data-v="1" aria-pressed={variant === '1' ? 'true' : 'false'}>1 · Pixel sky</button>
-        <button type="button" data-v="2" aria-pressed={variant === '2' ? 'true' : 'false'}>2 · Dot matrix</button>
+        <button type="button" data-v="map" aria-pressed={variant === 'map' ? 'true' : 'false'}>World map</button>
+        <button type="button" data-v="1" aria-pressed={variant === '1' ? 'true' : 'false'}>Line (current)</button>
       </div>
     )}
   </div>
@@ -68,6 +68,9 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
   .ps-aside-after { display: none; }
   .ps-sky .pl { font-family: var(--serif); font-style: italic; font-size: 12px; fill: var(--muted-2); }
   .ps-sky .st.active .pl { fill: var(--fg-2); }
+  .path-sky[data-variant="map"] .ps-sky { height: clamp(200px, 40vh, 380px); }
+  .ps-sky .city { fill: var(--muted-2); }
+  .ps-sky .citylabel { font-family: var(--serif); font-style: italic; font-size: 15px; fill: var(--fg); }
   .ps-card { position: relative; flex: 1; min-height: 0; }
   .ps-stop { position: absolute; inset: 0 0 auto 0; display: flex; flex-direction: column; gap: 8px; padding-top: 6px; opacity: 0; transform: translateY(8px); transition: opacity .35s, transform .35s; pointer-events: none; }
   .ps-stop.active { opacity: 1; transform: none; pointer-events: auto; }
@@ -85,6 +88,7 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
   }
   @media (max-width: 860px) {
     .ps-sky .pl { display: none; }
+    .path-sky[data-variant="map"] .ps-sky { height: clamp(140px, 22vh, 200px); }
     .ps-sky .yr { display: none; }
     .ps-sky .chl { font-size: 15px; }
     .ps-stop h3 { font-size: 24px; } .ps-stop p { font-size: 15px; line-height: 1.55; }
@@ -113,6 +117,13 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
   const BODY = ['...XXX...', '..XXXXX..', '.XX...XX.', '.X.X.X.X.', '.X.....X.', '..X...X..', '...XXX...', '..XXXXX..', '.XXXXXXX.', '.XXXXXXX.'];
   const FEET = [['..X...X..', '..X...X..'], ['...X.X...', '..X...X..']];
   const YS = [0.80, 0.66, 0.50, 0.62, 0.40, 0.52, 0.34, 0.20];
+  // World map (variant "map"): land on a 2° grid, lon -100..20, lat -44..62.
+  const LAND = ["111000000001111101000000011110000000000000000000010011111110", "111100000001111111100000000000000000000000000001100011111110", "111111000001111111110000000000000000000000000011100000111111", "111111111011111111111100000000000000000000000011110000111111", "111111111111111111111100000000000000000000000110111011111111", "111111111111111111111110000000000000000000000001111111111111", "111111111111111111101111000000000000000000000001111111111111", "111111111111111111110011000000000000000000000000011111111111", "111111111111111111110000000000000000000000000000011111111111", "111111111111111001000000000000000000000000000111111111111011", "111111111111111000000000000000000000000000000111111000101111", "111111111111100000000000000000000001000000000111111100100010", "111111111111000000000000000000000000000000000111111111111100", "111111111111000000000000000000000000000000000011111111110000", "111111111110000000000000000000000000000001000111111111111100", "111111111100000000000000000000000000000000000111111111111111", "111010001100000000000000000000000000000000011111111111111111", "110000001101000000000000000000000000000000011111111111111111", "110000000101000000000000000000000000000000111111111111111111", "100000001110000000000000000000000000000000111111111111111111", "110001101011111000000000000000000000000001111111111111111111", "111111100000011100000000000000000000000000111111111111111111", "111111000000000000100000000000000000000000111111111111111111", "000111111000000000010000000000000000001001111111111111111111", "000001110000000000000000000000000000000001111111111111111111", "000000011000111110100000000000000000000000111111111111111111", "000000001111111111110000000000000000000000011111111111111111", "000000000101111111111000000000000000000000011111111111111111", "000000000001111111111111000000000000000000000111110011111111", "000000000011111111111111100000000000000000000000000000011111", "000000000011111111111111100000000000000000000000000000111111", "000010000111111111111111111100000000000000000000000000111111", "000000000111111111111111111111100000000000000000000000011111", "000000000111111111111111111111111000000000000000000000001111", "000000000011111111111111111111111000000000000000000000001111", "000000000011111111111111111111111000000000000000000000001111", "000000000001111111111111111111110000000000000000000000000111", "000000000001111111111111111111100000000000000000000000001111", "000000000000111111111111111111100000000000000000000000001111", "000000000000011111111111111111100000000000000000000000001111", "000000000000000111111111111111000000000000000000000000001111", "000000000000000111111111111111000000000000000000000000001111", "000000000000000111111111111110000000000000000000000000000111", "000000000000001111111111111000000000000000000000000000000111", "000000000000001111111111110000000000000000000000000000000111", "000000000000001111111111110000000000000000000000000000000011", "000000000000001111111111100000000000000000000000000000000011", "000000000000001111111111000000000000000000000000000000000001", "000000000000011111111110000000000000000000000000000000000001", "000000000000011111111100000000000000000000000000000000000000", "000000000000011111111000000000000000000000000000000000000000", "000000000000011111100000000000000000000000000000000000000000", "000000000000011111000000000000000000000000000000000000000000"];
+  const CITY = { Paris: [48.86, 2.35], Marseille: [43.3, 5.37], 'East Lansing': [42.74, -84.48], Mendoza: [-32.89, -68.84], Geneva: [46.2, 6.14], London: [51.51, -0.13] };
+  // The journey, city by city; STOP_AT gives the waypoint where each stop sits.
+  const ROUTE = ['Paris', 'Marseille', 'East Lansing', 'Marseille', 'Paris', 'Mendoza', 'Paris', 'Geneva', 'Paris', 'London', 'Paris'];
+  const STOP_AT = [0, 1, 2, 5, 7, 8, 9, 10];
+  const STOP_CITY = ['Paris', 'Marseille', 'East Lansing', 'Mendoza', 'Geneva', 'Paris', 'London', 'Paris'];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   function drawChar(g, frame, blink) {
     g.replaceChildren();
@@ -136,7 +147,52 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
     const cards = [...root.querySelectorAll('.ps-stop')];
     let variant = root.dataset.variant, S = null, idle, blink = false;
 
+    function buildMap() {
+      const W = sky.clientWidth, H = sky.clientHeight; if (!W || !H) return;
+      const u = W < 500 ? 2 : 3, cols = Math.floor(W / u), rows = Math.floor(H / u), LC = LAND[0].length, LR = LAND.length, squash = 0.62;
+      const OR = Math.round(LR * squash); // output rows: latitude squashed so the map fits a wide band
+      const k = Math.max(2, Math.floor(Math.min(cols / LC, rows / OR))), kx = k, ky = k * OR / LR;
+      const ox = Math.floor((cols - LC * k) / 2), oy = Math.floor((rows - OR * k) / 2);
+      svg.setAttribute('viewBox', `0 0 ${cols * u} ${rows * u}`); svg.replaceChildren();
+      const cell = (x, y, cls, p = svg) => el('rect', { x: x * u, y: y * u, width: u, height: u, class: cls }, p);
+      const proj = ([lat, lon]) => [Math.round(ox + (lon + 100) / 2 * kx), Math.round(oy + (62 - lat) / 2 * ky)];
+      const bgG = el('g', {}, svg), pathG = el('g', {}, svg);
+      for (let r = 0; r < OR; r++) { const row = LAND[Math.min(LR - 1, Math.floor((r + 0.5) * LR / OR))]; [...row].forEach((c, rx) => { if (c === '1') cell(ox + rx * k + (k >> 1), oy + r * k + (k >> 1), 'bg', bgG); }); }
+      const pts = ROUTE.map((c) => proj(CITY[c]));
+      let walk = [pts[0]]; const wpIdx = [0];
+      for (let i = 1; i < pts.length; i++) {
+        const [ax, ay] = pts[i - 1], [bx, by] = pts[i], d = Math.hypot(bx - ax, by - ay), lift = Math.min(0.3 * d, 40);
+        const cx = (ax + bx) / 2, cy = (ay + by) / 2 - lift;
+        const n = Math.max(8, Math.ceil(d * 1.5));
+        for (let k = 1; k <= n; k++) {
+          const t = k / n, x = Math.round((1 - t) ** 2 * ax + 2 * (1 - t) * t * cx + t * t * bx), y = Math.round((1 - t) ** 2 * ay + 2 * (1 - t) * t * cy + t * t * by);
+          const last = walk[walk.length - 1];
+          if (x === last[0] && y === last[1]) continue;
+          if (Math.abs(x - last[0]) > 1 || Math.abs(y - last[1]) > 1) walk = walk.concat(line(last, [x, y])); else walk.push([x, y]);
+        }
+        wpIdx.push(walk.length - 1);
+      }
+      const stopIdx = STOP_AT.map((w) => wpIdx[w]);
+      const trail = walk.map(([x, y]) => cell(x, y, 'pc', pathG));
+      const cityG = el('g', {}, svg);
+      Object.keys(CITY).forEach((name) => { const [x, y] = proj(CITY[name]); [[0,0],[1,0],[-1,0],[0,1],[0,-1]].forEach(([a, b]) => cell(x + a, y + b, 'city', cityG)); });
+      const label = el('text', { class: 'citylabel', 'text-anchor': 'start' }, svg);
+      const stars = stops.map((_, i) => {
+        const [x, y] = proj(CITY[STOP_CITY[i]]);
+        const g = el('g', { class: 'st', tabindex: '0', role: 'button', 'aria-label': `${stops[i].when}, ${stops[i].org}` }, svg);
+        el('rect', { x: (x - 4) * u, y: (y - 4) * u, width: 9 * u, height: 9 * u, class: 'hit' }, g);
+        [[2,2],[-2,-2],[2,-2],[-2,2],[3,0],[-3,0],[0,3],[0,-3]].forEach(([a, b]) => cell(x + a, y + b, 'spark', g));
+        const go = () => goTo(i);
+        g.addEventListener('click', go);
+        g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+        return g;
+      });
+      const walker = el('g', {}, svg), sprite = el('g', {}, walker);
+      S = { u, walk, stopIdx, trail, stars, walker, sprite, lastIdx: -1, frame: 0, label, proj, map: true };
+      drawChar(sprite, 0, false); update();
+    }
     function build() {
+      if (variant === 'map') return buildMap();
       const W = sky.clientWidth, H = sky.clientHeight; if (!W || !H) return;
       const u = W < 500 ? 2 : 3, cols = Math.floor(W / u), rows = Math.floor(H / u);
       svg.setAttribute('viewBox', `0 0 ${cols * u} ${rows * u}`); svg.replaceChildren();
@@ -190,9 +246,14 @@ const aside = Astro.slots.has('aside') ? await Astro.slots.render('aside') : '';
       const active = Math.round(t);
       S.stars.forEach((s, k) => { s.classList.toggle('past', k <= t + 0.02); s.classList.toggle('active', k === active); });
       cards.forEach((c, k) => c.classList.toggle('active', k === active));
+      if (S.map) {
+        const city = STOP_CITY[active], [cx, cy] = S.proj(CITY[city]), u2 = S.u;
+        S.label.textContent = city; S.label.setAttribute('x', (cx + 5) * u2); S.label.setAttribute('y', (cy + 5) * u2 + 4);
+        const box = svg.viewBox.baseVal; if (box && (cx + 5) * u2 + 90 > box.width) { S.label.setAttribute('text-anchor', 'end'); S.label.setAttribute('x', (cx - 5) * u2); } else S.label.setAttribute('text-anchor', 'start');
+      }
     }
     root.querySelectorAll('.ps-switch button').forEach((b) => b.addEventListener('click', () => {
-      variant = b.dataset.v; root.querySelectorAll('.ps-switch button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); build();
+      variant = b.dataset.v; root.dataset.variant = variant; root.querySelectorAll('.ps-switch button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); build();
     }));
     let ticking = false;
     addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; update(); }); } }, { passive: true });
