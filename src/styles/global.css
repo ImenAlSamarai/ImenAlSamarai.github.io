@@ -384,3 +384,17 @@ img { max-width: 100%; display: block; }
   .feed-row { grid-template-columns: 1fr; gap: 4px; }
   .tab { padding: 0 12px; font-size: 19px; }
 }
+
+/* ---------- Landing v2: role under name, one-column Latest ---------- */
+.name-block { display: flex; flex-direction: column; gap: 12px; }
+.landing .role { margin: 0; font-family: var(--sans); font-size: 17px; font-weight: 500; line-height: 1.4; color: var(--fg-2); }
+.pontus-cta { margin: 0; font-size: 16px; }
+.latest { display: flex; flex-direction: column; margin-top: 12px; max-width: 760px; }
+.lt { display: flex; flex-direction: column; gap: 8px; padding: 22px 0; border-top: 1px solid var(--line); }
+.lt-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+.lt-t { font-family: var(--serif); font-size: clamp(20px, 2.2vw, 25px); line-height: 1.25; }
+.lt-s { font-size: 15.5px; line-height: 1.55; color: var(--fg-2); max-width: 64ch; }
+.lt:hover .lt-t { color: var(--accent); }
+.lt-soon { display: flex; flex-wrap: wrap; gap: 6px 20px; align-items: baseline; margin: 0; padding: 18px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 15px; }
+.lt-soon a { color: var(--accent); }
+.lt-more { margin: 16px 0 0; }

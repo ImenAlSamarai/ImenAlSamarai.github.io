@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Al Samarai;Imen;;;
+FN:Imen Al Samarai
+EMAIL;TYPE=INTERNET:imen.alsamarai@gmail.com
+URL:https://imenalsamarai.github.io/
+X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/imenalsamarai
+item1.URL:https://www.linkedin.com/in/imenalsamarai
+item1.X-ABLabel:LinkedIn
+ADR;TYPE=WORK:;;;Paris;;;
+NOTE:Physics · Markets · AI · Arts
+END:VCARD

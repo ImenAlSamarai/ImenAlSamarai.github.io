@@ -1,11 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import Ridgelines from '../components/Ridgelines.astro';
-import { site, getPublications, formatDate } from '../lib/site.js';
+import { site, load, getPublications, formatDate } from '../lib/site.js';
 import { getCollection } from 'astro:content';
 
-const preview = process.env.INCLUDE_DRAFTS === '1';
-const choice = 'A';
 const h = site.home;
 
 // Latest: published items only (drafts never appear here, even in the preview).
@@ -14,12 +12,15 @@ const pubs = getPublications().filter((p) => p.year).map((p) => ({
   field: p.field === 'Finance' ? 'Markets' : p.field, type: 'Publication', sort: Number(p.year), date: String(p.year), title: p.title, venue: p.venue, href: p.link || '/publications/',
 }));
 const posts = (await getCollection('writing', (e) => !e.data.draft)).filter((p) => p.data.tag !== 'Other').map((p) => ({
-  field: p.data.tag, type: p.data.type, sort: p.data.date.getFullYear() + p.data.date.getMonth() * 0.083, date: formatDate(p.data.date), title: p.data.title, venue: p.data.summary || '', href: `/writing/${p.id}/`,
+  field: p.data.tag, type: p.data.type, sort: p.data.date.getFullYear() + p.data.date.getMonth() * 0.083, date: formatDate(p.data.date), title: p.data.title, venue: '', summary: p.data.summary || '', href: `/writing/${p.id}/`,
 }));
 const art = (await getCollection('studio', (e) => !e.data.draft)).map((p) => ({
   field: 'Arts', type: p.data.kind, sort: Number(p.data.year) || 0, date: String(p.data.year || ''), title: p.data.title, venue: p.data.medium || '', href: '/studio/',
 }));
 const all = [...pubs, ...posts, ...art].sort((a, b) => b.sort - a.sort);
+const SUM = load('summaries.yml') || {};
+const latest = all.slice(0, 5).map((i) => ({ ...i, summary: i.summary || SUM[i.href] || '' }));
+const missing = FIELDS.filter((f) => !all.some((i) => i.field === f));
 const cols = FIELDS.map((f) => ({ field: f, items: all.filter((i) => i.field === f).slice(0, 2) }));
 const EMPTY = {
   Physics: { text: 'Publications', href: '/publications/' },
@@ -36,9 +37,12 @@ const MORE = { Physics: ['/publications/', 'All publications'], Markets: ['/writ
         <img src="/images/portrait.jpg" alt={`Portrait of ${site.name}`} width="112" height="112" />
         <p class="label fields">{site.fields.split(' · ').map((f, i) => <span>{i > 0 && '· '}{f}{' '}</span>)}</p>
       </div>
-      <h1>Imen<br />Al Samarai</h1>
-      <p class="personal">{h.personal_line}</p>
-      <p class="welcome">{h.role} <a class="link-accent" href={h.pontus_link}>{h.pontus_cta} ↗︎</a></p>
+      <div class="name-block">
+        <h1>Imen<br />Al Samarai</h1>
+        <p class="role">{h.role}</p>
+      </div>
+      <p class="welcome">{h.welcome}</p>
+      <p class="pontus-cta"><a class="link-accent" href={h.pontus_link}>{h.pontus_cta} ↗︎</a></p>
       <div class="contact-actions">
         <a class="btn btn-solid save" href="/imen-al-samarai.vcf" download>Save my contact</a>
         {site.links.linkedin && <a class="btn" href={site.links.linkedin}>LinkedIn</a>}
@@ -48,101 +52,23 @@ const MORE = { Physics: ['/publications/', 'All publications'], Markets: ['/writ
     <div class="landing-art"><Ridgelines /></div>
   </section>
 
-  {preview && (
-    <div class="opt-switch" role="group" aria-label="Preview: layout of Latest">
-      <span class="label">Preview · Latest</span>
-      <button type="button" data-opt="A" aria-pressed="true">A · Four columns</button>
-      <button type="button" data-opt="B" aria-pressed="false">B · One list with filters</button>
-      <button type="button" data-opt="C" aria-pressed="false">C · Tabs</button>
-    </div>
-  )}
-
-  {(preview || choice === 'A') && (
-    <section class="mid" data-opt-view="A" aria-labelledby="h-latest-a">
-      <h2 id="h-latest-a" class="label">Latest</h2>
-      <div class="cols4">
-        {cols.map((c) => (
-          <div class="col">
-            <span class="col-h">{c.field}</span>
-            {c.items.length ? c.items.map((i) => (
-              <a class="li" href={i.href}>
-                <span class="li-meta"><span class="tag">{i.type}</span><span class="m">{i.date}</span></span>
-                <span class="li-t">{i.title}</span>
-              </a>
-            )) : <p class="li-empty">{EMPTY[c.field].text}</p>}
-            <a class="col-more" href={c.items.length ? MORE[c.field][0] : EMPTY[c.field].href}>{c.items.length ? `${MORE[c.field][1]} →` : EMPTY[c.field].label}</a>
-          </div>
-        ))}
-      </div>
-    </section>
-  )}
-
-  {(preview || choice === 'B') && (
-    <section class="mid" data-opt-view="B" hidden={preview ? true : undefined} aria-labelledby="h-latest-b">
-      <div class="mid-head">
-        <h2 id="h-latest-b" class="label">Latest</h2>
-        <div class="chips" role="group" aria-label="Filter by field" data-feed-filter>
-          {['All', ...FIELDS].map((f, i) => <button class="chip" type="button" data-f={f} aria-pressed={i === 0 ? 'true' : 'false'}>{f}</button>)}
-        </div>
-      </div>
-      <div class="feed">
-        {all.slice(0, 8).map((i) => (
-          <a class="feed-row" href={i.href} data-field={i.field}>
-            <span class="m">{i.date}</span>
-            <span class="tag">{i.field} · {i.type}</span>
-            <span class="li-t">{i.title}</span>
-          </a>
-        ))}
-        {FIELDS.filter((f) => !all.slice(0, 8).some((i) => i.field === f)).map((f) => (
-          <a class="feed-row feed-empty" href={EMPTY[f].href} data-field={f} hidden>
-            <span class="m"></span><span class="tag">{f}</span><span class="li-t">{EMPTY[f].text}</span>
-          </a>
-        ))}
-      </div>
-    </section>
-  )}
-
-  {(preview || choice === 'C') && (
-    <section class="mid" data-opt-view="C" hidden={preview ? true : undefined} aria-labelledby="h-latest-c">
-      <h2 id="h-latest-c" class="label">Latest</h2>
-      <div class="tabs" role="tablist" aria-label="Fields">
-        {cols.map((c, k) => <button type="button" role="tab" class="tab" data-tab={c.field} aria-selected={k === 0 ? 'true' : 'false'}>{c.field}</button>)}
-      </div>
-      {cols.map((c, k) => (
-        <div class="tabpanel" role="tabpanel" data-panel={c.field} hidden={k === 0 ? undefined : true}>
-          {c.items.length ? c.items.map((i) => (
-            <a class="big-item" href={i.href}>
-              <span class="li-meta"><span class="tag">{i.type}</span><span class="m">{i.date}{i.venue && ` · ${i.venue}`}</span></span>
-              <span class="big-t">{i.title}</span>
-            </a>
-          )) : <p class="li-empty big">{EMPTY[c.field].text}</p>}
-          <a class="col-more" href={c.items.length ? MORE[c.field][0] : EMPTY[c.field].href}>{c.items.length ? `${MORE[c.field][1]} →` : EMPTY[c.field].label}</a>
-        </div>
+  <section class="mid" aria-labelledby="h-latest">
+    <h2 id="h-latest" class="label">Latest</h2>
+    <div class="latest">
+      {latest.map((i) => (
+        <a class="lt" href={i.href}>
+          <span class="lt-meta"><span class="tag">{i.field} · {i.type}</span><span class="m">{i.date}{i.venue && ` · ${i.venue}`}</span></span>
+          <span class="lt-t">{i.title}</span>
+          {i.summary && <span class="lt-s">{i.summary}</span>}
+        </a>
       ))}
-    </section>
-  )}
-
-  <script is:inline>
-    document.querySelectorAll('[data-opt]').forEach(function (b) {
-      b.addEventListener('click', function () {
-        document.querySelectorAll('[data-opt]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-        document.querySelectorAll('[data-opt-view]').forEach(function (v) { v.hidden = v.dataset.optView !== b.dataset.opt; });
-      });
-    });
-    document.querySelectorAll('[data-feed-filter] .chip').forEach(function (c, _, all) {
-      c.addEventListener('click', function () {
-        all.forEach(function (x) { x.setAttribute('aria-pressed', String(x === c)); });
-        document.querySelectorAll('.feed-row').forEach(function (r) {
-          var f = c.dataset.f, empty = r.classList.contains('feed-empty');
-          r.hidden = f === 'All' ? empty : r.dataset.field !== f;
-        });
-      });
-    });
-    document.querySelectorAll('.tab').forEach(function (t, _, tabs) {
-      t.addEventListener('click', function () {
-        tabs.forEach(function (x) { x.setAttribute('aria-selected', String(x === t)); });
-        document.querySelectorAll('.tabpanel').forEach(function (p) { p.hidden = p.dataset.panel !== t.dataset.tab; });
-      });
-    });
-  </script>
+      {missing.length > 0 && (
+        <p class="lt-soon">
+          <span class="m">Coming soon</span>
+          {missing.map((f) => <a href={EMPTY[f].href}>{f === 'Arts' ? 'Arts: music and visual work' : f === 'Markets' ? 'Markets: notes and essays' : f}</a>)}
+        </p>
+      )}
+    </div>
+    <p class="lt-more"><a class="link-accent" href="/publications/">All publications →</a></p>
+  </section>
 </Base>
