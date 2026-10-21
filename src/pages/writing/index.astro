@@ -1,8 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Subscribe from '../../components/Subscribe.astro';
-import { site, getPosts, formatDate, readingTime } from '../../lib/site.js';
-const posts = await getPosts();
+import { site, load, getPosts, formatDate, readingTime } from '../../lib/site.js';
+const own = (await getPosts()).map((p) => ({ date: p.data.date, href: `/writing/${p.id}/`, title: p.data.title, summary: p.data.summary, tag: p.data.tag, meta: `${readingTime(p.body)} min read`, draft: p.data.draft, ext: false }));
+const subs = (load('substack.yml') || []).map((p) => ({ date: new Date(p.date), href: p.url, title: p.title, summary: p.summary, tag: p.field, meta: `${p.source || 'Substack'} ↗︎`, draft: false, ext: true }));
+const posts = [...own, ...subs].sort((a, b) => b.date - a.date);
 const tags = ['All', 'AI', 'Physics', 'Markets', 'Other'];
 ---
 <Base title="Writing" current="writing" description="Essays and notes by Imen Al Samarai on science, markets and machine learning.">
@@ -23,11 +25,11 @@ const tags = ['All', 'AI', 'Physics', 'Markets', 'Other'];
         {tags.map((t, i) => <button class="chip" type="button" data-tag={t} aria-pressed={i === 0 ? 'true' : 'false'}>{t}</button>)}
       </div>
       {posts.map((p) => (
-        <a class="post-card" href={`/writing/${p.id}/`} data-post data-tag={p.data.tag}>
-          <span class="mono" style="display:flex;gap:16px"><span>{formatDate(p.data.date)}</span><span>{readingTime(p.body)} min read</span>{p.data.draft && <span>Draft</span>}</span>
-          <span class="t">{p.data.title}</span>
-          {p.data.summary && <span class="s">{p.data.summary}</span>}
-          <span class="tag">{p.data.tag}</span>
+        <a class="post-card" href={p.href} data-post data-tag={p.tag} {...(p.ext ? { rel: 'noopener' } : {})}>
+          <span class="mono" style="display:flex;gap:16px"><span>{formatDate(p.date)}</span><span>{p.meta}</span>{p.draft && <span>Draft</span>}</span>
+          <span class="t">{p.title}</span>
+          {p.summary && <span class="s">{p.summary}</span>}
+          <span class="tag">{p.tag}</span>
         </a>
       ))}
       <p class="empty" data-empty hidden>No articles in this topic yet.</p>

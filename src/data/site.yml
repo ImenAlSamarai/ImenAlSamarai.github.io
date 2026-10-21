@@ -23,7 +23,7 @@ goatcounter: ""              # e.g. https://YOURNAME.goatcounter.com/count
 
 home:
   tagline: Physicist, quant and occasional artist.
-  welcome: "Welcome to my page: research, writing and projects across physics, finance and AI — and a little art."
+  welcome: "Welcome to my personal page: research, writing and projects across physics, finance and AI — and a little art."
   about: >-
     I hold doctorates in particle physics and astrophysics and spent a decade searching for the cosmic
     sources of neutrinos within international collaborations. I then moved to quantitative finance,
@@ -33,14 +33,10 @@ home:
   studio_line: I also draw and compose music —
   writing_line: Thoughts on science, markets — and anything else that catches my curiosity.
   studio_title: Space and sound
-  studio_card: Drawings, paintings and music — where curiosity takes another form.
-  background:
-    - title: Astroparticle physics
-      text: ANTARES · Pierre Auger · Cherenkov Telescope Array · IceCube. 200+ publications, including Science.
-    - title: Quantitative finance
-      text: Swiss Life · TD Securities. Data science and ML engineering; quantitative research and team leadership.
-    - title: Artificial intelligence
-      text: Research on how language models reason and plan under uncertainty.
+  # Landing page, under the name.
+  role: Scientist, founder and CEO of Pontus Analytics
+  pontus_cta: For collaborations and client projects, visit Pontus Analytics
+  pontus_link: https://pontus-analytics.com
 
 about:
   intro: |-

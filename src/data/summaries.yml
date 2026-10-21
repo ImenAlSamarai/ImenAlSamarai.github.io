@@ -1,0 +1,17 @@
+# One- or two-line plain-language summaries shown under items in "Latest" on the home page.
+# Key: the item's link (DOI or URL). Written from each paper's abstract.
+"https://github.com/ImenAlSamarai/decision-level-evaluation": >-
+  A way to check each decision a language-model agent makes under uncertainty against an exact
+  stochastic-control reference, and to measure what its mistakes cost in expected value.
+"https://doi.org/10.22323/1.358.0694": >-
+  The SST-1M telescope, a cost-effective design proposed for the southern site of the Cherenkov
+  Telescope Array: main features, upgrades, performance checks and the 2018 observing campaign.
+"https://doi.org/10.22323/1.358.0617": >-
+  How the 1,296-pixel silicon-photomultiplier camera is calibrated, from the lab to on-site monitoring,
+  and how it performs as night-sky light rises, which makes observing under moonlight possible.
+"https://doi.org/10.1103/physrevd.99.032004": >-
+  Five years of IceCube data show how neutrinos share their energy when they interact, constraining
+  the astrophysical neutrino spectrum, its flavour mix and the atmospheric neutrino-to-antineutrino ratio.
+"https://doi.org/10.1103/physrevlett.122.051102": >-
+  IceCube looks for neutrino pairs arriving within 100 seconds from the same direction. None stand out,
+  which limits how much of the astrophysical neutrino flux short events such as gamma-ray bursts can produce.

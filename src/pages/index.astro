@@ -1,17 +1,50 @@
 ---
 import Base from '../layouts/Base.astro';
 import Ridgelines from '../components/Ridgelines.astro';
-import { site, load, getPosts, getDrawings, formatDate } from '../lib/site.js';
+import { site, load, getPublications, formatDate } from '../lib/site.js';
+import { getCollection } from 'astro:content';
 
-const selected = load('selected.yml') || [];
-const work = load('work.yml');
-const posts = await getPosts();
-const venture = work.ventures?.[0];
-const drawings = await getDrawings();
-const items = [
-  ...selected.slice(0, 2).map((p) => ({ tag: p.field === 'AI' ? 'AI research' : p.field, title: p.title, meta: `${p.venue} · ${p.year}`, href: p.link })),
-  ...(venture ? [{ tag: 'Venture', title: venture.name, meta: venture.description, href: venture.link || '/about/' }] : []),
-];
+const h = site.home;
+const preview = process.env.INCLUDE_DRAFTS === '1';
+
+// Latest: published items only (drafts never appear here, even in the preview).
+const FIELDS = ['Physics', 'Markets', 'AI', 'Arts'];
+const pubs = getPublications().filter((p) => p.year).map((p) => ({
+  field: p.field === 'Finance' ? 'Markets' : p.field, type: 'Publication', sort: Number(p.year), date: String(p.year), title: p.title, venue: p.venue, href: p.link || '/publications/',
+}));
+const posts = (await getCollection('writing', (e) => !e.data.draft)).filter((p) => p.data.tag !== 'Other').map((p) => ({
+  field: p.data.tag, type: p.data.type, sort: p.data.date.getFullYear() + p.data.date.getMonth() * 0.083, date: formatDate(p.data.date), title: p.data.title, venue: '', summary: p.data.summary || '', href: `/writing/${p.id}/`,
+}));
+const art = (await getCollection('studio', (e) => !e.data.draft)).map((p) => ({
+  field: 'Arts', type: p.data.kind, sort: Number(p.data.year) || 0, date: String(p.data.year || ''), title: p.data.title, venue: p.data.medium || '', href: '/studio/',
+}));
+const subs = (load('substack.yml') || []).map((p) => { const d = new Date(p.date); return {
+  field: p.field, type: p.type || 'Note', sort: d.getFullYear() + d.getMonth() * 0.083 + d.getDate() * 0.0027, date: formatDate(d), title: p.title, venue: p.source || 'Substack', summary: p.summary || '', href: p.url,
+}; });
+// Preview only: sample Arts items so the final look can be judged. Never built into the live site.
+const samples = preview ? [
+  { field: 'Arts', type: 'Music', sort: 2026.8, date: '2026', title: 'Placeholder: title of a music piece', venue: 'Piano · 4 min', summary: 'Placeholder: one line about the piece, how it was made or what it is about.', href: '/studio/' },
+  { field: 'Arts', type: 'Visual', sort: 2026.79, date: '2026', title: 'Placeholder: title of a drawing or painting', venue: 'Ink on paper', summary: 'Placeholder: one line about the work, the medium or what inspired it.', href: '/studio/' },
+] : [];
+const all = [...pubs, ...posts, ...subs, ...art, ...samples].sort((a, b) => b.sort - a.sort);
+const SUM = load('summaries.yml') || {};
+// One item per field and type (e.g. the newest Physics publication and the newest Physics note), newest first.
+const seen = new Set();
+const picked = all.filter((i) => { const k = i.field + '|' + i.type; if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, 6);
+const TYPES = ['Publication', 'Note', 'Essay', 'Music', 'Visual'];
+// Filter pool: the "All" view plus the 4 newest items of each type.
+const pool = [...new Set([...picked, ...TYPES.flatMap((ty) => all.filter((i) => i.type === ty).slice(0, 4))])].sort((a, b) => b.sort - a.sort);
+const latest = pool.map((i) => ({ ...i, inAll: picked.includes(i), summary: i.summary || SUM[i.href] || '' }));
+const FILTERS = ['All', ...TYPES.filter((ty) => all.some((i) => i.type === ty))];
+const missing = FIELDS.filter((f) => !all.some((i) => i.field === f));
+const cols = FIELDS.map((f) => ({ field: f, items: all.filter((i) => i.field === f).slice(0, 2) }));
+const EMPTY = {
+  Physics: { text: 'Publications', href: '/publications/' },
+  Markets: { text: 'Notes and essays on markets are coming soon.', href: '/writing/', label: 'Writing →' },
+  AI: { text: 'More AI work is coming soon.', href: '/projects/', label: 'Projects →' },
+  Arts: { text: 'Music and visual work are coming soon.', href: '/studio/', label: 'Enter the studio ↗︎' },
+};
+const MORE = { Physics: ['/publications/', 'All publications'], Markets: ['/writing/', 'Writing'], AI: ['/publications/', 'All publications'], Arts: ['/studio/', 'Studio'] };
 ---
 <Base>
   <section class="landing">
@@ -20,8 +53,12 @@ const items = [
         <img src="/images/portrait.jpg" alt={`Portrait of ${site.name}`} width="112" height="112" />
         <p class="label fields">{site.fields.split(' · ').map((f, i) => <span>{i > 0 && '· '}{f}{' '}</span>)}</p>
       </div>
-      <h1>Imen<br />Al Samarai</h1>
-      <p class="welcome">{site.home.welcome}</p>
+      <div class="name-block">
+        <h1>Imen<br />Al Samarai</h1>
+        <p class="role">{h.role}</p>
+      </div>
+      <p class="welcome">{h.welcome}</p>
+      <p class="pontus-cta"><a class="link-accent" href={h.pontus_link}>{h.pontus_cta} ↗︎</a></p>
       <div class="contact-actions">
         <a class="btn btn-solid save" href="/imen-al-samarai.vcf" download>Save my contact</a>
         {site.links.linkedin && <a class="btn" href={site.links.linkedin}>LinkedIn</a>}
@@ -31,41 +68,39 @@ const items = [
     <div class="landing-art"><Ridgelines /></div>
   </section>
 
-  <section class="selected-strip" aria-labelledby="h-sel">
-    <h2 id="h-sel" class="label">Selected</h2>
-    <div class="strip">
-      {items.map((it) => (
-        <a class="mini" href={it.href}>
-          <span class="tag">{it.tag}</span>
-          <span class="t">{it.title}</span>
-          <span class="m">{it.meta}</span>
+  <section class="mid" aria-labelledby="h-latest">
+    <div class="mid-head">
+      <h2 id="h-latest" class="label">Latest</h2>
+      <div class="chips" role="group" aria-label="Filter by kind" data-lt-filter>
+        {FILTERS.map((f, k) => <button class="chip" type="button" data-f={f} aria-pressed={k === 0 ? 'true' : 'false'}>{f === 'Visual' ? 'Visual work' : f}</button>)}
+      </div>
+    </div>
+    <div class="latest">
+      {latest.map((i) => (
+        <a class="lt" href={i.href} data-type={i.type} data-all={i.inAll ? '1' : '0'} hidden={i.inAll ? undefined : true}>
+          <span class="lt-meta"><span class={`kind kind-${i.type.toLowerCase()}`}>{i.type === 'Visual' ? 'Visual work' : i.type}</span><span class="tag">{i.field}</span><span class="m">{i.date}{i.venue && ` · ${i.venue}`}</span></span>
+          <span class="lt-t">{i.title}</span>
+          {i.summary && <span class="lt-s">{i.summary}</span>}
         </a>
       ))}
+      {missing.length > 0 && (
+        <p class="lt-soon" data-all="1">
+          <span class="m">Coming soon</span>
+          {missing.map((f) => <a href={EMPTY[f].href}>{f === 'Arts' ? 'Arts: music and visual work' : f === 'Markets' ? 'Markets: notes and essays' : f}</a>)}
+        </p>
+      )}
     </div>
-    <p class="strip-links">
-      <a class="link-accent" href="/publications/">All publications →</a>
-      <a class="link-accent" href="/projects/">All projects →</a>
-      <a class="link-accent" href="/about/">More about me →</a>
-    </p>
+    <p class="lt-more"><a class="link-accent" href="/publications/">All publications →</a><a class="link-accent" href="/writing/">All writing →</a></p>
   </section>
-
-  <section class="beyond" aria-labelledby="h-beyond">
-    <h2 id="h-beyond" class="label">Beyond research</h2>
-    <div class="beyond-grid">
-      <a class="beyond-card" href="/writing/">
-        <span class="tag">Writing</span>
-        <span class="t">Essays and notes</span>
-        <span class="d">{site.home.writing_line}</span>
-        {posts.length > 0
-          ? <><span class="m">Latest: {posts[0].data.title}</span><span class="link-accent">Read →</span></>
-          : <span class="soon">Coming soon</span>}
-      </a>
-      <a class="beyond-card studio-card" href="/studio/">
-        <span class="tag">Studio</span>
-        <span class="t">{site.home.studio_title}</span>
-        {drawings.length === 0 && <span class="soon">Coming soon</span>}
-        <span class="go">Enter the studio ↗︎</span>
-      </a>
-    </div>
-  </section>
+  <script is:inline>
+    document.querySelectorAll('[data-lt-filter] .chip').forEach(function (c, _, chips) {
+      c.addEventListener('click', function () {
+        chips.forEach(function (x) { x.setAttribute('aria-pressed', String(x === c)); });
+        var f = c.dataset.f;
+        document.querySelectorAll('.latest [data-all]').forEach(function (r) {
+          r.hidden = f === 'All' ? r.dataset.all !== '1' : r.dataset.type !== f;
+        });
+      });
+    });
+  </script>
 </Base>
