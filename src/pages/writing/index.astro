@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Subscribe from '../../components/Subscribe.astro';
 import { site, load, getPosts, formatDate, readingTime } from '../../lib/site.js';
 const own = (await getPosts()).map((p) => ({ date: p.data.date, href: `/writing/${p.id}/`, title: p.data.title, summary: p.data.summary, tag: p.data.tag, meta: `${readingTime(p.body)} min read`, draft: p.data.draft, ext: false }));
-const subs = (load('substack.yml') || []).map((p) => ({ date: new Date(p.date), href: p.url, title: p.title, summary: p.summary, tag: p.field, meta: 'Substack ↗︎', draft: false, ext: true }));
+const subs = (load('substack.yml') || []).map((p) => ({ date: new Date(p.date), href: p.url, title: p.title, summary: p.summary, tag: p.field, meta: `${p.source || 'Substack'} ↗︎`, draft: false, ext: true }));
 const posts = [...own, ...subs].sort((a, b) => b.date - a.date);
 const tags = ['All', 'AI', 'Physics', 'Markets', 'Other'];
 ---
