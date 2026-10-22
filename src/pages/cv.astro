@@ -2,60 +2,279 @@
 import Base from '../layouts/Base.astro';
 import { site, load } from '../lib/site.js';
 const cv = load('cv.yml');
+const preview = process.env.INCLUDE_DRAFTS === '1';
+const host = (u) => (u || '').replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+const email = `${site.email_user}@${site.email_domain}`;
+// Bullets may contain [text](url) links.
+const parts = (s) => String(s).split(/(\[[^\]]+\]\([^)]+\))/).map((x) => { const m = x.match(/^\[([^\]]+)\]\(([^)]+)\)$/); return m ? { t: m[1], href: m[2] } : { t: x }; });
 ---
-<Base title="CV" current="cv" description="Curriculum vitae of Imen Al Samarai.">
-  <section class="page-head" style="flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:28px">
-    <div style="display:flex;flex-direction:column;gap:18px">
-      <p class="label no-print">CV</p>
-      <h1 class="page-title"><span class="no-print">Curriculum vitae</span><span class="print-only">{site.name}</span></h1>
-      <span class="print-only" style="font-size:10pt">imenalsamarai.github.io · {site.email_user}@{site.email_domain} · {site.links.linkedin?.replace(/^https?:\/\/(www\.)?/, '')} · {site.location}</span>
-      <span class="mono">Last updated {cv.updated}</span>
-    </div>
-    <a class="btn btn-solid no-print" href="/cv.pdf" download>Download PDF ↓</a>
-  </section>
+<Base title="CV" current="cv" description="Curriculum vitae of Imen Al Samarai — physics, quantitative finance and AI.">
+  <article class="cv">
+    <header class="cv-phead print-only-block">
+      <h1>Imen Al Samarai, PhD</h1>
+      <p>{cv.title}</p>
+      <p class="cv-pcontact">{email} | <a href={site.links.linkedin}>LinkedIn</a> | <a href={site.links.github}>GitHub</a> | <a href="https://www.researchgate.net/profile/Imen-Al-Samarai">ResearchGate</a> | <a href="https://imenalsamarai.github.io">imenalsamarai.github.io</a> | London | Paris</p>
+    </header>
 
-  <section class="split rule" aria-labelledby="h-exp">
-    <h2 id="h-exp" class="label side">Experience</h2>
-    <div class="main">
-      {cv.experience.map((j) => (
-        <article class="job">
-          <div class="top"><h3>{j.role}</h3><span class="mono">{j.dates}</span></div>
-          <span style="font-size:17px;font-weight:600">{j.org} <span style="font-weight:400;color:var(--muted-2)">· {j.place}</span></span>
-          <ul>{(j.points || []).map((pt) => <li>{pt}</li>)}</ul>
-        </article>
-      ))}
-    </div>
-  </section>
+    <header class="cv-head">
+      <div class="cv-id">
+        <p class="label no-print">Curriculum vitae</p>
+        <h1>Imen Al Samarai, PhD</h1>
+        <p class="cv-title">{cv.title}</p>
+        <p class="cv-contact">
+          <span>{cv.location}</span>
+          <a class="no-print" href="#" data-email data-u={site.email_user} data-d={site.email_domain}>Email</a><span class="print-only">{email}</span>
+          {site.links.linkedin && <a href={site.links.linkedin}>LinkedIn</a>}
+          {site.links.github && <a href={site.links.github}>GitHub</a>}
+          {site.links.scholar && <a href={site.links.scholar}>Google Scholar</a>}
+          <a href="https://imenalsamarai.github.io">imenalsamarai.github.io</a>
+        </p>
+      </div>
+      <div class="cv-actions no-print">
+        <a class="btn btn-solid" href="/cv.pdf" download="Imen_Al_Samarai_CV.pdf">Download PDF ↓</a>
+        <span class="mono">Updated {cv.updated}</span>
+      </div>
+    </header>
 
-  <section class="split rule" aria-labelledby="h-edu">
-    <h2 id="h-edu" class="label side">Education</h2>
-    <div class="main">
-      {cv.education.map((e) => (
-        <div class="edu"><span><span class="d">{e.degree}</span><span class="muted">{e.school}{e.detail && ` · ${e.detail}`}</span></span><span class="mono">{e.dates}</span></div>
-      ))}
-    </div>
-  </section>
+    {cv.stats && <dl class="cv-stats">
+      {cv.stats.map((s) => <div><dt>{s.label}</dt><dd>{s.value}</dd></div>)}
+    </dl>}
 
-  <section class="split rule" aria-labelledby="h-pub">
-    <h2 id="h-pub" class="label side">Publications</h2>
-    <div class="main" style="display:flex;flex-direction:column;gap:12px">
-      <p style="margin:0;font-size:17px;color:var(--fg-2)">{cv.publications_line}</p>
-      <a class="link-accent no-print" href="/publications/">Complete list →</a>
-    </div>
-  </section>
+    <section class="cvs" aria-labelledby="cv-profile">
+      <h2 id="cv-profile" class="label">Profile</h2>
+      <div class="cv-list">
+        <p class="cv-lead">{cv.profile}</p>
+        {cv.highlights && <ul class="cv-bul cv-hl">{cv.highlights.map((h) => <li>{h}</li>)}</ul>}
+      </div>
+    </section>
 
-  <section class="split rule" aria-labelledby="h-sk">
-    <h2 id="h-sk" class="label side">Skills</h2>
-    <div class="main skills">
-      {cv.skills.map((s) => <div><h3>{s.group}</h3><p>{s.items}</p></div>)}
-    </div>
-  </section>
+    <section class="cvs" aria-labelledby="cv-exp">
+      <h2 id="cv-exp" class="label">Experience</h2>
+      <div class="cv-list">
+        {cv.experience.map((j) => (
+          <div class={`cv-job${(j.points || []).length <= 2 ? ' cv-short' : ''}`}>
+            <div class="cv-row">
+              <h3>{j.role} <span class="cv-org">· {j.org}{j.place && <span class="cv-place">, {j.place}</span>}</span>{preview && j.discuss && <span class="cv-flag">To be redefined</span>}</h3>
+              <span class="cv-when">{j.dates}</span>
+            </div>
+            {j.summary && <p class="cv-sum">{j.summary}</p>}
+            <ul>
+              {(j.points || []).map((pt) => <li>{parts(pt).map((x) => x.href ? <a class="cv-link" href={x.href}>{x.t}</a> : x.t)}</li>)}
+              {j.leadership && <li><strong>Leadership:</strong> {j.leadership}</li>}
+            </ul>
+            {j.impact && <p class="cv-impact"><span>Impact</span>{j.impact}</p>}
+          </div>
+        ))}
+      </div>
+    </section>
 
-  <section class="split rule" aria-labelledby="h-rec">
-    <h2 id="h-rec" class="label side">Recognition &amp; languages</h2>
-    <div class="main">
-      {cv.recognition.map((r) => <div class="kv"><span>{r.title}</span><span class="mono">{r.year}</span></div>)}
-      <p style="margin:0;padding-top:18px;font-size:16px;color:var(--fg-2)">{cv.languages}</p>
-    </div>
-  </section>
+    <section class="cvs" aria-labelledby="cv-edu">
+      <h2 id="cv-edu" class="label">Education</h2>
+      <div class="cv-list">
+        {cv.education.map((e) => (
+          <div class="cv-job">
+            <div class="cv-row">
+              <h3>{e.degree} <span class="cv-org">· {e.school}{e.place && <span class="cv-place">, {e.place}</span>}</span></h3>
+              <span class="cv-when">{e.dates}</span>
+            </div>
+            {e.detail && <p class="cv-text">{e.detail}</p>}
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {cv.recognition ? (
+    <section class="cvs" aria-labelledby="cv-pub">
+      <h2 id="cv-pub" class="label">Recognition</h2>
+      <ul class="cv-bul">
+        {cv.recognition.map((pt) => <li>{parts(pt).map((x) => x.href ? <a class="cv-link" href={x.href}>{x.t}</a> : x.t)}</li>)}
+        <li class="no-print"><a class="link-accent" href="/publications/">All publications →</a></li>
+      </ul>
+    </section>
+    ) : (
+    <section class="cvs" aria-labelledby="cv-pub">
+      <h2 id="cv-pub" class="label">Publications</h2>
+      <div class="cv-list cv-pubs">
+        <p class="cv-pstats">{cv.publications.stats}</p>
+        <div class="cv-kvrow"><span class="cv-k">Selected</span>
+          <div class="cv-v cv-sel">
+            {cv.publications.selected.map((p) => (
+              <a class="cv-paper" href={p.link}><span class="cv-paper-t">{p.title}</span><span class="cv-paper-m">{p.venue}, {p.year}</span></a>
+            ))}
+          </div>
+        </div>
+        <div class="cv-kvrow"><span class="cv-k">Talks</span><span class="cv-v">{cv.publications.talks}</span></div>
+        <div class="cv-kvrow"><span class="cv-k">Reviewer</span><span class="cv-v">{cv.publications.reviewing}</span></div>
+        <div class="cv-kvrow"><span class="cv-k">Press</span><span class="cv-v">{cv.publications.press.map((x, i) => <>{i > 0 && ' · '}<a href={x.link}>{x.outlet}</a></>)}</span></div>
+        <p class="cv-text no-print"><a class="link-accent" href="/publications/">All publications →</a></p>
+      </div>
+    </section>
+    )}
+
+    {cv.honors && (
+    <section class="cvs" aria-labelledby="cv-hon">
+      <h2 id="cv-hon" class="label">Honours &amp; awards</h2>
+      <div class="cv-list cv-kv">
+        {cv.honors.map((h) => (
+          <div class="cv-row"><span>{h.title}{(h.org || h.place) && <span class="cv-org"> · {[h.org, h.place].filter(Boolean).join(', ')}</span>}</span><span class="cv-when">{h.year}</span></div>
+        ))}
+      </div>
+    </section>
+
+    )}
+
+    {cv.expertise && (
+    <section class="cvs" aria-labelledby="cv-ex">
+      <h2 id="cv-ex" class="label">Expertise</h2>
+      <p class="cv-text">{cv.expertise}</p>
+    </section>
+    )}
+    {cv.expertise && (
+    <section class="cvs" aria-labelledby="cv-lang">
+      <h2 id="cv-lang" class="label">Languages</h2>
+      <p class="cv-text">{cv.languages}</p>
+    </section>
+    )}
+    {cv.skills && (
+    <section class="cvs" aria-labelledby="cv-sk">
+      <h2 id="cv-sk" class="label">Skills</h2>
+      <div class="cv-skills">
+        {cv.skills.map((s) => <div><h3>{s.group}</h3><p>{s.items}</p></div>)}
+        <div><h3>Languages</h3><p>{cv.languages}</p></div>
+        <div class="no-print"><h3>Open source</h3><p><a class="link-accent" href="/projects/">Code and tools on GitHub →</a></p></div>
+      </div>
+    </section>
+
+    )}
+
+    {cv.activities && (
+    <section class="cvs" aria-labelledby="cv-act">
+      <h2 id="cv-act" class="label">Other activities</h2>
+      <div class="cv-list cv-kv">
+        {cv.activities.map((a) => (
+          <div class="cv-row"><span>{a.title}<span class="cv-org"> · {a.place}</span></span><span class="cv-when">{a.year}</span></div>
+        ))}
+      </div>
+    </section>
+    )}
+  </article>
 </Base>
+
+<style is:global>
+  .cv { padding: 72px 0 96px; display: flex; flex-direction: column; }
+  .cv-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 48px; padding-bottom: 32px; }
+  .cv-id { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .cv-head h1 { margin: 6px 0 0; font-family: var(--serif); font-weight: 300; font-size: clamp(40px, 5.6vw, 68px); line-height: 1; letter-spacing: -0.02em; }
+  .cv-title { margin: 0; font-family: var(--serif); font-style: italic; font-size: clamp(20px, 2.2vw, 24px); color: var(--fg-2); }
+  .cv-contact { margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--muted-2); }
+  .cv-contact a { color: var(--accent); }
+  .cv-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+  .cv-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; border-top: 1px solid var(--fg); border-bottom: 1px solid var(--line); }
+  .cv-stats div { display: flex; flex-direction: column-reverse; gap: 4px; padding: 18px 16px 18px 0; }
+  .cv-stats div + div { padding-left: 20px; border-left: 1px solid var(--line); }
+  .cv-stats dd { margin: 0; font-family: var(--serif); font-weight: 300; font-size: clamp(30px, 3.6vw, 44px); line-height: 1; }
+  .cv-stats dt { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted-2); }
+  .cvs { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 12px 40px; padding: 32px 0; border-bottom: 1px solid var(--line); }
+  .cvs > .label { margin: 4px 0 0; }
+  .cv-lead { margin: 0; font-size: 18px; line-height: 1.65; color: var(--fg-2); max-width: 70ch; }
+  .cv-list { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
+  .cv-row { display: flex; justify-content: space-between; align-items: baseline; gap: 6px 24px; }
+  .cv-job h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 23px; line-height: 1.25; }
+  .cv-org { color: var(--muted); }
+  .cv-job h3 .cv-org { font-size: 19px; }
+  .cv-when { flex: none; display: flex; flex-direction: column; align-items: flex-end; font-family: var(--mono); font-size: 13px; color: var(--accent); text-align: right; }
+  .cv-place { color: var(--muted-2); }
+  .cv-flag { margin-left: 10px; vertical-align: middle; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: #B45309; border: 1px solid #B45309; border-radius: 999px; padding: 2px 8px; }
+  .cv-job ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; color: var(--fg-2); line-height: 1.55; }
+  .cv-job li::marker { color: var(--accent); }
+  .cv-note { margin: 8px 0 0; color: var(--fg-2); line-height: 1.55; }
+  .cv-note span { display: inline-block; min-width: 88px; margin-right: 6px; font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted-2); }
+  .cv-bul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; color: var(--fg-2); line-height: 1.55; }
+  .cv-bul li::marker { color: var(--accent); }
+  .cv-hl li { color: var(--fg); }
+  .cv-link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  .cv-sum { margin: 6px 0 0; font-style: italic; color: var(--muted); }
+  .cv-job li strong { font-weight: 600; color: var(--fg); }
+  .cv-impact { margin: 8px 0 0; color: var(--fg); line-height: 1.5; font-weight: 500; }
+  .cv-impact span { display: inline-block; margin-right: 10px; padding: 1px 8px; border: 1px solid var(--accent); border-radius: 999px; font-family: var(--mono); font-size: 11px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+  .cv-pubs { gap: 12px; }
+  .cv-pstats { margin: 0; font-family: var(--mono); font-size: 13px; color: var(--accent); }
+  .cv-kvrow { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 4px 16px; align-items: baseline; padding-top: 12px; border-top: 1px solid var(--line-soft, var(--line)); }
+  .cv-k { font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted-2); }
+  .cv-v { color: var(--fg-2); line-height: 1.55; }
+  .cv-v a { color: var(--accent); }
+  .cv-sel { display: flex; flex-direction: column; gap: 10px; }
+  .cv-paper-m { font-size: 14px; color: var(--muted-2); }
+  .cv-text { margin: 0; color: var(--fg-2); line-height: 1.6; }
+  .cv-text a { color: var(--accent); }
+  .cv-paper { display: flex; flex-direction: column; gap: 4px; }
+  .cv-paper .cv-when { align-items: flex-start; text-align: left; }
+  .cv-paper-t { font-family: var(--serif); font-size: 20px; line-height: 1.3; }
+  .cv-paper:hover .cv-paper-t { color: var(--accent); }
+  .cv-kv { gap: 12px; }
+  .cv-kv .cv-row > span:first-child { line-height: 1.45; }
+  .cv-skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 40px; }
+  .cv-skills h3 { margin: 0 0 4px; font-size: 15px; font-weight: 600; }
+  .cv-skills p { margin: 0; color: var(--fg-2); line-height: 1.55; }
+  @media (max-width: 760px) {
+    .cv { padding: 40px 0 64px; }
+    .cv-actions { align-items: flex-start; }
+    .cv-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cv-stats div:nth-child(3) { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+    .cv-stats div:nth-child(4) { border-top: 1px solid var(--line); }
+    .cvs { grid-template-columns: 1fr; padding: 26px 0; }
+    .cv-row { flex-direction: column; }
+    .cv-when { align-items: flex-start; text-align: left; flex-direction: row; gap: 10px; }
+    .cv-skills { grid-template-columns: 1fr; }
+    .cv-note span { display: block; margin-bottom: 2px; }
+  }
+  .print-only-block { display: none; }
+  @media print {
+    .cv-head, .cv-stats { display: none !important; }
+    .print-only-block { display: block; }
+    .cv-phead { text-align: center; padding-bottom: 6px; border-bottom: 1px solid #000; }
+    .cv-phead h1 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 20pt; line-height: 1.1; }
+    .cv-phead p { margin: 2px 0 0; font-size: 10pt; color: var(--fg-2); }
+    .cv-phead .cv-pcontact { font-size: 8.3pt; color: var(--muted-2); }
+    .cv-phead a { color: var(--accent); }
+    .cv-hidx { display: block !important; margin-top: 3px; font-size: 7pt; letter-spacing: .04em; text-transform: none; color: var(--muted-2); }
+    @page { size: A4; margin: 12mm 13mm; }
+    .wrap { max-width: none !important; padding: 0 !important; margin: 0 !important; }
+    main { padding: 0 !important; }
+    body { font-size: 8.7pt; }
+    .cv { padding: 0; }
+    .cv-head { padding-bottom: 10px; gap: 8px; }
+    .cv-head h1 { font-size: 24pt; }
+    .cv-title { font-size: 12pt; }
+    .cv-contact { font-size: 8.5pt; gap: 2px 12px; margin: 0; }
+    .cv-contact .print-only { display: inline; }
+    .cv-stats div { padding: 7px 10px 7px 0; } .cv-stats div + div { padding-left: 12px; }
+    .cv-stats dd { font-size: 16pt; } .cv-stats dt { font-size: 7pt; }
+    .cvs { display: block; position: relative; padding: 15px 0 15px 108px; break-inside: auto; }
+    .cvs > .label { position: absolute; left: 0; top: 15px; width: 92px; margin: 0; }
+    .cvs > .label { font-size: 7.5pt; }
+    .cv-lead { font-size: 9pt; line-height: 1.42; max-width: none; }
+    .cv-list { gap: 10px; }
+    section[aria-labelledby="cv-edu"], section[aria-labelledby="cv-pub"], section[aria-labelledby="cv-sk"] { break-inside: avoid; }
+    .cv-job { break-inside: auto; } .cv-job .cv-row, .cv-job li, .cv-note { break-inside: avoid; } .cv-row { break-after: avoid; }
+    .cv-job h3 { font-size: 11pt; } .cv-job h3 .cv-org { font-size: 10pt; }
+    .cv-when { font-size: 8pt; }
+    .cv-job ul { margin-top: 3px; gap: 1px; line-height: 1.35; padding-left: 13px; }
+    .cv-sum { margin-top: 2px; }
+    .cv-impact { margin-top: 3px; line-height: 1.35; break-before: avoid; break-inside: avoid; }
+    .cv-job ul { break-after: avoid; }
+    .cv-short { break-inside: avoid; }
+    .cv-bul { gap: 2px; line-height: 1.38; padding-left: 13px; }
+    .cv-paper-t { color: var(--fg) !important; }
+    .cv-impact span { border: 0; border-radius: 0; padding: 0; margin-right: 5px; font-family: var(--sans); font-size: 8.7pt; font-weight: 700; letter-spacing: 0; text-transform: none; color: var(--fg); }
+    .cv-impact span::after { content: ':'; }
+    .cv-pubs { gap: 4px; } .cv-pstats { font-size: 8pt; }
+    .cv-kvrow { grid-template-columns: 70px minmax(0, 1fr); gap: 2px 10px; padding-top: 4px; }
+    .cv-k { font-size: 7pt; } .cv-v { line-height: 1.4; } .cv-sel { gap: 3px; } .cv-paper-m { font-size: 8pt; }
+    .cv-text { line-height: 1.4; }
+    .cv-paper-t { font-size: 10pt; }
+    .cv-kv { gap: 3px; }
+    .cv-skills { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px 18px; } .cv-skills h3 { font-size: 9pt; margin: 0; } .cv-skills p { line-height: 1.35; }
+    .cv-flag { display: none; }
+  }
+</style>

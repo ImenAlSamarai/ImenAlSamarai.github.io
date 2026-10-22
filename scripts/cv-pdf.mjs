@@ -18,7 +18,8 @@ const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePa
 const page = await browser.newPage();
 await page.goto('http://localhost:4329/cv/', { waitUntil: 'networkidle' });
 await page.emulateMedia({ media: 'print' });
-await page.pdf({ path: 'dist/cv.pdf', format: 'A4', printBackground: true, margin: { top: '16mm', bottom: '16mm', left: '16mm', right: '16mm' } });
+// Page size and margins come from the CV page's own @page rule (src/pages/cv.astro).
+await page.pdf({ path: 'dist/cv.pdf', format: 'A4', printBackground: true, preferCSSPageSize: true });
 await browser.close();
 server.close();
 console.log('dist/cv.pdf written');

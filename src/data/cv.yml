@@ -1,99 +1,98 @@
-# Your CV. The CV page and the downloadable PDF are both generated from this file.
+# Your CV. The online CV page (/cv/) and the PDF (/cv.pdf) are generated from this file.
+# Links in bullets: [text](url). Location ("place") is shown after the organisation.
 
 updated: October 2026
 
+title: Quant Researcher · AI Scientist · Founder
+location: London · Paris
+
+profile: >-
+  Scientist who takes research from discovery to production. Contributed to the first evidence of a
+  high-energy astrophysical neutrino source at CERN and IceCube, built and led TD Securities' FICC systematic research platform as
+  Director of Quantitative Research, and founded Pontus Analytics, which brings research-grade modelling and AI to
+  companies in quant finance and engineering.
+
 experience:
-  - role: Founder & CEO
+  - role: Founder
     org: Pontus Analytics
-    place: Paris
-    dates: "[Year] – present"
+    place: London · Paris
+    dates: Jun 2024 – present
+    summary: Founded to bring research-grade modelling and AI to companies shaping the future of quant finance and engineering.
     points:
-      - AI, machine learning and physics-simulation solutions for quantitative finance, defence and R&D.
-      - Research on evaluating how language-model agents make decisions under uncertainty.
+      - Built RL training environments, valuation frameworks and macroeconomic models for clients serving frontier AI labs, venture capital and hedge funds.
+      - Released an [open-source benchmark](https://github.com/ImenAlSamarai/decision-level-evaluation) that scores LLM-agent decisions against exact, Bellman-optimal policies ([preprint, 2026](https://github.com/ImenAlSamarai/decision-level-evaluation/blob/main/paper/paper.pdf)).
+
   - role: Director, Quantitative Research
     org: TD Securities
     place: London
-    dates: Oct 2020 – Jun 2024
+    dates: 2020 – 2024
     points:
-      - Built the systematic fixed-income research platform from concept to firm-wide adoption across trading desks.
-      - Grew the team from individual contributor to seven PhD-level researchers, extending research to FX and commodities.
-      - Developed machine-learning alpha signals with validated backtesting, and NLP tools for central-bank sentiment.
+      - Built and led the FICC systematic research platform from first prototype to adoption across trading desks, with a robust data pipeline (curation, outlier detection, feature extraction) and daily analytics for traders and clients.
+      - Covered government, SSA and corporate bonds, and led the move from LIBOR to OIS-based swap curves in the bank's quantitative libraries.
+      - Brought NLP and transformer models into the trading workflow for event-driven analysis of central-bank communications and market sentiment.
+      - Grew the quant team by seven across three offices, extended coverage to FX and commodities, and set up research partnerships with UCL and Imperial College; promoted to Director.
+    impact: $30M in projected annual P&L, and millions saved in licensing costs.
+
   - role: Lead Data Scientist & ML Engineer
-    org: Swiss Life
+    org: Swiss Life Banque Privée
     place: Paris
-    dates: Nov 2018 – Oct 2020
+    dates: 2018 – 2020
     points:
-      - Designed and deployed a production robo-advisory engine combining LSTM models and genetic algorithms, serving thousands of clients.
-      - Built the full ML pipeline — client profiling, rebalancing, real-time risk monitoring — and led a team of three data scientists.
-  - role: Senior Research Scientist
-    org: CERN
+      - Led the build of an end-to-end robo-advisory platform, using genetic algorithms for stock selection, regularisation for risk control and PCA for macro-factor exposure.
+      - Designed an architecture serving thousands of client portfolios, with real-time market data, risk analytics and automated trade execution.
+      - Led a team of three data scientists, sat on the investment committees as ML expert, and secured R&D tax-credit funding.
+    impact: Personalised, factor-based portfolio management at scale, replacing a manual process.
+
+  - role: Research Scientist
+    org: CERN & University of Geneva
     place: Geneva
-    dates: Aug 2016 – Nov 2018
+    dates: 2016 – 2018
     points:
-      - Machine-learning methods in the search for the cosmic sources of neutrinos, contributing to results published in Science.
-      - Coordinated work across international collaborations and supervised three PhD researchers.
-  - role: Researcher
+      - Developed neutrino-source analyses for IceCube, using maximum-likelihood methods, random forests and high-performance computing to extract weak signals from noise-dominated data.
+      - Led the simulation work for the Cherenkov Telescope Array's small-sized telescopes, comparing optics and FPGA-electronics designs in C++; co-supervised three PhD students.
+    impact: Part of the analysis that produced the first evidence of a high-energy neutrino source (Science, 2018). These IceCube discoveries earned its principal investigator, Francis Halzen, the 2026 Nobel Prize in Physics.
+
+  - role: Research Scientist
     org: LPNHE
-    place: Paris
-    dates: May 2013 – Aug 2016
+    place: Paris · Mendoza
+    dates: 2013 – 2016
     points:
-      - Developed a phenomenological model and a C++ simulation framework adopted across four research projects.
-      - Co-led competitive technical proposals for experimental deployment.
-  - role: Visiting Scientist · Assistant Professor
+      - Wrote the phenomenological model of molecular-bremsstrahlung radio emission from cosmic-ray air showers, and its Monte Carlo C++ simulation framework.
+      - Led the simulation effort across four competing radio-detection projects (64 collaborators), and deployed detectors at the Pierre Auger Observatory in Argentina.
+    impact: Research that contributed to €7M of funding for the detector array in the Pampa Amarilla.
+
+  - role: Visiting Scientist · Lecturer
     org: University of Michigan · Aix-Marseille University
     place: Ann Arbor · Marseille
-    dates: Jan 2012 – Apr 2013
+    dates: 2012 – 2013
     points:
-      - Built real-time image-processing pipelines for autonomous telescope networks detecting transient events.
-      - Taught physics, mathematics and statistics.
+      - Built a large-scale astronomical image-analysis pipeline and automation for robotic telescopes, and taught physics, mathematics and statistics.
+    impact: The first autonomous alert system for high-energy astrophysical particles covering the Southern Hemisphere.
 
 education:
   - degree: PhD, Particle Physics & Astrophysics
-    school: Aix-Marseille University
-    detail: Signal detection in high-noise astrophysical data
+    school: Aix-Marseille University and Université Paris 7
+    place: ""
     dates: 2009 – 2012
+    detail: Supervised by Prof. José Busto. Automated analysis for rapid neutrino detection from transient sources, for the ANTARES and KM3NeT neutrino telescopes in the Mediterranean.
   - degree: MSc, Particle Physics
     school: Université Paris 7 Denis Diderot
-    detail: ""
+    place: ""
     dates: "2008"
-
-publications_line: 200+ publications in astroparticle physics and AI, including Science and Nature.
-
-skills:
-  - group: Methods
-    items: Statistical inference, Monte Carlo simulation, signal processing, econometrics, portfolio optimisation
-  - group: Machine learning
-    items: Classical ML, deep learning, reinforcement learning, LLMs and agentic systems; PyTorch, TensorFlow, scikit-learn
-  - group: Engineering
-    items: Python, C++, SQL, R; Docker, AWS, Spark, Airflow; Bloomberg and Reuters APIs
+    detail: High-sensitivity light-detector development for physics experiments.
 
 recognition:
-  - title: Legendary Award, TD Securities
-    year: "2023"
-  - title: Above and Beyond Award, TD Securities
-    year: "2021"
-  - title: NSF press release on the Science neutrino result
-    year: "2018"
+  - 200+ publications, h-index 55, 10K+ citations. Selected — "[Verifying Decisions Under Uncertainty](https://github.com/ImenAlSamarai/decision-level-evaluation/blob/main/paper/paper.pdf)" (preprint, 2026), and IceCube Collaboration, [Science (2018)](https://doi.org/10.1126/science.aat2890).
+  - Selected as a peer reviewer for Physical Review Letters and JCAP, and as an external analysis reviewer for the IceCube Beyond-Standard-Model Working Group.
+  - 15 invited seminars and 12 international conference talks. Work featured in PNAS, PolyMedia (EPFL) and Techno-Science.
+  - TD Securities Above and Beyond and Legendary Awards · US National Science Foundation sponsorship for breakthroughs in astrophysics · CNRS PHOTONIS PhD Award.
+
+skills:
+  - group: Machine learning & AI
+    items: Reinforcement learning and agent evaluation, transformers and LLMs, agentic workflows, RAG, deep learning, classical ML
+  - group: Statistics & modelling
+    items: Statistical inference, Monte Carlo methods, time-series analysis, signal processing, stochastic control, simulation
+  - group: Engineering
+    items: Python, C++, R, MATLAB; data pipelines, ETL, high-performance computing, production ML systems
 
 languages: French, Arabic (native) · English (fluent) · Italian, Spanish (conversational)
-
-# Shown on the About page's career timeline.
-timeline:
-  - when: Now
-    org: Pontus Analytics
-    role: Founder & CEO
-  - when: 2020–2024
-    org: TD Securities
-    role: Director, Quantitative Research
-  - when: 2018–2020
-    org: Swiss Life
-    role: Lead Data Scientist & ML Engineer
-  - when: 2016–2018
-    org: CERN
-    role: Senior Research Scientist
-  - when: 2013–2016
-    org: LPNHE, Paris
-    role: Researcher
-  - when: 2012–2013
-    org: University of Michigan · Aix-Marseille University
-    role: Visiting Scientist · Assistant Professor
